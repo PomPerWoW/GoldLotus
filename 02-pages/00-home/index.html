@@ -12,12 +12,24 @@
         />
 
         <!-- Global CSS -->
-        <link rel="stylesheet" href="../../01-global/general.css" />
-        <link rel="stylesheet" href="../../01-global/global-style.css" />
-        <link rel="stylesheet" href="../../01-global/queries.css" />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/general.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/global-style.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/queries.css') }}"
+        />
 
         <!-- Local CSS -->
-        <link rel="stylesheet" href="../../02-pages/00-home/style.css" />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('main-static', path='/style.css') }}"
+        />
 
         <title>GoldLotus</title>
     </head>
@@ -31,7 +43,7 @@
                     <li>Event</li>
                     <img
                         id="web-logo"
-                        src="../../00-assets/icons/logo.svg"
+                        src="{{ url_for('assets-static', path='/icons/logo.svg') }}"
                         alt="logo"
                     />
                     <li>Dherma</li>
@@ -53,7 +65,7 @@
                 </div>
                 <img
                     class="hero__image"
-                    src="../../00-assets/images/buddha-statue-1.jpg"
+                    src="{{ url_for('assets-static', path='/images/buddha-statue-1.jpg') }}"
                     alt="logo"
                 />
             </section>
