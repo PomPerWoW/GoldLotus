@@ -1,0 +1,39 @@
+/* Navigation Section */
+.navigation {
+    background-color: #ededed;
+    padding: 4rem 0;
+}
+
+.navigation__list {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10rem 0;
+}
+
+.hero__text {
+    text-align: center;
+}
+
+.hero__text--header {
+    color: #dcb60e;
+    font-size: 4rem;
+    margin-bottom: 2rem;
+}
+
+.hero__text--message {
+    color: #2e3113;
+    padding: 0 4rem;
+    font-size: 1.6rem;
+}
+
+.hero__image {
+    width: 70rem;
+}
