@@ -28,6 +28,7 @@
 }
 
 .hero__text {
+    padding-right: 10rem;
     text-align: center;
 }
 
@@ -40,9 +41,8 @@
 .hero__text--message {
     color: #2e3113;
     padding: 0 4rem;
-    font-size: 1.6rem;
 }
 
 .hero__image {
-    width: 70rem;
+    width: 60rem;
 }
