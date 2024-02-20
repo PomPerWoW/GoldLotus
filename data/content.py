@@ -2,7 +2,8 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 
-from database import *
+import persistent 
+from persistent.list import PersistentList
 
 class Content(persistent.Persistent, ABC):
     def __init__(self, title: str, author: str, text: str, media: list) -> None:
@@ -15,6 +16,10 @@ class Content(persistent.Persistent, ABC):
     @abstractmethod
     def removeContent():
         pass
+    
+    @abstractmethod
+    def editContent():
+        pass
 
 class Reply(Content):
     def __init__(self, title: str, author: str, text: str, media: list) -> None:
@@ -24,6 +29,9 @@ class Reply(Content):
     def removeContent():
         pass
     
+    def editContent():
+        pass
+    
     def addLike(self, userID: str):
         self.like.append(userID)
     
@@ -31,14 +39,16 @@ class Reply(Content):
         self.like.pop(userID)
         
 class Post(Content):
-    def __init__(self, title: str, author: str, text: str, media: list) -> None:
+    def __init__(self, postID: str, title: str, author: str, text: str, media: list) -> None:
         super().__init__(title, author, text, media)
-        self.postID = root.post["currentID"]
+        self.postID = postID
         self.like = PersistentList()
         self.reply = PersistentList()
-        root.post["currentID"] += 1
         
     def removeContent(self):
+        pass
+    
+    def editContent():
         pass
     
     def addLike(self, userID: str):
@@ -54,17 +64,19 @@ class Post(Content):
         self.reply.pop(replyIndex)
         
 class Event(Content):
-    currentEventID = 0
     
-    def __init__(self, title: str, author: str, text: str, media: list, date: datetime) -> None:
+    def __init__(self, eventID: str, title: str, author: str, text: str, media: list, date: datetime) -> None:
         super().__init__(title, author, text, media)
+        self.eventID = eventID
         self.date = date
         self.attending = PersistentList()
         self.maybe = PersistentList()
         self.notAttending = PersistentList()
-        root.event["currentID"] += 1
         
     def removeContent():
+        pass
+    
+    def editContent():
         pass
         
     def addAttending(self, userID: str):
