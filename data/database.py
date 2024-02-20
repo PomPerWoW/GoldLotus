@@ -3,15 +3,15 @@ from dotenv import load_dotenv
 
 load_dotenv(os.path.dirname(os.path.abspath(__file__)) + '\.env')
 
-admin_username = os.getenv('ADMIN_USERNAME')
-admin_password = os.getenv('ADMIN_PASSWORD')
-sender_email = os.getenv('SENDER_EMAIL')
-signup_subject = os.getenv('SIGNUP_SUBJECT')
-reset_password_subject = os.getenv('RESET_PASSWORD_SUBJECT')
-smtp_server = os.getenv('SMTP_SERVER')
-smtp_port = os.getenv('SMTP_PORT')
-smtp_username = os.getenv('SMTP_USERNAME')
-smtp_password = os.getenv('SMTP_PASSWORD')
+ADMIN_USERNAME = os.getenv('ADMIN_USERNAME')
+ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
+SENDER_EMAIL = os.getenv('SENDER_EMAIL')
+SIGNUP_SUBJECT = os.getenv('SIGNUP_SUBJECT')
+RESET_PASSWORD_SUBJECT = os.getenv('RESET_PASSWORD_SUBJECT')
+SMTP_SERVER = os.getenv('SMTP_SERVER')
+SMTP_PORT = os.getenv('SMTP_PORT')
+SMTP_USERNAME = os.getenv('SMTP_USERNAME')
+SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')
 
 
 import ZODB, ZODB.FileStorage, transaction
@@ -29,7 +29,7 @@ if not hasattr(root, "config"):
 if not hasattr(root, "user"):
     root.user = BTrees.OOBTree.BTree()
     root.config["currentUserID"] = 1
-    root.user["0000000000000"] = User("0000000000000", admin_username, sender_email, admin_password)
+    root.user["0000000000000"] = User("0000000000000", ADMIN_USERNAME, SENDER_EMAIL, ADMIN_PASSWORD)
 if not hasattr(root, "post"):
     root.post = BTrees.OOBTree.BTree()
     root.config["currentPostID"] = 1
