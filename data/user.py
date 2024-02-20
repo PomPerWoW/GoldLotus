@@ -1,22 +1,25 @@
 
+import persistent 
+from persistent.list import PersistentList 
+
 from email_validator import validate_email, EmailNotValidError
 from password_strength import PasswordPolicy
 
-from hashing import hashPassword
 from content import *
-from database import *
+
+import hashlib
+hash_algorithm = hashlib.new("SHA256")
 
 class User(persistent.Persistent):
-    def __init__(self, username: str, email: str, password: str) -> None:
+    def __init__(self, userID: str, username: str, email: str, password: str) -> None:
         self.__verify_account_details(username, email, password)
 
-        self.userID = root.user["currentID"]
+        self.userID = userID
         self.username = username
         self.email = email
-        self.__password = hashPassword(password)
+        self.__password = self.hashPassword(password)
         self.post = PersistentList()
         self.event = PersistentList()
-        root.user["currentID"] += 1
 
     def __verify_account_details(self, username: str, email: str, password: str) -> None:
         # Username
@@ -37,6 +40,14 @@ class User(persistent.Persistent):
         )
         if policy.test(password):
             raise ValueError("Invalid password format")
+
+    def hashPassword(self, password):  
+        hash_algorithm = hashlib.new("SHA256") 
+        hash_algorithm.update(password.encode())
+        return hash_algorithm.hexdigest()
+    
+    def verifyPassword(self, password):
+        return True if self.hashPassword(password) == self.__password else False
 
     def createPost(self, title: str, text: str, media: list):
         Post(title, self.userID, text, media)
