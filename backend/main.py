@@ -20,6 +20,9 @@ app.mount("/global-static",
 app.mount("/main-static",
           StaticFiles(directory="../pages/00-home"), name="main-static")
 
+app.mount("/signin-static",
+          StaticFiles(directory="../pages/01-signin"), name="signin-static")
+
 # =============================================================================
 
 
