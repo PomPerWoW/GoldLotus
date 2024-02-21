@@ -71,23 +71,19 @@ body{
 .info{
     text-align: center;
 }
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8rem;
+}
+
 .serviceBox{
     color: black;
     background: #D8B778;
     text-align: center;
-    padding: 25px 25px 25px;
-    border-radius: 35px;
-    box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
-    z-index: 1;
-    height: auto;
-    width: 20%;
-    float: left;
-    margin: 30px;
-    max-width: 33.33%;
-}
-.center{
-    content: '';
-    clear: both;
-    display: table;
-    margin-left: 8rem;
+    padding: 2.5rem 2.5rem 2.5rem;
+    border-radius: 3.5rem;
+    box-shadow: 0.5rem 0.5rem 1rem rgba(0,0,0,0.1);
 }
