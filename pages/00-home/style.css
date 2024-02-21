@@ -1,12 +1,9 @@
-body{
-    background-color: #ededed;
-}
 /* Navigation Section */
 .navigation {
     background-color: #ededed;
     padding: 2.85rem 0;
-    border-bottom: 3px solid #D8B778;
-    position:fixed;
+    border-bottom: 3px solid #d8b778;
+    position: fixed;
     width: 100%;
 }
 
@@ -17,25 +14,25 @@ body{
     list-style: none;
 }
 
-.navigation a{
-    /* background-color: #ededed; */
+.navigation a {
+    cursor: pointer;
     padding: 3.6rem 2.5rem;
     border-bottom: 3px solid transparent;
-
+    color: #000;
+    text-decoration: none;
 }
 
-.navigation a:hover{
-    border-bottom: 3px solid #2E3113;
-    background-color: #F0CF95;
+.navigation a:hover {
+    border-bottom: 3px solid #2e3113;
+    background-color: #f0cf95;
     padding: 3.6rem 2.5rem;
     /* transition: width 20s; */
 }
 
-.navigation__list img{
+.navigation__list img {
     width: 40;
     height: 100%;
 }
-    
 
 /* Hero Section */
 .hero {
@@ -63,12 +60,11 @@ body{
 }
 
 .hero__image {
-    width: 60rem; 
+    width: 60rem;
 }
 
-
 /* infomation section */
-.info{
+.info {
     text-align: center;
 }
 
@@ -81,9 +77,16 @@ body{
 
 .serviceBox{
     color: black;
-    background: #D8B778;
+    background: #d8b778;
     text-align: center;
     padding: 2.5rem 2.5rem 2.5rem;
     border-radius: 3.5rem;
     box-shadow: 0.5rem 0.5rem 1rem rgba(0,0,0,0.1);
+}
+
+.center {
+    content: "";
+    clear: both;
+    display: table;
+    margin-left: 8rem;
 }
