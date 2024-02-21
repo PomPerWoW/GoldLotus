@@ -1,7 +1,13 @@
+body{
+    background-color: #ededed;
+}
 /* Navigation Section */
 .navigation {
     background-color: #ededed;
-    /* padding: 3.6rem 0; */
+    padding: 2.85rem 0;
+    border-bottom: 3px solid #D8B778;
+    position:fixed;
+    width: 100%;
 }
 
 .navigation__list {
@@ -10,14 +16,26 @@
     align-items: center;
     list-style: none;
 }
+
 .navigation a{
-    color: black;
-    text-align: center;
-    text-decoration: none;
+    /* background-color: #ededed; */
     padding: 3.6rem 2.5rem;
-    font-size: 17px;
-    border-bottom: 3px solid ;
+    border-bottom: 3px solid transparent;
+
 }
+
+.navigation a:hover{
+    border-bottom: 3px solid #2E3113;
+    background-color: #F0CF95;
+    padding: 3.6rem 2.5rem;
+    /* transition: width 20s; */
+}
+
+.navigation__list img{
+    width: 40;
+    height: 100%;
+}
+    
 
 /* Hero Section */
 .hero {
@@ -25,6 +43,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 10rem 0;
+    margin-top: 3.6rem;
 }
 
 .hero__text {
@@ -44,5 +63,31 @@
 }
 
 .hero__image {
-    width: 60rem;
+    width: 60rem; 
+}
+
+
+/* infomation section */
+.info{
+    text-align: center;
+}
+.serviceBox{
+    color: black;
+    background: #D8B778;
+    text-align: center;
+    padding: 25px 25px 25px;
+    border-radius: 35px;
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
+    z-index: 1;
+    height: auto;
+    width: 20%;
+    float: left;
+    margin: 30px;
+    max-width: 33.33%;
+}
+.center{
+    content: '';
+    clear: both;
+    display: table;
+    margin-left: 8rem;
 }
