@@ -1,5 +1,5 @@
 
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request, Response, Cookie
 from datetime import datetime
 import sys
 import os
@@ -9,29 +9,43 @@ app = FastAPI()
 PARENT_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.insert(1, os.path.join(PARENT_DIRECTORY, "data"))
 
-from user import User
-from content import Post, Reply, Event
+from content import Blog, Reply, Event
 from database import *
+from auth.auth_handler import decodeJWT
 
 @app.post("/postBlog/")
-async def postBlog(response: Response, request: Request, username: str, email: str, password: str):
+async def postBlog(response: Response, request: Request, title: str, text: str, media: list, access_token: str = Cookie(None)):
     try:
-        for id in root.user:
-            if username == root.user[id].username:
-                raise Exception("username is already taken")
-            if email == root.user[id].email:
-                raise Exception("email already exist")
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        if not userId in root.user:
+            raise Exception("author not found")
         
-        currentUserID = root.config["currentUserID"]
+        root.blog[root.config["currentBlogID"]] = root.user[userId].createBlog(root.config["currentBlogID"], title, text, media)
         
-        # userID format: "ddmmyyyyxxxxxx"   
-        userID = datetime.now().strftime("%d%m%Y") + f"{currentUserID:06d}"
-        root.user[userID] = User(userID, username, email, password)
-        
-        root.config["currentUserID"] += 1
+        root.config["currentBlogID"] += 1
         
         transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+
+@app.post("/removeBlog/")
+async def removeBlog(response: Response, request: Request, blogID: str, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        if not userId in root.user:
+            raise Exception("author not found")
         
-        return root.user[userID]
+        found = False
+        for blog in root.user["userID"].blog:
+            if blogID == blog.blogID:
+                del blog
+                found = True
+        
+        if not found:
+            raise Exception("user has no permission")    
+        
+        transaction.commit()
     except Exception as e:
         return {"detail": str(e)}

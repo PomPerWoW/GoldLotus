@@ -38,10 +38,10 @@ class Reply(Content):
     def removeLike(self, userID: str):
         self.like.pop(userID)
         
-class Post(Content):
-    def __init__(self, postID: str, title: str, author: str, text: str, media: list) -> None:
+class Blog(Content):
+    def __init__(self, blogID: str, title: str, author: str, text: str, media: list) -> None:
         super().__init__(title, author, text, media)
-        self.postID = postID
+        self.blogID = blogID
         self.like = PersistentList()
         self.reply = PersistentList()
         
