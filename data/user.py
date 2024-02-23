@@ -18,7 +18,7 @@ class User(persistent.Persistent):
         self.username = username
         self.email = email
         self.__password = self.hashPassword(password)
-        self.post = PersistentList()
+        self.blog = PersistentList()
         self.event = PersistentList()
 
     def __verify_account_details(self, username: str, email: str, password: str) -> None:
@@ -49,8 +49,11 @@ class User(persistent.Persistent):
     def verifyPassword(self, password):
         return True if self.hashPassword(password) == self.__password else False
 
-    def createPost(self, title: str, text: str, media: list):
-        Post(title, self.userID, text, media)
+    def createBlog(self, blogID: str, title: str, text: str, media: list):
+        newBlog = Blog(blogID, title, self.userID, text, media)
+        self.blog.append(newBlog)
+        
+        return newBlog
     
     def createEvent(self, title: str, text: str, media: list,  date: datetime):
         Event(title, self.userID, text, media, date)

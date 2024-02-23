@@ -30,9 +30,9 @@ if not hasattr(root, "user"):
     root.user = BTrees.OOBTree.BTree()
     root.config["currentUserID"] = 1
     root.user["0000000000000"] = User("0000000000000", ADMIN_USERNAME, SENDER_EMAIL, ADMIN_PASSWORD)
-if not hasattr(root, "post"):
-    root.post = BTrees.OOBTree.BTree()
-    root.config["currentPostID"] = 1
+if not hasattr(root, "blog"):
+    root.blog = BTrees.OOBTree.BTree()
+    root.config["currentBlogID"] = 1
 if not hasattr(root, "event"):
     root.event = BTrees.OOBTree.BTree()
     root.config["currentEventID"] = 1
