@@ -1,10 +1,10 @@
-
-from fastapi import FastAPI, Request, Response
+from fastapi import APIRouter
+from fastapi import Request, Response
 from datetime import datetime
 import sys
 import os
 
-app = FastAPI()
+router = APIRouter()
 
 PARENT_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.insert(1, os.path.join(PARENT_DIRECTORY, "data"))
@@ -13,7 +13,7 @@ from user import User
 from content import Post, Reply, Event
 from database import *
 
-@app.post("/postBlog/")
+@router.post("/postBlog/", tags=["blog"])
 async def postBlog(response: Response, request: Request, username: str, email: str, password: str):
     try:
         for id in root.user:
