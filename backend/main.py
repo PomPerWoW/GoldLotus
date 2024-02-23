@@ -22,11 +22,27 @@ pages = Jinja2Templates(directory="../pages/")
 # Assets
 # =============================================================================
 
-app.mount("/assets", StaticFiles(directory="../assets"), name="assets-static")
-app.mount("/global-static", StaticFiles(directory="../global"), name="global-static")
-app.mount("/main-static", StaticFiles(directory="../pages/00-home"), name="main-static")
+app.mount("/assets",
+          StaticFiles(directory="../assets"), name="assets-static")
+
+app.mount("/global-static",
+          StaticFiles(directory="../global"), name="global-static")
+
+app.mount("/main-static",
+          StaticFiles(directory="../pages/00-home"), name="main-static")
+
+app.mount("/signin-static",
+          StaticFiles(directory="../pages/01-signin"), name="signin-static")
 
 # =============================================================================
+
+
+# Templates
+# =============================================================================
+
+@app.get("/signIn", response_class=HTMLResponse, tags=["website"])
+async def index(request: Request):
+    return pages.TemplateResponse("00-home/index.html", {"request": request})
 
 # Templates
 # =============================================================================

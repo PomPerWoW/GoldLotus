@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- Shortcut Icon -->
+        <link
+            rel="shortcut icon"
+            type="image/png"
+            href="../../00-assets/icons/logo.svg"
+        />
+
+        <!-- Global CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/general.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/global-style.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/queries.css') }}"
+        />
+
+        <!-- Local CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('signin-static', path='/style.css') }}"
+        />
+
+        <title>GoldLotus | Sign In</title>
+    </head>
+    <body>
+        <div class="background__image--1">
+            <div class="container">
+                <div class="signin">
+                    <div class="signin__image">
+                        <div class="back_to_home">
+                            <p>
+                                <a href="/signIn"
+                                    ><i class="icon fa-solid fa-arrow-left"></i
+                                    >Back to home</a
+                                >
+                            </p>
+                        </div>
+                        <img
+                            class="signin__image--1"
+                            src="{{ url_for('assets-static', path='/images/monk-cartoon-1.png') }}"
+                            alt="buddha img"
+                        />
+                    </div>
+                    <div class="signin__input">
+                        <h2
+                            class="signin__input--header heading-tertiary text__center"
+                        >
+                            Sign In
+                        </h2>
+                        <form class="signin__form" action="" method="post">
+                            <label for="username">Username</label>
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Enter your username"
+                                required
+                            />
+
+                            <label for="password">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                required
+                            />
+
+                            <div class="signin__form--forgetpassword">
+                                <p><a href="">Forget password?</a></p>
+                            </div>
+
+                            <button type="submit" class="btn">Sign In</button>
+
+                            <div class="signin__form--register">
+                                <p>
+                                    Don't have an account?
+                                    <a href="/signUp">Sign Up</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script
+            src="https://kit.fontawesome.com/1c7eef805a.js"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>

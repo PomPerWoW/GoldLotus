@@ -38,17 +38,21 @@
         <nav class="navigation">
             <div class="container">
                 <ul class="navigation__list">
-                    <li>Home</li>
-                    <li>Blog</li>
-                    <li>Event</li>
+                    <div class="navigation_left">
+                        <a>Home</a>
+                        <a>Blog</a>
+                        <a>Event</a>
+                    </div>
                     <img
                         id="web-logo"
                         src="{{ url_for('assets-static', path='/icons/logo.svg') }}"
                         alt="logo"
                     />
-                    <li>Dherma</li>
-                    <li>Notification</li>
-                    <li>User Profile</li>
+                    <div class="navigation_right">
+                        <a>Dherma</a>
+                        <a>Notification</a>
+                        <a href="/signIn">User Profile</a>
+                    </div>
                 </ul>
             </div>
         </nav>
@@ -57,7 +61,9 @@
         <div class="container">
             <section class="hero">
                 <div class="hero__text">
-                    <h1 class="hero__text--header">Welcome to GoldLotus</h1>
+                    <h1 class="hero__text--header heading-primary">
+                        Welcome to GoldLotus
+                    </h1>
                     <p class="hero__text--message">
                         where seekers come to experience the profound teachings
                         of Buddha.
@@ -70,5 +76,57 @@
                 />
             </section>
         </div>
+
+        <!-- Info Section -->
+        <div class="container">
+            <section class="info">
+                <div class="row">
+                    <div class="serviceBox">
+                        <h3 class="subheading">Service box</h3>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Suspendisse eget dui lectus. Phasellus quis
+                            orci at eros euismod suscipit vitae sed lacus.
+                            Curabitur eu tincidunt mauris, eleifend feugiat
+                            lacus. Morbi vel ipsum elit. Maecenas et eros velit.
+                            Ut sit amet tristique sapien. Nulla et lectus eu
+                            velit hendrerit mollis in quis arcu. Aenean accumsan
+                            lacus massa, 
+                        </p>
+                    </div>
+                    <div class="serviceBox">
+                        <h3 class="subheading">Service box</h3>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Suspendisse eget dui lectus. Phasellus quis
+                            orci at eros euismod suscipit vitae sed lacus.
+                            Curabitur eu tincidunt mauris, eleifend feugiat
+                            lacus. Morbi vel ipsum elit. Maecenas et eros velit.
+                            Ut sit amet tristique sapien. Nulla et lectus eu
+                            velit hendrerit mollis in quis arcu. Aenean accumsan
+                            lacus massa, 
+                        </p>
+                    </div>
+                    <div class="serviceBox">
+                        <h3 class="subheading">Service box</h3>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Suspendisse eget dui lectus. Phasellus quis
+                            orci at eros euismod suscipit vitae sed lacus.
+                            Curabitur eu tincidunt mauris, eleifend feugiat
+                            lacus. Morbi vel ipsum elit. Maecenas et eros velit.
+                            Ut sit amet tristique sapien. Nulla et lectus eu
+                            velit hendrerit mollis in quis arcu. Aenean accumsan
+                            lacus massa, 
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <script
+            src="https://kit.fontawesome.com/1c7eef805a.js"
+            crossorigin="anonymous"
+        ></script>
     </body>
 </html>
