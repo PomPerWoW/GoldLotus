@@ -3,4 +3,5 @@ backend/database.fs
 backend/database.fs.index
 backend/database.fs.lock
 backend/database.fs.tmp
+backend/auth/__pycache__
 data/__pycache__
