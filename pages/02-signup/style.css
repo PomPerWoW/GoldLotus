@@ -1,4 +1,4 @@
-/* Sign In Section */
+/* Sign Up Section */
 .back_to_home {
     position: absolute;
     top: 10rem;
@@ -16,13 +16,13 @@
 
 .signup {
     height: 100vh;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
     align-items: center;
+    grid-template-columns: 1fr 1.2fr;
 }
 
 .signup__image img {
-    width: 56rem;
+    width: 100%;
 }
 
 .signup__input {

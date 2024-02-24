@@ -1,4 +1,10 @@
 /* Sign In Section */
+.back_to_home {
+    position: absolute;
+    top: 10rem;
+    left: 10rem;
+}
+
 .back_to_home .icon {
     margin-right: 1.2rem;
 }
@@ -10,13 +16,13 @@
 
 .signin {
     height: 100vh;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
     align-items: center;
+    grid-template-columns: 1fr 1.2fr;
 }
 
 .signin__image img {
-    width: 56rem;
+    width: 100%;
 }
 
 .signin__input {
