@@ -63,3 +63,87 @@ async def editEvent(response: Response, request: Request, eventID: str, title: s
         transaction.commit()
     except Exception as e:
         return {"detail": str(e)}
+
+@router.post("/addAttending/")
+async def addAttending(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        if not userId in root.user:
+            raise Exception("author not found")
+        
+        root.event[eventID].addAttending(userId)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+    
+@router.post("/removeAttending/")
+async def removeAttending(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        if not userId in root.user:
+            raise Exception("author not found")
+        
+        root.event[eventID].removeAttending(userId)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+
+@router.post("/addMaybe/")
+async def addMaybe(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        if not userId in root.user:
+            raise Exception("author not found")
+        
+        root.event[eventID].addMaybe(userId)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+    
+@router.post("/removeMaybe/")
+async def removeMaybe(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        if not userId in root.user:
+            raise Exception("author not found")
+        
+        root.event[eventID].removeMaybe(userId)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+
+@router.post("/addNotAttending/")
+async def addNotAttending(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        if not userId in root.user:
+            raise Exception("author not found")
+        
+        root.event[eventID].addNotAttending(userId)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+    
+@router.post("/removeNotAttending/")
+async def removeNotAttending(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        if not userId in root.user:
+            raise Exception("author not found")
+        
+        root.event[eventID].removeNotAttending(userId)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}

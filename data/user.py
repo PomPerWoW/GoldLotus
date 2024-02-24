@@ -18,8 +18,8 @@ class User(persistent.Persistent):
         self.username = username
         self.email = email
         self.__password = self.hashPassword(password)
-        self.blog = PersistentList()    # Store as ID
-        self.event = PersistentList()   # Store as ID
+        self.blog = PersistentList()                # Store as ID
+        self.event = PersistentList()               # Store as ID
 
     def __verify_account_details(self, username: str, email: str, password: str) -> None:
         # Username

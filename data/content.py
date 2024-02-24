@@ -91,15 +91,15 @@ class Event(Content):
     def addMaybe(self, userID: str):
         self.attending.append(userID)
         
-    def addAttending(self, userID: str):
-        self.attending.append(userID)
+    def addNotAttending(self, userID: str):
+        self.notAttending.append(userID)
                 
     def removeAttending(self, userID: str):
-        self.attending.pop(userID)
+        self.attending.remove(userID)
     
     def removeMaybe(self, userID: str):
-        self.attending.pop(userID)
+        self.attending.remove(userID)
         
-    def removeAttending(self, userID: str):
-        self.attending.pop(userID)
+    def removeNotAttending(self, userID: str):
+        self.notAttending.remove(userID)
     
