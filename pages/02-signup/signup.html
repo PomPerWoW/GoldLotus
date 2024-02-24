@@ -34,6 +34,27 @@
         <title>GoldLotus | Sign Up</title>
     </head>
     <body>
+        <div class="background__black--faded">
+            <div class="container">
+                <div class="error__box-signup">
+                    <h2 class="error__box-signup--header heading-tertiary">
+                        Sign Up Error
+                    </h2>
+                    <p class="error__box-signup--message">
+                        Minimum length 8 characters.
+                    </p>
+                    <p class="error__box-signup--message">
+                        Require minimum 1 uppercase letter.
+                    </p>
+                    <p class="error__box-signup--message">
+                        Require minimum 1 non-letter character <br />(digit,
+                        special character, etc.).
+                    </p>
+                    <a class="error__box-signup--btn" href="/signUp">Ok</a>
+                </div>
+            </div>
+        </div>
+
         <div class="background__image--1">
             <div class="container">
                 <div class="back_to_home">
@@ -58,7 +79,7 @@
                         >
                             Sign Up
                         </h2>
-                        <form class="signup__form" id="signup__form">
+                        <div class="signup__form" id="signup__form">
                             <label for="username">Username</label>
                             <input
                                 type="text"
@@ -94,7 +115,7 @@
                                     <a href="/signIn">Sign In</a>
                                 </p>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
