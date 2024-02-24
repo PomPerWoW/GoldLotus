@@ -24,8 +24,6 @@ class SignInWidget(AbstractWidget):
         super().__init__(element_id)
 
     def initializeWidget(self):
-        element = self.element
-        print(element.id)
         self.form_element = document.querySelector("#submit__btn")
         self.form_element.onclick = self.submitForm
         
