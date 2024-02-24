@@ -23,18 +23,21 @@ app.mount("/main-static",
 app.mount("/signin-static",
           StaticFiles(directory="../pages/01-signin"), name="signin-static")
 
+app.mount("/signup-static",
+          StaticFiles(directory="../pages/02-signup"), name="signup-static")
+
 # =============================================================================
 
 
 # Templates
 # =============================================================================
 
-@app.get("/signIn", response_class=HTMLResponse, tags=["website"])
+@app.get("/", response_class=HTMLResponse, tags=["website"])
 async def index(request: Request):
     return pages.TemplateResponse("00-home/index.html", {"request": request})
 
 
-@app.get("/", response_class=HTMLResponse, tags=["website"])
+@app.get("/signIn", response_class=HTMLResponse, tags=["website"])
 async def signInPage(request: Request):
     return pages.TemplateResponse("01-signin/signin.html", {"request": request})
 
