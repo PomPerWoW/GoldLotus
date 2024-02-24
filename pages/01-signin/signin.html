@@ -56,6 +56,14 @@
             <div class="container">
                 <div class="signin">
                     <div class="signin__image">
+                        <div class="back_to_home">
+                            <p>
+                                <a href="/"
+                                    ><i class="icon fa-solid fa-arrow-left"></i
+                                    >Back to home</a
+                                >
+                            </p>
+                        </div>
                         <img
                             class="signin__image--1"
                             src="{{ url_for('assets-static', path='/images/monk-cartoon-1.png') }}"
@@ -68,12 +76,7 @@
                         >
                             Sign In
                         </h2>
-                        <form
-                            class="signin__form"
-                            id="signin__form"
-                            action=""
-                            method="post"
-                        >
+                        <form class="signin__form" id="signin__form">
                             <label for="username">Username or Email</label>
                             <input
                                 type="text"
