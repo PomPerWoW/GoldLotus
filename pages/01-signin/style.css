@@ -19,6 +19,7 @@
     display: grid;
     align-items: center;
     grid-template-columns: 1fr 1.2fr;
+    margin-right: 8rem;
 }
 
 .signin__image img {
