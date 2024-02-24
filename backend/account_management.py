@@ -1,16 +1,15 @@
-
 # Email Setup
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 # API 
-from fastapi import FastAPI, Request, Response
+from fastapi import APIRouter, Request, Response
 from datetime import datetime
 import sys
 import os
 
-app = FastAPI()
+router = APIRouter()
 
 PARENT_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.insert(1, os.path.join(PARENT_DIRECTORY, "data"))
@@ -19,7 +18,7 @@ from user import User
 from database import *
 from auth.auth_handler import *
 
-@app.post("/user/signUp/")
+@router.post("/user/signUp/", tags=["User"])
 async def signUp(response: Response, request: Request, username: str, email: str, password: str):
     try:
         for id in root.user:
@@ -46,7 +45,7 @@ async def signUp(response: Response, request: Request, username: str, email: str
     except Exception as e:
         return {"detail": str(e)}
 
-@app.get("/user/signIn/")
+@router.get("/user/signIn/", tags=["User"])
 async def signIn(response: Response, request: Request, key: str, password: str):
     try:
         found = False
@@ -65,7 +64,7 @@ async def signIn(response: Response, request: Request, key: str, password: str):
     except Exception as e:
         return {"detail": str(e)}
 
-@app.get("/user/resetPassword/")
+@router.get("/user/resetPassword/", tags=["User"])
 async def resetPwd(email: str):
     try:
         userID = None

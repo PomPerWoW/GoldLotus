@@ -1,10 +1,10 @@
-
-from fastapi import FastAPI, Request, Response, Cookie
+from fastapi import APIRouter
+from fastapi import Request, Response, Cookie
 from datetime import datetime
 import sys
 import os
 
-app = FastAPI()
+router = APIRouter()
 
 PARENT_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.insert(1, os.path.join(PARENT_DIRECTORY, "data"))
@@ -13,7 +13,7 @@ from content import Blog, Reply, Event
 from database import *
 from auth.auth_handler import decodeJWT
 
-@app.post("/postBlog/")
+@router.post("/postBlog/", tags=["blog"])
 async def postBlog(response: Response, request: Request, title: str, text: str, media: list, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -29,7 +29,7 @@ async def postBlog(response: Response, request: Request, title: str, text: str, 
     except Exception as e:
         return {"detail": str(e)}
 
-@app.post("/removeBlog/")
+@router.post("/removeBlog/")
 async def removeBlog(response: Response, request: Request, blogID: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
