@@ -9,7 +9,7 @@ router = APIRouter()
 PARENT_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.insert(1, os.path.join(PARENT_DIRECTORY, "data"))
 
-from content import Blog, Reply, Event
+from content import Blog, Reply
 from database import *
 from auth.auth_handler import decodeJWT
 

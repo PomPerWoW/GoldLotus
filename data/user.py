@@ -52,21 +52,25 @@ class User(persistent.Persistent):
     def createBlog(self, blogID: str):
         self.blog.append(blogID)
     
-    def editBlog(self, targetBlog: str):
-        for blogID in self.blog:
-            if targetBlog == blogID:
-                return True
-                
-        return False
+    def editBlog(self, blogID: str):    
+        return blogID in self.blog
     
     def deleteBlog(self, targetBlog: str):
-        for blogID in self.blog:
-            if targetBlog == blogID:
-                del blogID
-                return True
+        if targetBlog in self.blog:
+            self.blog.remove(targetBlog)
+            return True
                 
         return False
     
-    def createEvent(self, title: str, text: str, media: list,  date: datetime):
-        Event(title, self.userID, text, media, date)
-        
+    def createEvent(self, eventID : str):
+        self.event.append(eventID)
+    
+    def editEvent(self, eventID: str):
+        return eventID in self.event
+    
+    def deleteEvent(self, targetEvent: str):
+        if targetEvent in self.event:
+            self.event.remove(targetEvent)
+            return True
+                
+        return False

@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from fastapi import Request, Response, Cookie
-from datetime import datetime
+from datetime import date, datetime
 import sys
 import os
 
@@ -9,7 +9,7 @@ router = APIRouter()
 PARENT_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.insert(1, os.path.join(PARENT_DIRECTORY, "data"))
 
-from content import Blog, Reply, Event
+from content import Reply, Event
 from database import *
 from auth.auth_handler import decodeJWT
 
@@ -31,34 +31,34 @@ async def createEvent(response: Response, request: Request, title: str, text: st
         return {"detail": str(e)}
 
 @router.post("/removeEvent/")
-async def removeEvent(response: Response, request: Request, blogID: str, access_token: str = Cookie(None)):
+async def removeEvent(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
         if not userId in root.user:
             raise Exception("author not found")
         
-        if not root.user[userId].deleteBlog(blogID):
+        if not root.user[userId].deleteEvent(eventID):
             raise Exception("user has no permission")
         
-        del root.blog[blogID]
+        del root.event[eventID]
         
         transaction.commit()
     except Exception as e:
         return {"detail": str(e)}
     
 @router.post("/editEvent/")
-async def editEvent(response: Response, request: Request, blogID: str, title: str, text: str, media: list, access_token: str = Cookie(None)):
+async def editEvent(response: Response, request: Request, eventID: str, title: str, text: str, media: list, date: datetime, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
         if not userId in root.user:
             raise Exception("author not found")
         
-        if root.user[userId].editBlog(blogID):
+        if root.user[userId].editEvent(eventID):
             raise Exception("user has no permission")
         
-        root.blog[blogID].editContent(title, text, media)
+        root.event[eventID].editContent(title, text, media, date)
         
         transaction.commit()
     except Exception as e:
