@@ -44,7 +44,7 @@ async def removeBlog(response: Response, request: Request, blogID: str, access_t
     except Exception as e:
         return {"detail": str(e)}
     
-@app.post("/editBlog/")
+@router.post("/editBlog/")
 async def editBlog(response: Response, request: Request, blogID: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)

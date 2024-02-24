@@ -34,6 +34,9 @@ app.mount("/main-static",
 app.mount("/signin-static",
           StaticFiles(directory="../pages/01-signin"), name="signin-static")
 
+app.mount("/signup-static",
+          StaticFiles(directory="../pages/02-signup"), name="signup-static")
+
 # =============================================================================
 
 # Templates

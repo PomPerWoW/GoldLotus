@@ -19,52 +19,33 @@ class AbstractWidget(ABC):
     def initializeWidget(self):
         pass
     
-class SignInWidget(AbstractWidget):
+class SignUpWidget(AbstractWidget):
     def __init__(self, element_id):
         super().__init__(element_id)
-
+    
     def initializeWidget(self):
-        element = self.element
-        print(element.id)
         self.form_element = document.querySelector("#submit__btn")
         self.form_element.onclick = self.submitForm
         
-    # try:
-    #         response = await pyfetch(
-    #             url="/user/signIn/", 
-    #             method='GET', 
-    #             headers={'Content-Type': 'application/json'},
-    #             body=js.JSON.stringify({
-    #                 'key': username,
-    #                 'password': password,
-    #             }),
-    #         )
-    #         if response.ok:
-    #             data = await response.json()
-    #             print(data)
-    #             js.alert("signin")
-    #             window.location.href = "/"
-    # except Exception as e:
-    #     print(e) 
-
     async def submitForm(self, event):
         event.preventDefault()
         username = document.querySelector("#username").value
+        email = document.querySelector("#email").value
         password = document.querySelector("#password").value
         try:
             response = await pyfetch(
-                url=f"/user/signIn/?key={username}&password={password}", 
-                method='GET', 
+                url=f"/user/signUp/?username={username}&email={email}&password={password}",
+                method='POST',
                 headers={'Content-Type': 'application/json'}
             )
             if response.ok:
                 data = await response.json()
                 print(data)
-                js.alert("signin")
+                js.alert("signup")
                 window.location.href = "/"
         except Exception as e:
             print(e)
 
 if __name__ == "__main__":
-    w = SignInWidget("signin__form")
+    w = SignUpWidget("signup__form")
     w.initializeWidget()
