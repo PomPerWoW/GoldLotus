@@ -63,3 +63,52 @@ async def editBlog(response: Response, request: Request, blogID: str, title: str
         transaction.commit()
     except Exception as e:
         return {"detail": str(e)}
+    
+@router.post("/addLikeBlog/")
+async def addLikeBlog(response: Response, request: Request, blogID: str, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        
+        root.blog[blogID].addLike(userId)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+    
+@router.post("/removeLikeBlog/")
+async def removeLikeBlog(response: Response, request: Request, blogID: str, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        
+        root.blog[blogID].removeLike(userId)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+    
+@router.post("/addReplyBlog/")
+async def addReplyBlog(response: Response, request: Request, blogID: str, text: str, media: list, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        
+        root.blog[blogID].addReply(userId, text, media)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+    
+@router.post("/removeReplyBlog/")
+async def addReplyBlog(response: Response, request: Request, blogID: str, replyIndex: str, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        
+        if not root.blog[blogID].removeReply(replyIndex, userId):
+            raise Exception("user has no permission")
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}

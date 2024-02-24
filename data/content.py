@@ -40,7 +40,7 @@ class Blog(Content):
         self.blogID = blogID
         self.title = title
         self.like = PersistentList()    # Store as ID
-        self.reply = PersistentList()   # Store as ID
+        self.reply = PersistentList()   # Store as obj
     
     def editContent(self, title: str, text: str, media: list):
         self.title = title
@@ -53,13 +53,17 @@ class Blog(Content):
         self.like.append(userID)
         
     def removeLike(self, userID: str):
-        self.like.pop(userID)
+        self.like.remove(userID)
         
-    def addReply(self, reply: Reply):
-        self.reply.append(reply)
+    def addReply(self, author, text, media):
+        self.reply.append(Reply(author, text, media))
         
-    def removeReply(self, replyIndex: str):
-        self.reply.pop(replyIndex)
+    def removeReply(self, replyIndex: str, userID: str):
+        if self.reply[replyIndex].author == userID:
+            self.reply.pop(replyIndex)
+            return True
+
+        return False
         
 class Event(Content):
     
@@ -68,6 +72,7 @@ class Event(Content):
         self.eventID = eventID
         self.title = title
         self.date = date
+        self.reply = PersistentList()           # Store as obj
         self.attending = PersistentList()       # Store as ID
         self.maybe = PersistentList()           # Store as ID
         self.notAttending = PersistentList()    # Store as ID
