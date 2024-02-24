@@ -1,5 +1,5 @@
 import js
-from pyscript import document
+from pyscript import window, document
 from pyodide.ffi import create_proxy
 from pyodide.http import pyfetch
 from abc import ABC, abstractmethod
@@ -16,17 +16,44 @@ class AbstractWidget(ABC):
         return self._element
     
     @abstractmethod
-    def drawWidget(self):
+    def initializeWidget(self):
         pass
     
-class ConcreteWidget(AbstractWidget):
+class SignInWidget(AbstractWidget):
     def __init__(self, element_id):
         super().__init__(element_id)
 
-    def drawWidget(self):
-        print(self.element_id)
+    def initializeWidget(self):
+        element = self.element
+        form_id = element.id
+        form_class = element.classList.value
+        form_action = element.getAttribute("action")
+        form_method = element.getAttribute("method")
+
+        print(f"ID: {form_id}")
+        print(f"Class: {form_class}")
+        print(f"Action: {form_action}")
+        print(f"Method: {form_method}")
         self.form_element = document.querySelector("#submit__btn")
         self.form_element.onclick = self.submitForm
+        
+    # try:
+    #         response = await pyfetch(
+    #             url="/user/signIn/", 
+    #             method='GET', 
+    #             headers={'Content-Type': 'application/json'},
+    #             body=js.JSON.stringify({
+    #                 'key': username,
+    #                 'password': password,
+    #             }),
+    #         )
+    #         if response.ok:
+    #             data = await response.json()
+    #             print(data)
+    #             js.alert("signin")
+    #             window.location.href = "/"
+    # except Exception as e:
+    #     print(e) 
 
     async def submitForm(self, event):
         event.preventDefault()
@@ -42,10 +69,10 @@ class ConcreteWidget(AbstractWidget):
                 data = await response.json()
                 print(data)
                 js.alert("signin")
-                document.location.href = "/"
-        except:
-            return None
+                window.location.href = "/"
+        except Exception as e:
+            print(e)
 
 if __name__ == "__main__":
-    w = ConcreteWidget("signin__form")
-    w.drawWidget()
+    w = SignInWidget("signin__form")
+    w.initializeWidget()
