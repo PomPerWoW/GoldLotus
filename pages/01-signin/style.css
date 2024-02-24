@@ -82,3 +82,40 @@
 .signin__form--register a {
     color: #c7a200;
 }
+
+.error__box-signin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem;
+    width: 42rem;
+    height: 28rem;
+    background-color: #fff;
+    border-radius: 2rem;
+}
+
+.error__box-signin--header {
+    color: #ff4a4a;
+}
+
+.error__box-signin--message {
+    margin-bottom: 4rem;
+}
+
+.error__box-signin--btn,
+.error__box-signin--btn:link,
+.error__box-signin--btn:visited {
+    display: inline-block;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 1.2rem 2.8rem;
+    border-radius: 4rem;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.3s;
+    color: #000;
+    background-color: #f0cf95;
+}

@@ -34,6 +34,20 @@
         <title>GoldLotus | Sign In</title>
     </head>
     <body>
+        <div class="hidden background__black--faded">
+            <div class="container">
+                <div class="error__box-signin">
+                    <h2 class="error__box-signin--header heading-tertiary">
+                        Sign In Error
+                    </h2>
+                    <p class="error__box-signin--message">
+                        Invalid username or password.
+                    </p>
+                    <a class="error__box-signin--btn" href="/signIn">Ok</a>
+                </div>
+            </div>
+        </div>
+
         <div class="background__image--1">
             <div class="container">
                 <div class="signin">
@@ -58,7 +72,7 @@
                         >
                             Sign In
                         </h2>
-                        <form class="signin__form" action="" method="post">
+                        <form class="signin__form" id="signin__form">
                             <label for="username">Username or Email</label>
                             <input
                                 type="text"
