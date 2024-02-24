@@ -54,7 +54,7 @@ class User(persistent.Persistent):
         self.blog.append(newBlog)
         
         return newBlog
-    
+     
     def deleteBlog(self, blogID: str):
         for blog in self.blog:
             if blogID == blog.blogID:
