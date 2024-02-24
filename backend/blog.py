@@ -37,13 +37,22 @@ async def removeBlog(response: Response, request: Request, blogID: str, access_t
         if not userId in root.user:
             raise Exception("author not found")
         
-        found = False
-        for blog in root.user["userID"].blog:
-            if blogID == blog.blogID:
-                del blog
-                found = True
+        if not root.user[userId].deleteBlog(blogID):
+            raise Exception("user has no permission")    
         
-        if not found:
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+    
+@app.post("/editBlog/")
+async def editBlog(response: Response, request: Request, blogID: str, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        if not userId in root.user:
+            raise Exception("author not found")
+        
+        if root.user[userId].deleteBlog(blogID):
             raise Exception("user has no permission")    
         
         transaction.commit()

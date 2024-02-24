@@ -14,10 +14,6 @@ class Content(persistent.Persistent, ABC):
         self.timestamp = datetime.now()
     
     @abstractmethod
-    def removeContent():
-        pass
-    
-    @abstractmethod
     def editContent():
         pass
 
@@ -26,8 +22,9 @@ class Reply(Content):
         super().__init__(title, author, text, media)
         self.like = PersistentList()
 
-    def removeContent():
+    def removeContent(self):
         pass
+                
     
     def editContent():
         pass
@@ -44,9 +41,6 @@ class Blog(Content):
         self.blogID = blogID
         self.like = PersistentList()
         self.reply = PersistentList()
-        
-    def removeContent(self):
-        pass
     
     def editContent():
         pass
@@ -73,9 +67,6 @@ class Event(Content):
         self.maybe = PersistentList()
         self.notAttending = PersistentList()
         
-    def removeContent():
-        pass
-    
     def editContent():
         pass
         

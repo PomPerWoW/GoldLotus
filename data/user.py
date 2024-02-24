@@ -55,6 +55,14 @@ class User(persistent.Persistent):
         
         return newBlog
     
+    def deleteBlog(self, blogID: str):
+        for blog in self.blog:
+            if blogID == blog.blogID:
+                del blog
+                return True
+                
+        return False
+    
     def createEvent(self, title: str, text: str, media: list,  date: datetime):
         Event(title, self.userID, text, media, date)
         
