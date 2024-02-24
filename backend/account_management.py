@@ -1,10 +1,11 @@
 # Email Setup
+from shutil import ExecError
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 # API 
-from fastapi import APIRouter, Request, Response
+from fastapi import APIRouter, Request, Response, Cookie
 from datetime import datetime
 import sys
 import os
@@ -65,7 +66,7 @@ async def signIn(response: Response, request: Request, key: str, password: str):
         return {"detail": str(e)}
 
 @router.get("/user/resetPassword/", tags=["User"])
-async def resetPwd(email: str):
+async def resetPwd(response: Response, request: Request, email: str):
     try:
         userID = None
         for id in root.user:
@@ -96,5 +97,19 @@ async def resetPwd(email: str):
             server.sendmail(SENDER_EMAIL, email, message.as_string())
         
         return {"detail": "Email sent successfully!"}
+    except Exception as e:
+        return {"detail": str(e)}
+    
+@router.get("/user/info", tags=["User"])
+async def getUserInfo(response: Response, request: Request, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        if not userId in root.user:
+            raise Exception("author not found")
+        
+        user = root.user[userId]
+        
+        return {"userID": user.userID, "username": user.username, "email": user.email, "blog": user.blog, "event": user.event}
     except Exception as e:
         return {"detail": str(e)}
