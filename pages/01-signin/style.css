@@ -103,9 +103,9 @@
     margin-bottom: 4rem;
 }
 
-.error__box-signin--btn,
-.error__box-signin--btn:link,
-.error__box-signin--btn:visited {
+.error__box-signin--okbtn,
+.error__box-signin--okbtn:link,
+.error__box-signin--okbtn:visited {
     display: inline-block;
     text-transform: uppercase;
     text-decoration: none;

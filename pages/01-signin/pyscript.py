@@ -26,6 +26,11 @@ class SignInWidget(AbstractWidget):
     def initializeWidget(self):
         self.form_element = document.querySelector("#submit__btn")
         self.form_element.onclick = self.submitForm
+        self.hidden_element = document.querySelector(".background__black--faded")
+        
+        if not self.hidden_element:
+            print("Error: Could not find element with class 'background__black--faded'")
+            return
         
     # try:
     #         response = await pyfetch(
@@ -57,9 +62,10 @@ class SignInWidget(AbstractWidget):
             )
             if response.ok:
                 data = await response.json()
-                print(data)
-                js.alert("signin")
-                window.location.href = "/"
+                if 'detail' in data:
+                    self.hidden_element.classList.remove("hidden")
+                else:
+                    window.location.href = "/"
         except Exception as e:
             print(e)
 
