@@ -45,7 +45,7 @@ async def signUp(response: Response, request: Request, username: str, email: str
     except Exception as e:
         return {"detail": str(e)}
 
-@router.get("/user/signIn/", tags=["User"])
+@router.post("/user/signIn/", tags=["User"])
 async def signIn(response: Response, request: Request, key: str, password: str):
     try:
         found = False
