@@ -1,0 +1,6 @@
+backend/__pycache__
+backend/database.fs
+backend/database.fs.index
+backend/database.fs.lock
+backend/database.fs.tmp
+data/__pycache__
