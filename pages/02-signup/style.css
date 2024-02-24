@@ -82,3 +82,41 @@
 .signup__form--register a {
     color: #c7a200;
 }
+
+.error__box-signup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem;
+    width: 48rem;
+    height: 40rem;
+    background-color: #fff;
+    border-radius: 2rem;
+}
+
+.error__box-signup--header {
+    color: #ff4a4a;
+}
+
+.error__box-signup--message {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.error__box-signup--btn,
+.error__box-signup--btn:link,
+.error__box-signup--btn:visited {
+    display: inline-block;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 1.2rem 2.8rem;
+    border-radius: 4rem;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.3s;
+    color: #000;
+    background-color: #f0cf95;
+}
