@@ -84,7 +84,17 @@ class Event(Content):
         self.date = date
         self.edited = True
         self.timestamp = datetime.now()
+    
+    def addReply(self, author, text, media):
+        self.reply.append(Reply(author, text, media))
         
+    def removeReply(self, replyIndex: str, userID: str):
+        if self.reply[replyIndex].author == userID:
+            self.reply.pop(replyIndex)
+            return True
+
+        return False
+    
     def addAttending(self, userID: str):
         self.attending.append(userID)
         

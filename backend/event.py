@@ -64,6 +64,31 @@ async def editEvent(response: Response, request: Request, eventID: str, title: s
     except Exception as e:
         return {"detail": str(e)}
 
+@router.post("/addReplyEvent/")
+async def addReplyEvent(response: Response, request: Request, eventID: str, text: str, media: list, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        
+        root.event[eventID].addReply(userId, text, media)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+    
+@router.post("/removeReplyEvent/")
+async def addReplyEvent(response: Response, request: Request, eventID: str, replyIndex: str, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        
+        if not root.event[eventID].removeReply(replyIndex, userId):
+            raise Exception("user has no permission")
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+
 @router.post("/addAttending/")
 async def addAttending(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
     try:
