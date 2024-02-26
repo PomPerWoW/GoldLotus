@@ -1,0 +1,27 @@
+<nav class="navigation">
+    <div class="container">
+        <div class="navigation__list">
+            <div class="navigation__left text__center">
+                <div class="navigation__item">
+                    <a href="/">Home</a>
+                </div>
+                <div class="navigation__item">
+                    <a href="/lotusBlog">Blog</a>
+                </div>
+                <div class="navigation__item"><a>Event</a></div>
+            </div>
+            <img
+                id="web-logo"
+                src="{{ url_for('assets-static', path='/icons/logo.svg') }}"
+                alt="logo"
+            />
+            <div class="navigation__right text__center">
+                <div class="navigation__item"><a>Dherma</a></div>
+                <div class="navigation__item"><a>Notification</a></div>
+                <div class="navigation__item">
+                    <a href="/signIn">User Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

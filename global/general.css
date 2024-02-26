@@ -11,9 +11,53 @@ html {
 }
 
 body {
-    background-color: #ededed;
     font-family: "Inter", sans-serif;
     font-weight: 400;
     font-size: 1.6rem;
     overflow-x: hidden;
+    background-color: #fff;
+}
+
+/* Navigation Section */
+.navigation {
+    border-bottom: 3px solid #d8b778;
+    width: 100%;
+}
+
+.navigation__list {
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    justify-content: center;
+    align-items: center;
+}
+
+.navigation__left,
+.navigation__right {
+    display: flex;
+}
+
+.navigation__item {
+    width: 15rem;
+}
+
+.navigation__item a {
+    cursor: pointer;
+    display: block;
+    width: 15rem;
+    padding: 3.6rem 2.5rem;
+    border-bottom: 3px solid transparent;
+    color: #000;
+    text-decoration: none;
+    /* transition: padding 0.2s; */
+}
+
+.navigation a:hover {
+    border-bottom: 3px solid #2e3113;
+    background-color: #f0cf95;
+    padding: 3.6rem 2.5rem;
+}
+
+.navigation__list img {
+    margin: 0 auto;
+    height: 100%;
 }
