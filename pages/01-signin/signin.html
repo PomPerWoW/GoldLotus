@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- Shortcut Icon -->
+        <link
+            rel="shortcut icon"
+            type="image/png"
+            href="../../00-assets/icons/logo.svg"
+        />
+
+        <!-- Global CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/general.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/global-style.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/queries.css') }}"
+        />
+
+        <!-- Local CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('signin-static', path='/style.css') }}"
+        />
+
+        <!-- PyScript -->
+        <link
+            rel="stylesheet"
+            href="https://pyscript.net/releases/2024.1.1/core.css"
+        />
+        <script
+            type="module"
+            src="https://pyscript.net/releases/2024.1.1/core.js"
+        ></script>
+
+        <title>GoldLotus | Sign In</title>
+    </head>
+    <body>
+        <div class="hidden background__black--faded">
+            <div class="container">
+                <div class="error__box-signin">
+                    <h2 class="error__box-signin--header heading-tertiary">
+                        Sign In Error
+                    </h2>
+                    <p class="error__box-signin--message">
+                        Invalid username or password.
+                    </p>
+                    <a class="error__box-signin--okbtn" href="/signIn">Ok</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="background__image--1">
+            <div class="back_to_home">
+                <p>
+                    <a href="/"
+                        ><i class="icon fa-solid fa-arrow-left"></i>Back to
+                        home</a
+                    >
+                </p>
+            </div>
+            <div class="container">
+                <div class="signin">
+                    <div class="signin__image">
+                        <div class="back_to_home">
+                            <p>
+                                <a href="/"
+                                    ><i class="icon fa-solid fa-arrow-left"></i
+                                    >Back to home</a
+                                >
+                            </p>
+                        </div>
+                        <img
+                            class="signin__image--1"
+                            src="{{ url_for('assets-static', path='/images/monk-cartoon-1.png') }}"
+                            alt="buddha img"
+                        />
+                    </div>
+                    <div class="signin__input">
+                        <h2
+                            class="signin__input--header heading-tertiary text__center"
+                        >
+                            Sign In
+                        </h2>
+                        <div class="signin__form" id="signin__form">
+                            <label for="username">Username or Email</label>
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Enter your username"
+                                required
+                            />
+
+                            <label for="password">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                required
+                            />
+
+                            <div class="signin__form--forgetpassword">
+                                <p><a href="">Forget password?</a></p>
+                            </div>
+
+                            <button type="submit" class="btn" id="submit__btn">
+                                Sign In
+                            </button>
+
+                            <div class="signin__form--register">
+                                <p>
+                                    Don't have an account?
+                                    <a href="/signUp">Sign Up</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script
+            src="https://kit.fontawesome.com/1c7eef805a.js"
+            crossorigin="anonymous"
+        ></script>
+
+        <script
+            type="py"
+            src="{{ url_for('signin-static', path='/pyscript.py') }}"
+        ></script>
+    </body>
+</html>
