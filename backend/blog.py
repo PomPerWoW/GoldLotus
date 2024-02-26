@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from fastapi import Request, Response, Cookie
 from datetime import datetime
+from typing import List
 import sys
 import os
 
@@ -14,7 +15,7 @@ from database import *
 from auth.auth_handler import decodeJWT
 
 @router.post("/createBlog/", tags=["blog"])
-async def createBlog(response: Response, request: Request, title: str, text: str, media: list, access_token: str = Cookie(None)):
+async def createBlog(response: Response, request: Request, title: str, text: str, media: List[str], access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -25,13 +26,14 @@ async def createBlog(response: Response, request: Request, title: str, text: str
         root.user[userId].createBlog(root.config["currentBlogID"])
         
         root.config["currentBlogID"] += 1
-        
         transaction.commit()
+        
+        return root.user[userId]
     except Exception as e:
         return {"detail": str(e)}
 
-@router.post("/removeBlog/")
-async def removeBlog(response: Response, request: Request, blogID: str, access_token: str = Cookie(None)):
+@router.post("/removeBlog/", tags=["blog"])
+async def removeBlog(response: Response, request: Request, blogID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -47,25 +49,26 @@ async def removeBlog(response: Response, request: Request, blogID: str, access_t
     except Exception as e:
         return {"detail": str(e)}
     
-@router.post("/editBlog/")
-async def editBlog(response: Response, request: Request, blogID: str, title: str, text: str, media: list, access_token: str = Cookie(None)):
+@router.post("/editBlog/", tags=["blog"])
+async def editBlog(response: Response, request: Request, blogID: int, title: str, text: str, media: List[str], access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
         if not userId in root.user:
             raise Exception("author not found")
         
-        if root.user[userId].editBlog(blogID):
+        if not root.user[userId].editBlog(blogID):
             raise Exception("user has no permission")
         
         root.blog[blogID].editContent(title, text, media)
         
         transaction.commit()
+        return root.blog[blogID]
     except Exception as e:
         return {"detail": str(e)}
     
-@router.post("/addLikeBlog/")
-async def addLikeBlog(response: Response, request: Request, blogID: str, access_token: str = Cookie(None)):
+@router.post("/addLikeBlog/", tags=["blog"])
+async def addLikeBlog(response: Response, request: Request, blogID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -76,8 +79,8 @@ async def addLikeBlog(response: Response, request: Request, blogID: str, access_
     except Exception as e:
         return {"detail": str(e)}
     
-@router.post("/removeLikeBlog/")
-async def removeLikeBlog(response: Response, request: Request, blogID: str, access_token: str = Cookie(None)):
+@router.post("/removeLikeBlog/", tags=["blog"])
+async def removeLikeBlog(response: Response, request: Request, blogID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -88,8 +91,8 @@ async def removeLikeBlog(response: Response, request: Request, blogID: str, acce
     except Exception as e:
         return {"detail": str(e)}
     
-@router.post("/addReplyBlog/")
-async def addReplyBlog(response: Response, request: Request, blogID: str, text: str, media: list, access_token: str = Cookie(None)):
+@router.post("/addReplyBlog/", tags=["blog"])
+async def addReplyBlog(response: Response, request: Request, blogID: int, text: str, media: List[str], access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -100,8 +103,8 @@ async def addReplyBlog(response: Response, request: Request, blogID: str, text: 
     except Exception as e:
         return {"detail": str(e)}
     
-@router.post("/removeReplyBlog/")
-async def addReplyBlog(response: Response, request: Request, blogID: str, replyIndex: str, access_token: str = Cookie(None)):
+@router.post("/removeReplyBlog/", tags=["blog"])
+async def addReplyBlog(response: Response, request: Request, blogID: int, replyIndex: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -110,5 +113,15 @@ async def addReplyBlog(response: Response, request: Request, blogID: str, replyI
             raise Exception("user has no permission")
         
         transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+    
+@router.get("/getBlog/", tags=["blog"])
+async def getBlog(response: Response, request: Request, blogID: int):
+    try:
+        if not blogID in root.blog:
+            raise Exception("blog not found")
+        
+        return root.blog[blogID]
     except Exception as e:
         return {"detail": str(e)}

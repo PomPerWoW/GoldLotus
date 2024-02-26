@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter
 from fastapi import Request, Response, Cookie
 from datetime import date, datetime
@@ -14,7 +15,7 @@ from database import *
 from auth.auth_handler import decodeJWT
 
 @router.post("/createEvent/", tags=["event"])
-async def createEvent(response: Response, request: Request, title: str, text: str, media: list, date: datetime, access_token: str = Cookie(None)):
+async def createEvent(response: Response, request: Request, title: str, text: str, media: List[str], date: datetime, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -48,7 +49,7 @@ async def removeEvent(response: Response, request: Request, eventID: str, access
         return {"detail": str(e)}
     
 @router.post("/editEvent/")
-async def editEvent(response: Response, request: Request, eventID: str, title: str, text: str, media: list, date: datetime, access_token: str = Cookie(None)):
+async def editEvent(response: Response, request: Request, eventID: int, title: str, text: str, media: List[str], date: datetime, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -65,7 +66,7 @@ async def editEvent(response: Response, request: Request, eventID: str, title: s
         return {"detail": str(e)}
 
 @router.post("/addReplyEvent/")
-async def addReplyEvent(response: Response, request: Request, eventID: str, text: str, media: list, access_token: str = Cookie(None)):
+async def addReplyEvent(response: Response, request: Request, eventID: int, text: str, media: List[str], access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -77,7 +78,7 @@ async def addReplyEvent(response: Response, request: Request, eventID: str, text
         return {"detail": str(e)}
     
 @router.post("/removeReplyEvent/")
-async def addReplyEvent(response: Response, request: Request, eventID: str, replyIndex: str, access_token: str = Cookie(None)):
+async def addReplyEvent(response: Response, request: Request, eventID: int, replyIndex: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -90,7 +91,7 @@ async def addReplyEvent(response: Response, request: Request, eventID: str, repl
         return {"detail": str(e)}
 
 @router.post("/addAttending/")
-async def addAttending(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
+async def addAttending(response: Response, request: Request, eventID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -104,7 +105,7 @@ async def addAttending(response: Response, request: Request, eventID: str, acces
         return {"detail": str(e)}
     
 @router.post("/removeAttending/")
-async def removeAttending(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
+async def removeAttending(response: Response, request: Request, eventID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -118,7 +119,7 @@ async def removeAttending(response: Response, request: Request, eventID: str, ac
         return {"detail": str(e)}
 
 @router.post("/addMaybe/")
-async def addMaybe(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
+async def addMaybe(response: Response, request: Request, eventID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -132,7 +133,7 @@ async def addMaybe(response: Response, request: Request, eventID: str, access_to
         return {"detail": str(e)}
     
 @router.post("/removeMaybe/")
-async def removeMaybe(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
+async def removeMaybe(response: Response, request: Request, eventID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -146,7 +147,7 @@ async def removeMaybe(response: Response, request: Request, eventID: str, access
         return {"detail": str(e)}
 
 @router.post("/addNotAttending/")
-async def addNotAttending(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
+async def addNotAttending(response: Response, request: Request, eventID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -160,7 +161,7 @@ async def addNotAttending(response: Response, request: Request, eventID: str, ac
         return {"detail": str(e)}
     
 @router.post("/removeNotAttending/")
-async def removeNotAttending(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
+async def removeNotAttending(response: Response, request: Request, eventID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
