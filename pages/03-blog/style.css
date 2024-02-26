@@ -1,0 +1,166 @@
+/* Blog pagination section */
+.blog__pagination {
+    display: flex;
+    align-items: center;
+    gap: 3.6rem;
+    margin-top: 8rem;
+}
+
+.blog__pagination--element {
+    cursor: pointer;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    color: #fff;
+    background-color: #d8b778;
+}
+
+.blog__pagination--element p {
+    font-weight: 600;
+}
+
+/* Blog Section */
+.blog {
+    display: grid;
+    padding: 4rem 0;
+    grid-template-columns: 2.2fr 1fr;
+    gap: 8rem;
+}
+
+/* Post Section */
+.blog__post--box {
+    display: flex;
+    flex-direction: column;
+}
+
+.blog__post {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2rem;
+    height: 100%;
+    box-shadow: 0 0.3rem 0.5rem 0.2rem rgb(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+}
+
+.blog__post--header {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.blog__post--username {
+    font-weight: 500;
+}
+
+.blog__post--username:hover {
+    cursor: pointer;
+    color: #dcb60e;
+}
+
+.blog__post--posted {
+    color: #929292;
+}
+
+.blog__post--timestamp {
+    color: #929292;
+}
+
+.blog__post--field {
+    padding: 2rem 0;
+}
+
+.blog__post--message p {
+    font-size: 1.8rem;
+}
+
+.blog__post--assets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.blog__post--assets img {
+    margin-top: 2rem;
+    width: 30rem;
+}
+
+.blog__post--assets video {
+    margin-top: 2rem;
+    width: 30rem;
+}
+
+.blog__post--footer {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    color: #929292;
+}
+
+.blog__post--footer i {
+    margin-right: 0.6rem;
+}
+
+.blog__post--footer i:hover {
+    cursor: pointer;
+    color: #dcb60e;
+}
+
+/* Communities Section */
+.blog__communities {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 36rem;
+    padding: 2rem;
+    box-shadow: 0 0.3rem 0.5rem 0.2rem rgb(0, 0, 0, 0.2);
+}
+
+.blog__communities--header {
+    font-weight: 500;
+}
+
+.blog__communities--btn {
+    color: #4190c9;
+    text-decoration: none;
+}
+
+.blog__communities--people {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.blog__communities--people:not(:last-child) {
+    margin-bottom: 1.6rem;
+}
+
+.blog__communities--name {
+    margin-bottom: 0.4rem;
+}
+
+.blog__communities--follower {
+    color: #616161;
+}
+
+.blog__communities--follow-btn a {
+    text-decoration: none;
+    background-color: #d9d9d9;
+    border-radius: 2rem;
+    padding: 1rem 2rem;
+    color: #000;
+}
+
+/* Read more btn */
+.blog__readmore-btn {
+    align-self: center;
+    margin-top: 4rem;
+    padding-bottom: 8rem;
+}
+
+.blog__readmore-btn a {
+    padding: 1rem 2rem;
+    border-radius: 4rem;
+    text-decoration: none;
+    color: #000;
+    border: 0.2rem solid #000;
+}
