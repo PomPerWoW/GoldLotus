@@ -66,7 +66,7 @@ async def signIn(response: Response, request: Request, key: str, password: str):
         return {"detail": str(e)}
 
 @router.get("/user/resetPassword/", tags=["User"])
-async def resetPwd(response: Response, request: Request, email: str):
+async def resetPassword(response: Response, request: Request, email: str):
     try:
         userID = None
         for id in root.user:
