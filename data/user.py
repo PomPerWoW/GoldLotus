@@ -20,6 +20,8 @@ class User(persistent.Persistent):
         self.__password = self.hashPassword(password)
         self.blog = PersistentList()                    # Store as ID
         self.event = PersistentList()                   # Store as ID
+        self.follower = PersistentList()                # Store as ID
+        self.following = PersistentList()               # Store as ID
 
     def __verify_account_details(self, username: str, email: str, password: str) -> None:
         # Username
@@ -77,3 +79,15 @@ class User(persistent.Persistent):
             return True
                 
         return False
+    
+    def addFollower(self, userID: str):
+        self.follower.append(userID)
+    
+    def addFollowing(self, userID: str):
+        self.following.append(userID)
+        
+    def removeFollower(self, userID: str):
+        self.follower.remove(userID)
+    
+    def removeFollowing(self, userID: str):
+        self.following.remove(userID)

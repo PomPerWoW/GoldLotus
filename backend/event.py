@@ -116,12 +116,12 @@ async def editEvent(response: Response, request: Request, eventID: int, title: s
         return {"detail": str(e)}
 
 @router.post("/addReplyEvent/")
-async def addReplyEvent(response: Response, request: Request, eventID: int, text: str, media: List[str], access_token: str = Cookie(None)):
+async def addReplyEvent(response: Response, request: Request, eventID: int, text: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
         
-        root.event[eventID].addReply(userId, text, media)
+        root.event[eventID].addReply(userId, text)
         
         transaction.commit()
     except Exception as e:
