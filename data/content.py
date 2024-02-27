@@ -35,9 +35,9 @@ class Reply(Content):
         self.like.pop(userID)
         
 class Blog(Content):
-    def __init__(self, blogID: str, title: str, author: str, text: str, media: list) -> None:
+    def __init__(self, blogID: int, title: str, author: str, text: str, media: list) -> None:
         super().__init__(author, text, media)
-        self.blogID = blogID
+        self.blogID = blogID            # int
         self.title = title
         self.like = PersistentList()    # Store as ID
         self.reply = PersistentList()   # Store as obj
@@ -67,9 +67,9 @@ class Blog(Content):
         
 class Event(Content):
     
-    def __init__(self, eventID: str, title: str, author: str, text: str, media: list, date: datetime) -> None:
+    def __init__(self, eventID: int, title: str, author: str, text: str, media: list, date: datetime) -> None:
         super().__init__(author, text, media)
-        self.eventID = eventID
+        self.eventID = eventID                  # int
         self.title = title
         self.date = date
         self.reply = PersistentList()           # Store as obj

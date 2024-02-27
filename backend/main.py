@@ -43,4 +43,8 @@ async def signInPage(request: Request):
 async def signUpPage(request: Request):
     return pages.TemplateResponse("02-signup/signup.html", {"request": request})
 
+@app.get("/createBlog", response_class=HTMLResponse, tags=["website"])
+async def signUpPage(request: Request):
+    return pages.TemplateResponse("upload_test.html", {"request": request})
+
 # =============================================================================
