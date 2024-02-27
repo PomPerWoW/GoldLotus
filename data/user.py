@@ -18,8 +18,8 @@ class User(persistent.Persistent):
         self.username = username
         self.email = email
         self.__password = self.hashPassword(password)
-        self.blog = PersistentList()
-        self.event = PersistentList()
+        self.blog = PersistentList()                # Store as ID
+        self.event = PersistentList()               # Store as ID
 
     def __verify_account_details(self, username: str, email: str, password: str) -> None:
         # Username
@@ -49,20 +49,28 @@ class User(persistent.Persistent):
     def verifyPassword(self, password):
         return True if self.hashPassword(password) == self.__password else False
 
-    def createBlog(self, blogID: str, title: str, text: str, media: list):
-        newBlog = Blog(blogID, title, self.userID, text, media)
-        self.blog.append(newBlog)
-        
-        return newBlog
-     
-    def deleteBlog(self, blogID: str):
-        for blog in self.blog:
-            if blogID == blog.blogID:
-                del blog
-                return True
+    def createBlog(self, blogID: str):
+        self.blog.append(blogID)
+    
+    def editBlog(self, blogID: str):    
+        return blogID in self.blog
+    
+    def deleteBlog(self, targetBlog: str):
+        if targetBlog in self.blog:
+            self.blog.remove(targetBlog)
+            return True
                 
         return False
     
-    def createEvent(self, title: str, text: str, media: list,  date: datetime):
-        Event(title, self.userID, text, media, date)
-        
+    def createEvent(self, eventID : str):
+        self.event.append(eventID)
+    
+    def editEvent(self, eventID: str):
+        return eventID in self.event
+    
+    def deleteEvent(self, targetEvent: str):
+        if targetEvent in self.event:
+            self.event.remove(targetEvent)
+            return True
+                
+        return False

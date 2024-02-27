@@ -30,7 +30,7 @@ async def createBlog(response: Response, request: Request, title: str, text: str
     except Exception as e:
         return {"detail": str(e)}
 
-@router.post("/removeBlog/")
+@router.post("/removeBlog/", tags=["blog"])
 async def removeBlog(response: Response, request: Request, blogID: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -47,7 +47,7 @@ async def removeBlog(response: Response, request: Request, blogID: str, access_t
     except Exception as e:
         return {"detail": str(e)}
     
-@router.post("/editBlog/")
+@router.post("/editBlog/", tags=["blog"])
 async def editBlog(response: Response, request: Request, blogID: str, title: str, text: str, media: list, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -64,7 +64,7 @@ async def editBlog(response: Response, request: Request, blogID: str, title: str
     except Exception as e:
         return {"detail": str(e)}
     
-@router.post("/addLikeBlog/")
+@router.post("/addLikeBlog/", tags=["blog"])
 async def addLikeBlog(response: Response, request: Request, blogID: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -76,7 +76,7 @@ async def addLikeBlog(response: Response, request: Request, blogID: str, access_
     except Exception as e:
         return {"detail": str(e)}
     
-@router.post("/removeLikeBlog/")
+@router.post("/removeLikeBlog/", tags=["blog"])
 async def removeLikeBlog(response: Response, request: Request, blogID: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -88,7 +88,7 @@ async def removeLikeBlog(response: Response, request: Request, blogID: str, acce
     except Exception as e:
         return {"detail": str(e)}
     
-@router.post("/addReplyBlog/")
+@router.post("/addReplyBlog/", tags=["blog"])
 async def addReplyBlog(response: Response, request: Request, blogID: str, text: str, media: list, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -100,7 +100,7 @@ async def addReplyBlog(response: Response, request: Request, blogID: str, text: 
     except Exception as e:
         return {"detail": str(e)}
     
-@router.post("/removeReplyBlog/")
+@router.post("/removeReplyBlog/", tags=["blog"])
 async def addReplyBlog(response: Response, request: Request, blogID: str, replyIndex: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
