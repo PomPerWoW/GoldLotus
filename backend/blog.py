@@ -56,9 +56,21 @@ async def removeBlog(response: Response, request: Request, blogID: int, access_t
         if not root.user[userId].deleteBlog(blogID):
             raise Exception("user has no permission")
         
+        blog = root.blog[blogID]
+        for mediaID in blog.media:
+            if os.path.exists(os.path.join("uploads", str(mediaID)) + ".png"):
+                os.remove(os.path.join("uploads", str(mediaID)) + ".png")
+            elif os.path.exists(os.path.join("uploads", str(mediaID)) + ".jpg"):
+                os.remove(os.path.join("uploads", str(mediaID)) + ".jpg")
+            elif os.path.exists(os.path.join("uploads", str(mediaID)) + ".MP4"):
+                os.remove(os.path.join("uploads", str(mediaID)) + ".MP4")
+            else:
+                raise Exception("File not found in the db.")
+        
         del root.blog[blogID]
         
         transaction.commit()
+        return root.user[userId]
     except Exception as e:
         return {"detail": str(e)}
     
@@ -72,6 +84,27 @@ async def editBlog(response: Response, request: Request, blogID: int, title: str
         
         if not root.user[userId].editBlog(blogID):
             raise Exception("user has no permission")
+        
+        for current in root.blog[blogID].media:
+            if not current in media:
+                if os.path.exists(os.path.join("uploads", str(current)) + ".png"):
+                    os.remove(os.path.join("uploads", str(current)) + ".png")
+                elif os.path.exists(os.path.join("uploads", str(current)) + ".jpg"):
+                    os.remove(os.path.join("uploads", str(current)) + ".jpg")
+                elif os.path.exists(os.path.join("uploads", str(current)) + ".MP4"):
+                    os.remove(os.path.join("uploads", str(current)) + ".MP4")
+                else:
+                    raise Exception("File not found in the db.")
+        
+        for file in media:
+            filename, file_extension = os.path.splitext(file)
+            if not filename in root.blog[blogID].media:
+                file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
+                with open(file_path, "wb") as buffer:
+                    shutil.copyfileobj(file.file, buffer)
+                
+                root.blog[blogID].media.append(root.config["currentMediaID"])
+                root.config["currentMediaID"] += 1
         
         root.blog[blogID].editContent(title, text, media)
         
