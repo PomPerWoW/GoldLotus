@@ -37,8 +37,11 @@ app.mount("/signin-static",
 app.mount("/signup-static",
           StaticFiles(directory="../pages/02-signup"), name="signup-static")
 
+app.mount("/resetpassword-static",
+          StaticFiles(directory="../pages/03-resetpassword"), name="resetpassword-static")
+
 app.mount("/blog-static",
-          StaticFiles(directory="../pages/03-blog"), name="blog-static")
+          StaticFiles(directory="../pages/04-blog"), name="blog-static")
 
 # =============================================================================
 
@@ -57,9 +60,13 @@ async def signInPage(request: Request):
 async def signUpPage(request: Request):
     return pages.TemplateResponse("02-signup/signup.html", {"request": request})
 
+@app.get("/resetPassword", response_class=HTMLResponse, tags=["website"])
+async def resetPasswordPage(request: Request):
+    return pages.TemplateResponse("03-resetpassword/resetpassword.html", {"request": request})
+
 
 @app.get("/lotusBlog", response_class=HTMLResponse, tags=["website"])
 async def blogPage(request: Request):
-    return pages.TemplateResponse("03-blog/blog.html", {"request": request})
+    return pages.TemplateResponse("04-blog/blog.html", {"request": request})
 
 # =============================================================================
