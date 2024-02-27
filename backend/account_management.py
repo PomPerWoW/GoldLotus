@@ -42,7 +42,7 @@ async def signUp(response: Response, request: Request, username: str, email: str
         response.status_code = 200
         response.set_cookie(key="access_token", value=access_token)
         
-        return root.user[userID]
+        return access_token
     except Exception as e:
         return {"detail": str(e)}
 
@@ -56,7 +56,7 @@ async def signIn(response: Response, request: Request, key: str, password: str):
                     access_token = signJWT(id)
                     response.status_code = 200
                     response.set_cookie(key="access_token", value=access_token)
-                    return root.user[id].__dict__
+                    return access_token
                 else:
                     Exception("invalid signin information")
                             
