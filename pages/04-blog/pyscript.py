@@ -24,8 +24,80 @@ class BlogWidget(AbstractWidget):
         super().__init__(element_id)
     
     def initializeWidget(self):
-        print(self.element)
+        self.dropArea = document.querySelector(".blog__create-post--assets-draganddrop")
+        self.listSection = document.querySelector(".blog__create-post--assets-list")
+        self.listContainer = document.querySelector(".list")
+        self.fileSelector = document.querySelector(".blog__create-post--assets-btn-selector")
+        self.fileSelectorInput = document.querySelector(".blog__create-post--assets-btn-input")
+        
+        self.fileSelector.onclick = lambda _: self.fileSelectorInput.click()
+        self.fileSelectorInput.onchange = lambda _: self.handleFileInputChange()
+        self.dropArea.ondragover = lambda e: self.handleDragOver(e)
+        self.dropArea.ondragleave = lambda _: self.handleDragLeave()
+        self.dropArea.ondrop = lambda e: self.handleDrop(e)
+
+    def handleFileInputChange(self):
+        for file in js.Array.from_(self.fileSelectorInput.files):
+            if self.typeValidation(file.type):
+                self.printFileDetails(file)
+                self.uploadFile(file)
+            else:
+                print("Invalid file type")
+
+    def handleDragOver(self, event):
+        event.preventDefault()
+        for item in js.Array.from_(event.dataTransfer.items):
+            if self.typeValidation(item.type):
+                self.dropArea.classList.add('drag-over-effect')
+                
+    def handleDragLeave(self):
+        self.dropArea.classList.remove('drag-over-effect')
+        
+    def handleDrop(self, event):
+        event.preventDefault()
+        self.dropArea.classList.remove('drag-over-effect')
+
+        if event.dataTransfer.items:
+            for item in js.Array.from_(event.dataTransfer.items):
+                if item.kind == 'file':
+                    file = item.getAsFile()
+                    if self.typeValidation(file.type):
+                        self.uploadFile(file)
+        else:
+            for file in js.Array.from_(event.dataTransfer.files):
+                if self.typeValidation(file.type):
+                    pass
+
+    def typeValidation(self, fileType):
+        validTypes = ['image/png', 'image/jpeg', 'video/mp4']
+        return fileType in validTypes
+
+    def uploadFile(self, file):
+        url = '/uploadfile/'
+        # Create a FormData object directly
+        data = js.eval("new FormData()")
+        data.append('file', file)
+
+        def on_progress(e):
+            percent_complete = (e.loaded / e.total) * 100
+            print(percent_complete)
+
+        def on_load(response):
+            # Handle completion if needed
+            pass
+
+        # Use fetch for making the POST request
+        js.fetch(url, {
+            'method': 'POST',
+            'body': data,
+        }).then(on_load)
+    
+    def printFileDetails(self, file):
+        print(f"File Name: {file.name}")
+        print(f"File Size: {file.size} bytes")
+        print(f"File Type: {file.type}")
+        print(f"Last Modified: {file.lastModified}")
 
 if __name__ == "__main__":
-    w = BlogWidget("signup__form")
+    w = BlogWidget("blog")
     w.initializeWidget()

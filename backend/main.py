@@ -1,12 +1,21 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Request, File, UploadFile
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from blog import router as blog_router
 from account_management import router as accounte_management_router
 from account_management import *
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Routers
 # =============================================================================
@@ -70,3 +79,13 @@ async def blogPage(request: Request):
     return pages.TemplateResponse("04-blog/blog.html", {"request": request})
 
 # =============================================================================
+
+@app.post("/uploadfile/")
+async def create_upload_file(file: UploadFile = File(...)):
+    target_dir = 'uploads/'
+    target_file_path = target_dir + file.filename
+
+    with open(target_file_path, "wb") as f:
+        f.write(file.file.read())
+
+    return {"message": "File Uploaded"}
