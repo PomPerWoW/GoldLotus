@@ -142,12 +142,12 @@ async def removeLikeBlog(response: Response, request: Request, blogID: int, acce
         return {"detail": str(e)}
     
 @router.post("/addReplyBlog/", tags=["blog"])
-async def addReplyBlog(response: Response, request: Request, blogID: int, text: str, media: List[str], access_token: str = Cookie(None)):
+async def addReplyBlog(response: Response, request: Request, blogID: int, text: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
         
-        root.blog[blogID].addReply(userId, text, media)
+        root.blog[blogID].addReply(userId, text)
         
         transaction.commit()
     except Exception as e:
