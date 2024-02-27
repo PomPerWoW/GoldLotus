@@ -41,15 +41,15 @@ class User(persistent.Persistent):
         if policy.test(password):
             raise ValueError("Invalid password format")
 
-    def hashPassword(self, password):  
+    def hashPassword(self, password: str):  
         hash_algorithm = hashlib.new("SHA256") 
         hash_algorithm.update(password.encode())
         return hash_algorithm.hexdigest()
     
-    def verifyPassword(self, password):
+    def verifyPassword(self, password: str):
         return True if self.hashPassword(password) == self.__password else False
 
-    def changePassword(self, password):
+    def changePassword(self, password: str):
         self.__password = self.hashPassword(password)
     
     def createBlog(self, blogID: int):

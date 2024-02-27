@@ -62,6 +62,8 @@ async def removeBlog(response: Response, request: Request, blogID: int, access_t
                 os.remove(os.path.join("uploads", str(mediaID)) + ".png")
             elif os.path.exists(os.path.join("uploads", str(mediaID)) + ".jpg"):
                 os.remove(os.path.join("uploads", str(mediaID)) + ".jpg")
+            elif os.path.exists(os.path.join("uploads", str(mediaID)) + ".jpeg"):
+                os.remove(os.path.join("uploads", str(mediaID)) + ".jpeg")
             elif os.path.exists(os.path.join("uploads", str(mediaID)) + ".MP4"):
                 os.remove(os.path.join("uploads", str(mediaID)) + ".MP4")
             else:
@@ -91,6 +93,8 @@ async def editBlog(response: Response, request: Request, blogID: int, title: str
                     os.remove(os.path.join("uploads", str(current)) + ".png")
                 elif os.path.exists(os.path.join("uploads", str(current)) + ".jpg"):
                     os.remove(os.path.join("uploads", str(current)) + ".jpg")
+                elif os.path.exists(os.path.join("uploads", str(current)) + ".jpeg"):
+                    os.remove(os.path.join("uploads", str(current)) + ".jpeg")
                 elif os.path.exists(os.path.join("uploads", str(current)) + ".MP4"):
                     os.remove(os.path.join("uploads", str(current)) + ".MP4")
                 else:
