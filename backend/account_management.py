@@ -99,7 +99,17 @@ async def resetPassword(response: Response, request: Request, email: str):
         return {"detail": "Email sent successfully!"}
     except Exception as e:
         return {"detail": str(e)}
-    
+
+@router.get("/user/setNewPassword/", tags=["User"])
+async def setNewPassword(response: Response, request: Request, token: str, password: str):
+    try:
+        userID = decodeJWT(token)["id"]
+        root.user[userID].changePassword(password)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+
 @router.get("/user/info", tags=["User"])
 async def getUserInfo(response: Response, request: Request, access_token: str = Cookie(None)):
     try:

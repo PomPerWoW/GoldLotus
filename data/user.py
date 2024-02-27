@@ -49,6 +49,9 @@ class User(persistent.Persistent):
     def verifyPassword(self, password):
         return True if self.hashPassword(password) == self.__password else False
 
+    def changePassword(self, password):
+        self.__password = self.hashPassword(password)
+    
     def createBlog(self, blogID: int):
         self.blog.append(blogID)
     
