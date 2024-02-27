@@ -65,9 +65,121 @@
                 >
                     <p>My posts</p>
                 </div>
+                <div class="blog__search">
+                    <input type="text" placeholder="Search" />
+                    <a href="">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </a>
+                </div>
             </div>
+
             <div class="blog">
                 <div class="blog__post--box">
+                    <div class="blog__post" id="blog__post--create">
+                        <div class="blog__create-post--header">
+                            <p>Create your own post</p>
+                        </div>
+                        <div class="blog__create-post--field">
+                            <div>
+                                <input
+                                    type="text"
+                                    placeholder="Title"
+                                    class="blog__create-post--title"
+                                />
+                            </div>
+                            <div class="blog__create-post--message">
+                                <textarea
+                                    name="insert message..."
+                                    class="blog__create-post--message"
+                                    placeholder="insert messages..."
+                                    cols="60"
+                                    rows="5"
+                                ></textarea>
+                            </div>
+                            <div class="blog__create-post--assets">
+                                <div class="blog__create-post--assets-header">
+                                    <h1>Upload Files</h1>
+                                    <p>
+                                        Upload images and videos to express your
+                                        mind.
+                                    </p>
+                                    <p>PNG, JPG, and MP4 are allowed.</p>
+                                </div>
+                                <div
+                                    class="blog__create-post--assets-draganddrop"
+                                >
+                                    <div class="col">
+                                        <div class="cloud-icon">
+                                            <i class="fa-solid fa-cloud"></i>
+                                        </div>
+                                        <span>Drag & Drog your files here</span>
+                                        <span>OR</span>
+                                        <button
+                                            class="blog__create-post--assets-btn-selector"
+                                        >
+                                            Browse Files
+                                        </button>
+                                        <input
+                                            type="file"
+                                            class="blog__create-post--assets-btn-input"
+                                            multiple
+                                        />
+                                    </div>
+                                    <div class="col">
+                                        <div class="drop-here">Drop Here</div>
+                                    </div>
+                                </div>
+                                <div class="blog__create-post--assets-list">
+                                    <div
+                                        class="blog__create-post--assets-list-title"
+                                    >
+                                        <div class="assets-list-title">
+                                            Upload Files
+                                        </div>
+                                        <div class="list">
+                                            <li class="in-prog">
+                                                <div class="col">
+                                                    <i
+                                                        class="fa-solid fa-file"
+                                                    ></i>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="file-name">
+                                                        <div class="name">
+                                                            File Name Here
+                                                        </div>
+                                                        <span>50%</span>
+                                                    </div>
+                                                    <div class="file-progress">
+                                                        <span></span>
+                                                    </div>
+                                                    <div class="file-size">
+                                                        2.2 MB
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <i
+                                                        class="fa-solid fa-xmark cross"
+                                                    ></i>
+                                                    <i
+                                                        class="fa-solid fa-check tick"
+                                                    ></i>
+                                                </div>
+                                            </li>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="blog__post--footer">
+                            <div class="blog__create-post--btn">
+                                <a href="">Create</a>
+                            </div>
+                            <div class="blog__create-post--btn">
+                                <a href="">Reset</a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="blog__post">
                         <div class="blog__post--header">
                             <div class="blog__post--username">John Doe</div>
@@ -77,6 +189,7 @@
                             <div class="blog__post--timestamp">11 mins ago</div>
                         </div>
                         <div class="blog__post--field">
+                            <div class="blog__post--title"><h3>Hello</h3></div>
                             <div class="blog__post--message">
                                 <p>
                                     Lorem, ipsum dolor sit amet consectetur
@@ -110,6 +223,7 @@
                             <div class="blog__post--timestamp">11 mins ago</div>
                         </div>
                         <div class="blog__post--field">
+                            <div class="blog__post--title"><h3>Hello</h3></div>
                             <div class="blog__post--message">
                                 <p>
                                     Lorem ipsum, dolor sit amet consectetur
@@ -139,6 +253,7 @@
                             <div class="blog__post--timestamp">11 mins ago</div>
                         </div>
                         <div class="blog__post--field">
+                            <div class="blog__post--title"><h3>Hello</h3></div>
                             <div class="blog__post--message">
                                 <p>
                                     Lorem ipsum dolor sit amet consectetur
