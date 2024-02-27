@@ -24,8 +24,8 @@ class SignInWidget(AbstractWidget):
         super().__init__(element_id)
 
     def initializeWidget(self):
-        self.form_element = document.querySelector("#submit__btn")
-        self.form_element.onclick = self.submitForm
+        self.reset_element = document.querySelector("#reset__btn")
+        self.reset_element.onclick = self.resetPassword
         self.hidden_element = document.querySelector(".background__black--faded")
         
         if not self.hidden_element:
@@ -48,6 +48,24 @@ class SignInWidget(AbstractWidget):
                     self.hidden_element.classList.remove("hidden")
                 else:
                     window.location.href = "/"
+        except Exception as e:
+            print(e)
+    
+    async def resetPassword(self, event):
+        event.preventDefault()
+        email = document.querySelector("#email").value
+        try:
+            response = await pyfetch(
+                url=f"/user/resetPassword/?email={email}", 
+                method='GET', 
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+                if 'detail' in data:
+                    self.hidden_element.classList.remove("hidden")
+                else:
+                    window.location.href = "/signIn"
         except Exception as e:
             print(e)
 

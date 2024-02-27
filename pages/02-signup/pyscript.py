@@ -26,10 +26,14 @@ class SignUpWidget(AbstractWidget):
     def initializeWidget(self):
         self.form_element = document.querySelector("#submit__btn")
         self.form_element.onclick = self.submitForm
-        self.hidden_element = document.querySelector(".background__black--faded")
+        self.hidden_element_username = document.querySelector("#error_hidden_username")
+        self.hidden_element_email = document.querySelector("#error_hidden_email")
+        self.hidden_element_default = document.querySelector("#error_hidden_default")
         
-        if not self.hidden_element:
-            print("Error: Could not find element with class 'background__black--faded'")
+        if not self.hidden_element_email:
+            return
+        
+        if not self.hidden_element_default:
             return
         
     async def submitForm(self, event):
@@ -45,8 +49,12 @@ class SignUpWidget(AbstractWidget):
             )
             if response.ok:
                 data = await response.json()
-                if 'detail' in data:
-                    self.hidden_element.classList.remove("hidden")
+                if data['detail'] == "email already exist":
+                    self.hidden_element_email.classList.remove("hidden")
+                elif data['detail'] == "username is already taken":
+                    self.hidden_element_username.classList.remove("hidden")
+                elif 'detail' in data:
+                    self.hidden_element_default.classList.remove("hidden")
                 else:
                     window.location.href = "/"
         except Exception as e:

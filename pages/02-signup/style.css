@@ -83,6 +83,11 @@
     color: #c7a200;
 }
 
-.error__box-signup {
+#error_box_username,
+#error_box_email {
+    height: 28rem;
+}
+
+#error_box_default {
     height: 40rem;
 }

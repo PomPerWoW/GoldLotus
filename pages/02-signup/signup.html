@@ -44,9 +44,41 @@
         <title>GoldLotus | Sign Up</title>
     </head>
     <body>
-        <div class="hidden background__black--faded">
+        <div class="hidden background__black--faded" id="error_hidden_username">
             <div class="container">
-                <div class="error__box error__box-signup">
+                <div
+                    class="error__box error__box-signup"
+                    id="error_box_username"
+                >
+                    <h2 class="error__box--header heading-tertiary">
+                        Sign Up Error
+                    </h2>
+                    <p class="error__box--message">
+                        Username is already taken.
+                    </p>
+                    <a class="error__box--btn" href="/signUp">Ok</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden background__black--faded" id="error_hidden_email">
+            <div class="container">
+                <div class="error__box error__box-signup" id="error_box_email">
+                    <h2 class="error__box--header heading-tertiary">
+                        Sign Up Error
+                    </h2>
+                    <p class="error__box--message">Email already exist.</p>
+                    <a class="error__box--btn" href="/signUp">Ok</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden background__black--faded" id="error_hidden_default">
+            <div class="container">
+                <div
+                    class="error__box error__box-signup"
+                    id="error_box_default"
+                >
                     <h2 class="error__box--header heading-tertiary">
                         Sign Up Error
                     </h2>
