@@ -66,7 +66,7 @@ async def signIn(response: Response, request: Request, key: str, password: str):
         return {"detail": str(e)}
 
 @router.get("/user/resetPassword/", tags=["User"])
-async def resetPwd(response: Response, request: Request, email: str):
+async def resetPassword(response: Response, request: Request, email: str):
     try:
         userID = None
         for id in root.user:
@@ -99,7 +99,17 @@ async def resetPwd(response: Response, request: Request, email: str):
         return {"detail": "Email sent successfully!"}
     except Exception as e:
         return {"detail": str(e)}
-    
+
+@router.get("/user/setNewPassword/", tags=["User"])
+async def setNewPassword(response: Response, request: Request, token: str, password: str):
+    try:
+        userID = decodeJWT(token)["id"]
+        root.user[userID].changePassword(password)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+
 @router.get("/user/info", tags=["User"])
 async def getUserInfo(response: Response, request: Request, access_token: str = Cookie(None)):
     try:
@@ -110,6 +120,36 @@ async def getUserInfo(response: Response, request: Request, access_token: str = 
         
         user = root.user[userId]
         
-        return {"userID": user.userID, "username": user.username, "email": user.email, "blog": user.blog, "event": user.event}
+        return {"userID": user.userID, "username": user.username, "email": user.email, "blog": user.blog, "event": user.event, "follower": user.follower, "following": user.following}
+    except Exception as e:
+        return {"detail": str(e)}
+    
+@router.get("/user/follow", tags=["User"])
+async def follow(response: Response, request: Request, followingID: str, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        if not userId in root.user:
+            raise Exception("author not found")
+        
+        root.user[userId].addFollowing(followingID)
+        root.user[followingID].addFollower(userId)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+    
+@router.get("/user/unfollow", tags=["User"])
+async def unfollow(response: Response, request: Request, followingID: str, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        if not userId in root.user:
+            raise Exception("author not found")
+        
+        root.user[userId].removeFollowing(followingID)
+        root.user[followingID].removeFollower(userId)
+        
+        transaction.commit()
     except Exception as e:
         return {"detail": str(e)}

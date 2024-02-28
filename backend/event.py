@@ -1,7 +1,8 @@
+
 from typing import List
-from fastapi import APIRouter
-from fastapi import Request, Response, Cookie
+from fastapi import APIRouter, Request, Response, Cookie
 from datetime import date, datetime
+import shutil
 import sys
 import os
 
@@ -10,7 +11,7 @@ router = APIRouter()
 PARENT_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.insert(1, os.path.join(PARENT_DIRECTORY, "data"))
 
-from content import Reply, Event
+from content import Event
 from database import *
 from auth.auth_handler import decodeJWT
 
@@ -22,12 +23,25 @@ async def createEvent(response: Response, request: Request, title: str, text: st
         if not userId in root.user:
             raise Exception("author not found")
         
-        root.event[root.config["currentEventID"]] = Event(root.config["currentEventID"], title, userId, text, media, date)
+        if not os.path.exists("uploads"):
+            os.makedirs("uploads")
+            
+        mediaID = list()
+        for file in media:
+            file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
+            with open(file_path, "wb") as buffer:
+                shutil.copyfileobj(file.file, buffer)
+            
+            mediaID.append(root.config["currentMediaID"])
+            root.config["currentMediaID"] += 1
+        
+        root.event[root.config["currentEventID"]] = Event(root.config["currentEventID"], title, userId, text, mediaID, date)
         root.user[userId].createEvent(root.config["currentEventID"])
         
         root.config["currentEventID"] += 1
-        
         transaction.commit()
+        
+        return root.eventID[root.config["currentEventID"] - 1]
     except Exception as e:
         return {"detail": str(e)}
 
@@ -41,6 +55,19 @@ async def removeEvent(response: Response, request: Request, eventID: str, access
         
         if not root.user[userId].deleteEvent(eventID):
             raise Exception("user has no permission")
+        
+        event = root.event[eventID]
+        for mediaID in event.media:
+            if os.path.exists(os.path.join("uploads", str(mediaID)) + ".png"):
+                os.remove(os.path.join("uploads", str(mediaID)) + ".png")
+            elif os.path.exists(os.path.join("uploads", str(mediaID)) + ".jpg"):
+                os.remove(os.path.join("uploads", str(mediaID)) + ".jpg")
+            elif os.path.exists(os.path.join("uploads", str(mediaID)) + ".jpeg"):
+                os.remove(os.path.join("uploads", str(mediaID)) + ".jpeg")
+            elif os.path.exists(os.path.join("uploads", str(mediaID)) + ".MP4"):
+                os.remove(os.path.join("uploads", str(mediaID)) + ".MP4")
+            else:
+                raise Exception("File not found in the db.")
         
         del root.event[eventID]
         
@@ -59,6 +86,29 @@ async def editEvent(response: Response, request: Request, eventID: int, title: s
         if root.user[userId].editEvent(eventID):
             raise Exception("user has no permission")
         
+        for current in root.event[eventID].media:
+            if not current in media:
+                if os.path.exists(os.path.join("uploads", str(current)) + ".png"):
+                    os.remove(os.path.join("uploads", str(current)) + ".png")
+                elif os.path.exists(os.path.join("uploads", str(current)) + ".jpg"):
+                    os.remove(os.path.join("uploads", str(current)) + ".jpg")
+                elif os.path.exists(os.path.join("uploads", str(current)) + ".jpeg"):
+                    os.remove(os.path.join("uploads", str(current)) + ".jpeg")
+                elif os.path.exists(os.path.join("uploads", str(current)) + ".MP4"):
+                    os.remove(os.path.join("uploads", str(current)) + ".MP4")
+                else:
+                    raise Exception("File not found in the db.")
+        
+        for file in media:
+            filename, file_extension = os.path.splitext(file)
+            if not filename in root.event[eventID].media:
+                file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
+                with open(file_path, "wb") as buffer:
+                    shutil.copyfileobj(file.file, buffer)
+                
+                root.event[eventID].media.append(root.config["currentMediaID"])
+                root.config["currentMediaID"] += 1
+        
         root.event[eventID].editContent(title, text, media, date)
         
         transaction.commit()
@@ -66,12 +116,12 @@ async def editEvent(response: Response, request: Request, eventID: int, title: s
         return {"detail": str(e)}
 
 @router.post("/addReplyEvent/")
-async def addReplyEvent(response: Response, request: Request, eventID: int, text: str, media: List[str], access_token: str = Cookie(None)):
+async def addReplyEvent(response: Response, request: Request, eventID: int, text: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
         
-        root.event[eventID].addReply(userId, text, media)
+        root.event[eventID].addReply(userId, text)
         
         transaction.commit()
     except Exception as e:

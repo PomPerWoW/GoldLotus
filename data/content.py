@@ -6,10 +6,9 @@ import persistent
 from persistent.list import PersistentList
 
 class Content(persistent.Persistent, ABC):
-    def __init__(self, author: str, text: str, media: list) -> None:
+    def __init__(self, author: str, text: str) -> None:
         self.author = author
         self.text = text
-        self.media = media
         self.edited = False
         self.timestamp = datetime.now()
     
@@ -18,13 +17,12 @@ class Content(persistent.Persistent, ABC):
         pass
 
 class Reply(Content):
-    def __init__(self, author: str, text: str, media: list) -> None:
-        super().__init__(author, text, media)
+    def __init__(self, author: str, text: str) -> None:
+        super().__init__(author, text)
         self.like = PersistentList()
 
-    def editContent(self, text: str, media: list):
+    def editContent(self, text: str):
         self.text = text
-        self.media = media
         self.edited = True
         self.timestamp = datetime.now()
     
@@ -35,10 +33,11 @@ class Reply(Content):
         self.like.pop(userID)
         
 class Blog(Content):
-    def __init__(self, blogID: str, title: str, author: str, text: str, media: list) -> None:
-        super().__init__(author, text, media)
-        self.blogID = blogID
+    def __init__(self, blogID: int, title: str, author: str, text: str, media: list) -> None:
+        super().__init__(author, text)
+        self.blogID = blogID            # int
         self.title = title
+        self.media = media              # Store as ID
         self.like = PersistentList()    # Store as ID
         self.reply = PersistentList()   # Store as obj
     
@@ -55,8 +54,8 @@ class Blog(Content):
     def removeLike(self, userID: str):
         self.like.remove(userID)
         
-    def addReply(self, author, text, media):
-        self.reply.append(Reply(author, text, media))
+    def addReply(self, author, text):
+        self.reply.append(Reply(author, text))
         
     def removeReply(self, replyIndex: str, userID: str):
         if self.reply[replyIndex].author == userID:
@@ -67,11 +66,12 @@ class Blog(Content):
         
 class Event(Content):
     
-    def __init__(self, eventID: str, title: str, author: str, text: str, media: list, date: datetime) -> None:
-        super().__init__(author, text, media)
-        self.eventID = eventID
+    def __init__(self, eventID: int, title: str, author: str, text: str, media: list, date: datetime) -> None:
+        super().__init__(author, text)
+        self.eventID = eventID                  # int
         self.title = title
         self.date = date
+        self.media = media                      # Store as ID
         self.reply = PersistentList()           # Store as obj
         self.attending = PersistentList()       # Store as ID
         self.maybe = PersistentList()           # Store as ID
@@ -85,8 +85,8 @@ class Event(Content):
         self.edited = True
         self.timestamp = datetime.now()
     
-    def addReply(self, author, text, media):
-        self.reply.append(Reply(author, text, media))
+    def addReply(self, author, text):
+        self.reply.append(Reply(author, text))
         
     def removeReply(self, replyIndex: str, userID: str):
         if self.reply[replyIndex].author == userID:

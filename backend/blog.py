@@ -1,7 +1,7 @@
-from fastapi import APIRouter
-from fastapi import Request, Response, Cookie
-from datetime import datetime
+
+from fastapi import APIRouter, Request, Response, Cookie, File, UploadFile
 from typing import List
+import shutil
 import sys
 import os
 
@@ -10,25 +10,37 @@ router = APIRouter()
 PARENT_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.insert(1, os.path.join(PARENT_DIRECTORY, "data"))
 
-from content import Blog, Reply
+from content import Blog
 from database import *
 from auth.auth_handler import decodeJWT
 
 @router.post("/createBlog/", tags=["blog"])
-async def createBlog(response: Response, request: Request, title: str, text: str, media: List[str], access_token: str = Cookie(None)):
+async def createBlog(response: Response, request: Request, title: str, text: str, media: list[UploadFile] = File(...), access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
         if not userId in root.user:
             raise Exception("author not found")
         
-        root.blog[root.config["currentBlogID"]] = Blog(root.config["currentBlogID"], title, userId, text, media)
+        if not os.path.exists("uploads"):
+            os.makedirs("uploads")
+            
+        mediaID = list()
+        for file in media:
+            file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
+            with open(file_path, "wb") as buffer:
+                shutil.copyfileobj(file.file, buffer)
+            
+            mediaID.append(root.config["currentMediaID"])
+            root.config["currentMediaID"] += 1
+        
+        root.blog[root.config["currentBlogID"]] = Blog(root.config["currentBlogID"], title, userId, text, mediaID)
         root.user[userId].createBlog(root.config["currentBlogID"])
         
         root.config["currentBlogID"] += 1
         transaction.commit()
         
-        return root.user[userId]
+        return root.blog[root.config["currentBlogID"] - 1]
     except Exception as e:
         return {"detail": str(e)}
 
@@ -43,9 +55,23 @@ async def removeBlog(response: Response, request: Request, blogID: int, access_t
         if not root.user[userId].deleteBlog(blogID):
             raise Exception("user has no permission")
         
+        blog = root.blog[blogID]
+        for mediaID in blog.media:
+            if os.path.exists(os.path.join("uploads", str(mediaID)) + ".png"):
+                os.remove(os.path.join("uploads", str(mediaID)) + ".png")
+            elif os.path.exists(os.path.join("uploads", str(mediaID)) + ".jpg"):
+                os.remove(os.path.join("uploads", str(mediaID)) + ".jpg")
+            elif os.path.exists(os.path.join("uploads", str(mediaID)) + ".jpeg"):
+                os.remove(os.path.join("uploads", str(mediaID)) + ".jpeg")
+            elif os.path.exists(os.path.join("uploads", str(mediaID)) + ".MP4"):
+                os.remove(os.path.join("uploads", str(mediaID)) + ".MP4")
+            else:
+                raise Exception("File not found in the db.")
+        
         del root.blog[blogID]
         
         transaction.commit()
+        return root.user[userId]
     except Exception as e:
         return {"detail": str(e)}
     
@@ -59,6 +85,29 @@ async def editBlog(response: Response, request: Request, blogID: int, title: str
         
         if not root.user[userId].editBlog(blogID):
             raise Exception("user has no permission")
+        
+        for current in root.blog[blogID].media:
+            if not current in media:
+                if os.path.exists(os.path.join("uploads", str(current)) + ".png"):
+                    os.remove(os.path.join("uploads", str(current)) + ".png")
+                elif os.path.exists(os.path.join("uploads", str(current)) + ".jpg"):
+                    os.remove(os.path.join("uploads", str(current)) + ".jpg")
+                elif os.path.exists(os.path.join("uploads", str(current)) + ".jpeg"):
+                    os.remove(os.path.join("uploads", str(current)) + ".jpeg")
+                elif os.path.exists(os.path.join("uploads", str(current)) + ".MP4"):
+                    os.remove(os.path.join("uploads", str(current)) + ".MP4")
+                else:
+                    raise Exception("File not found in the db.")
+        
+        for file in media:
+            filename, file_extension = os.path.splitext(file)
+            if not filename in root.blog[blogID].media:
+                file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
+                with open(file_path, "wb") as buffer:
+                    shutil.copyfileobj(file.file, buffer)
+                
+                root.blog[blogID].media.append(root.config["currentMediaID"])
+                root.config["currentMediaID"] += 1
         
         root.blog[blogID].editContent(title, text, media)
         
@@ -92,12 +141,12 @@ async def removeLikeBlog(response: Response, request: Request, blogID: int, acce
         return {"detail": str(e)}
     
 @router.post("/addReplyBlog/", tags=["blog"])
-async def addReplyBlog(response: Response, request: Request, blogID: int, text: str, media: List[str], access_token: str = Cookie(None)):
+async def addReplyBlog(response: Response, request: Request, blogID: int, text: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
         
-        root.blog[blogID].addReply(userId, text, media)
+        root.blog[blogID].addReply(userId, text)
         
         transaction.commit()
     except Exception as e:
