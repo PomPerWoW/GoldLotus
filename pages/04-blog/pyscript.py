@@ -62,6 +62,7 @@ class BlogWidget(AbstractWidget):
                 if item.kind == 'file':
                     file = item.getAsFile()
                     if self.typeValidation(file.type):
+                        self.printFileDetails(file)
                         self.uploadFile(file)
         else:
             for file in js.Array.from_(event.dataTransfer.files):
@@ -73,24 +74,7 @@ class BlogWidget(AbstractWidget):
         return fileType in validTypes
 
     def uploadFile(self, file):
-        url = '/uploadfile/'
-        # Create a FormData object directly
-        data = js.eval("new FormData()")
-        data.append('file', file)
-
-        def on_progress(e):
-            percent_complete = (e.loaded / e.total) * 100
-            print(percent_complete)
-
-        def on_load(response):
-            # Handle completion if needed
-            pass
-
-        # Use fetch for making the POST request
-        js.fetch(url, {
-            'method': 'POST',
-            'body': data,
-        }).then(on_load)
+        pass
     
     def printFileDetails(self, file):
         print(f"File Name: {file.name}")
