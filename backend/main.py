@@ -70,8 +70,4 @@ async def resetPasswordPage(request: Request):
 async def blogPage(request: Request):
     return pages.TemplateResponse("04-blog/blog.html", {"request": request})
 
-@app.get("/testBlog", response_class=HTMLResponse, tags=["website"])
-async def signUpPage(request: Request):
-    return pages.TemplateResponse("upload_test.html", {"request": request})
-
 # =============================================================================

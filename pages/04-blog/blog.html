@@ -92,12 +92,16 @@
                             <div>
                                 <input
                                     type="text"
+                                    id="title"
+                                    name="title"
                                     placeholder="Title"
                                     class="blog__create-post--title"
+                                    required
                                 />
                             </div>
                             <div class="blog__create-post--message">
                                 <textarea
+                                    id="text"
                                     name="insert message..."
                                     class="blog__create-post--message"
                                     placeholder="insert messages..."
@@ -112,7 +116,13 @@
                                         Upload images and videos to express your
                                         mind.
                                     </p>
-                                    <p><span class="blog__create-post--assets-file-valid">PNG, JPG, JPEG, and MP4</span are allowed.</p>
+                                    <p>
+                                        <span
+                                            class="blog__create-post--assets-file-valid"
+                                            >PNG, JPG, JPEG, and MP4</span
+                                        >
+                                        are allowed.
+                                    </p>
                                 </div>
                                 <div
                                     class="blog__create-post--assets-draganddrop"
@@ -130,6 +140,8 @@
                                         </button>
                                         <input
                                             type="file"
+                                            id="media"
+                                            name="media"
                                             class="blog__create-post--assets-btn-input"
                                             multiple
                                         />
@@ -139,53 +151,25 @@
                                     </div>
                                 </div>
                                 <div class="blog__create-post--assets-list">
-                                    <div
-                                        class="blog__create-post--assets-list-title"
-                                    >
-                                        <div class="assets-list-title">
-                                            Upload Files
-                                        </div>
-                                        <div class="list">
-                                            <li class="in-prog">
-                                                <div class="col">
-                                                    <i
-                                                        class="fa-solid fa-file"
-                                                    ></i>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="file-name">
-                                                        <div class="name">
-                                                            File Name Here
-                                                        </div>
-                                                        <span>50%</span>
-                                                    </div>
-                                                    <div class="file-progress">
-                                                        <span></span>
-                                                    </div>
-                                                    <div class="file-size">
-                                                        2.2 MB
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <i
-                                                        class="fa-solid fa-xmark cross"
-                                                    ></i>
-                                                    <i
-                                                        class="fa-solid fa-check tick"
-                                                    ></i>
-                                                </div>
-                                            </li>
-                                        </div>
+                                    <div class="assets-list-title">
+                                        Upload Files
                                     </div>
+                                    <div class="assets-list"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="blog__post--footer">
                             <div class="blog__create-post--btn">
-                                <a href="">Create</a>
+                                <button
+                                    type="submit"
+                                    id="submit__btn"
+                                    class="blog__create-post--btn"
+                                >
+                                    Create
+                                </button>
                             </div>
                             <div class="blog__create-post--btn">
-                                <a href="">Reset</a>
+                                <button id="reset__btn" href="">Reset</button>
                             </div>
                         </div>
                     </div>
