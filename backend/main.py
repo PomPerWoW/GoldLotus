@@ -5,6 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from blog import router as blog_router
 from account_management import router as accounte_management_router
 from account_management import *
+from media_response import router as media_response_router
 
 app = FastAPI()
 
@@ -13,6 +14,7 @@ app = FastAPI()
 
 app.include_router(blog_router)
 app.include_router(accounte_management_router)
+app.include_router(media_response_router)
 
 # =============================================================================
 
@@ -45,6 +47,6 @@ async def signUpPage(request: Request):
 
 @app.get("/testBlog", response_class=HTMLResponse, tags=["website"])
 async def signUpPage(request: Request):
-    return pages.TemplateResponse("blog_test.html", {"request": request})
+    return pages.TemplateResponse("upload_test.html", {"request": request})
 
 # =============================================================================
