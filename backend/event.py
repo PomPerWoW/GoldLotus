@@ -1,7 +1,8 @@
 
 from typing import List
-from fastapi import APIRouter, Request, Response, Cookie
-from datetime import date, datetime
+from fastapi import APIRouter, Request, Response, Cookie, UploadFile
+from typing import Optional
+from datetime import datetime
 import shutil
 import sys
 import os
@@ -16,7 +17,7 @@ from database import *
 from auth.auth_handler import decodeJWT
 
 @router.post("/createEvent/", tags=["event"])
-async def createEvent(response: Response, request: Request, title: str, text: str, media: List[str], date: datetime, access_token: str = Cookie(None)):
+async def createEvent(response: Response, request: Request, title: str, text: str, date: datetime, media: Optional[list[UploadFile]] = None, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -27,13 +28,14 @@ async def createEvent(response: Response, request: Request, title: str, text: st
             os.makedirs("uploads")
             
         mediaID = list()
-        for file in media:
-            file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
-            with open(file_path, "wb") as buffer:
-                shutil.copyfileobj(file.file, buffer)
-            
-            mediaID.append(root.config["currentMediaID"])
-            root.config["currentMediaID"] += 1
+        if media == None:
+            for file in media:
+                file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
+                with open(file_path, "wb") as buffer:
+                    shutil.copyfileobj(file.file, buffer)
+                
+                mediaID.append(root.config["currentMediaID"])
+                root.config["currentMediaID"] += 1
         
         root.event[root.config["currentEventID"]] = Event(root.config["currentEventID"], title, userId, text, mediaID, date)
         root.user[userId].createEvent(root.config["currentEventID"])
@@ -76,7 +78,7 @@ async def removeEvent(response: Response, request: Request, eventID: str, access
         return {"detail": str(e)}
     
 @router.post("/editEvent/")
-async def editEvent(response: Response, request: Request, eventID: int, title: str, text: str, media: List[str], date: datetime, access_token: str = Cookie(None)):
+async def editEvent(response: Response, request: Request, eventID: int, title: str, text: str, date: datetime, media: Optional[list[UploadFile]] = None, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -85,6 +87,9 @@ async def editEvent(response: Response, request: Request, eventID: int, title: s
         
         if root.user[userId].editEvent(eventID):
             raise Exception("user has no permission")
+        
+        if media == None:
+            media = list()
         
         for current in root.event[eventID].media:
             if not current in media:
