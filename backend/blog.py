@@ -38,7 +38,7 @@ async def createBlog(response: Response, request: Request, title: str, text: str
         return {"detail": str(e)}
 
 @router.post("/createBlogWithMedia/", tags=["blog"])
-async def createBlogWithMedia(response: Response, request: Request, title: str, text: str, media: List[UploadFile] = File(), access_token: str = Cookie(None)):
+async def createBlogWithMedia(response: Response, request: Request, title: str, text: str, media: List[UploadFile] = File(...), access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -99,7 +99,7 @@ async def removeBlog(response: Response, request: Request, blogID: int, access_t
         return {"detail": str(e)}
     
 @router.post("/editBlog/", tags=["blog"])
-async def editBlog(response: Response, request: Request, blogID: int, title: str, text: str, media: Optional[List[UploadFile]] = None, access_token: str = Cookie(None)):
+async def editBlog(response: Response, request: Request, blogID: int, title: str, text: str, media: List[UploadFile] = File(...), access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
