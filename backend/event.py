@@ -88,11 +88,27 @@ async def editEvent(response: Response, request: Request, eventID: int, title: s
         if root.user[userId].editEvent(eventID):
             raise Exception("user has no permission")
         
+        mediaID = list()
         if media == None:
-            media = list()
-        else:
             for current in root.event[eventID].media:
-                if not current in media:
+                if os.path.exists(os.path.join("uploads", str(current)) + ".png"):
+                    os.remove(os.path.join("uploads", str(current)) + ".png")
+                elif os.path.exists(os.path.join("uploads", str(current)) + ".jpg"):
+                    os.remove(os.path.join("uploads", str(current)) + ".jpg")
+                elif os.path.exists(os.path.join("uploads", str(current)) + ".jpeg"):
+                    os.remove(os.path.join("uploads", str(current)) + ".jpeg")
+                elif os.path.exists(os.path.join("uploads", str(current)) + ".MP4"):
+                    os.remove(os.path.join("uploads", str(current)) + ".MP4")
+                else:
+                    raise Exception("File not found in the db.")
+        else:
+            temp = list()
+            for file in media:
+                filename, file_extension = os.path.splitext(file.filename)
+                temp.append(filename)
+                
+            for current in root.event[eventID].media:
+                if not current in temp:
                     if os.path.exists(os.path.join("uploads", str(current)) + ".png"):
                         os.remove(os.path.join("uploads", str(current)) + ".png")
                     elif os.path.exists(os.path.join("uploads", str(current)) + ".jpg"):
@@ -111,10 +127,12 @@ async def editEvent(response: Response, request: Request, eventID: int, title: s
                     with open(file_path, "wb") as buffer:
                         shutil.copyfileobj(file.file, buffer)
                     
-                    root.event[eventID].media.append(root.config["currentMediaID"])
+                    mediaID.append(root.config["currentMediaID"])
                     root.config["currentMediaID"] += 1
+                else:
+                    mediaID.append(filename)
         
-        root.event[eventID].editContent(title, text, media, date)
+        root.event[eventID].editContent(title, text, mediaID, date)
         
         transaction.commit()
     except Exception as e:

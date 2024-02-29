@@ -87,11 +87,9 @@ async def editBlog(response: Response, request: Request, blogID: int, title: str
         if not root.user[userId].editBlog(blogID):
             raise Exception("user has no permission")
         
+        mediaID = list()
         if media == None:
-            media = list()
-        
-        for current in root.blog[blogID].media:
-            if not current in media:
+            for current in root.blog[blogID].media:
                 if os.path.exists(os.path.join("uploads", str(current)) + ".png"):
                     os.remove(os.path.join("uploads", str(current)) + ".png")
                 elif os.path.exists(os.path.join("uploads", str(current)) + ".jpg"):
@@ -102,16 +100,36 @@ async def editBlog(response: Response, request: Request, blogID: int, title: str
                     os.remove(os.path.join("uploads", str(current)) + ".MP4")
                 else:
                     raise Exception("File not found in the db.")
-        
-        for file in media:
-            filename, file_extension = os.path.splitext(file)
-            if not filename in root.blog[blogID].media:
-                file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
-                with open(file_path, "wb") as buffer:
-                    shutil.copyfileobj(file.file, buffer)
+        else:
+            temp = list()
+            for file in media:
+                filename, file_extension = os.path.splitext(file.filename)
+                temp.append(filename)
                 
-                root.blog[blogID].media.append(root.config["currentMediaID"])
-                root.config["currentMediaID"] += 1
+            for current in root.blog[blogID].media:
+                if not current in temp:
+                    if os.path.exists(os.path.join("uploads", str(current)) + ".png"):
+                        os.remove(os.path.join("uploads", str(current)) + ".png")
+                    elif os.path.exists(os.path.join("uploads", str(current)) + ".jpg"):
+                        os.remove(os.path.join("uploads", str(current)) + ".jpg")
+                    elif os.path.exists(os.path.join("uploads", str(current)) + ".jpeg"):
+                        os.remove(os.path.join("uploads", str(current)) + ".jpeg")
+                    elif os.path.exists(os.path.join("uploads", str(current)) + ".MP4"):
+                        os.remove(os.path.join("uploads", str(current)) + ".MP4")
+                    else:
+                        raise Exception("File not found in the db.")
+            
+            for file in media:
+                filename, file_extension = os.path.splitext(file)
+                if not filename in root.blog[blogID].media:
+                    file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
+                    with open(file_path, "wb") as buffer:
+                        shutil.copyfileobj(file.file, buffer)
+                    
+                    mediaID.append(root.config["currentMediaID"])
+                    root.config["currentMediaID"] += 1
+                else:
+                    mediaID.append(filename)
         
         root.blog[blogID].editContent(title, text, media)
         
