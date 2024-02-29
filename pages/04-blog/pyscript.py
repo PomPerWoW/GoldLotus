@@ -167,7 +167,6 @@ class BlogWidget(AbstractWidget):
     async def uploadFile(self, event):
         event.preventDefault()
         form_data = window.FormData.new()
-        form_data.append('media', None)
 
         for i in range(len(self.allFiles)):
             form_data.append('media', self.allFiles[i])
