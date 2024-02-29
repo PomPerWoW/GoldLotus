@@ -26,6 +26,9 @@ class BlogWidget(AbstractWidget):
     def initializeWidget(self):
         self.allFiles = []
         self.counter = 0
+        self.addMediaBtn = document.querySelector("#add-media-btn")
+        self.removeMediaBtn = document.querySelector("#remove-media-btn")
+        self.createPostAssets = document.querySelector(".blog__create-post--assets")
         self.dropArea = document.querySelector(".blog__create-post--assets-draganddrop")
         self.listSection = document.querySelector(".blog__create-post--assets-list")
         self.assetsList = document.querySelector(".assets-list")
@@ -35,6 +38,8 @@ class BlogWidget(AbstractWidget):
         self.blogCreateBtn = document.querySelector("#submit__btn")
         self.resetBtn = document.querySelector("#reset__btn")
         
+        self.addMediaBtn.onclick = lambda e: self.handleAddMediaBtn(e)
+        self.removeMediaBtn.onclick = lambda e: self.handleRemoveMediaBtn(e)
         self.fileSelector.onclick = lambda _: self.fileSelectorInput.click()
         self.fileSelectorInput.onchange = lambda e: self.handleFileInputChange(e)
         self.dropArea.ondragover = lambda e: self.handleDragOver(e)
@@ -42,6 +47,20 @@ class BlogWidget(AbstractWidget):
         self.dropArea.ondrop = lambda e: self.handleDrop(e)
         self.blogCreateBtn.onclick = self.uploadFile
         self.resetBtn.onclick = self.resetInput
+    
+    def handleAddMediaBtn(self, event):
+        event.preventDefault()
+        self.resetInput(event)
+        self.addMediaBtn.style.display = "none"
+        self.removeMediaBtn.style.display = "block"
+        self.createPostAssets.style.display = "flex"
+    
+    def handleRemoveMediaBtn(self, event):
+        event.preventDefault()
+        self.resetInput(event)
+        self.addMediaBtn.style.display = "block"
+        self.removeMediaBtn.style.display = "none"
+        self.createPostAssets.style.display = "none"
 
     def handleFileInputChange(self, event):
         event.preventDefault()
@@ -49,7 +68,6 @@ class BlogWidget(AbstractWidget):
             if self.typeValidation(file.type):
                 self.allFiles.append(file)
                 self.displayFile(file)
-                self.printFileDetails(file)
             else:
                 print("Invalid file type")
 
@@ -73,7 +91,6 @@ class BlogWidget(AbstractWidget):
                     if self.typeValidation(file.type):
                         self.allFiles.append(file)
                         self.displayFile(file)
-                        self.printFileDetails(file)
         else:
             for file in js.Array.from_(event.dataTransfer.files):
                 if self.typeValidation(file.type):
@@ -84,8 +101,6 @@ class BlogWidget(AbstractWidget):
         return fileType in validTypes
     
     def deleteElement(self, del_id):
-        for i in range(len(self.allFiles)):
-            print(self.allFiles[i].name)
         delIdSplit = del_id.split("-")
         indexToDelete = int(delIdSplit[2])
         delElement = document.querySelector(f"#assets-element-{indexToDelete}")
@@ -96,16 +111,14 @@ class BlogWidget(AbstractWidget):
             delTextContent = delIndexContentSplit[0]
             
             for i, v in enumerate(self.allFiles):
-                fileName = self.allFiles[i].name.split(".")
+                fileName = v.split(".")
                 checkFileName = fileName[0]
                 if (checkFileName == delTextContent):
                     del self.allFiles[i]
             delElement.parentNode.removeChild(delElement)
         
         if len(self.allFiles) == 0:
-            print("0")
-        for i in range(len(self.allFiles)):
-            print(self.allFiles[i].name)
+            self.listSection.style.display = "none"
     
     def displayFile(self, file):
         self.listSection.style.display = "flex"
