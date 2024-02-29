@@ -1,6 +1,6 @@
 
 from fastapi import APIRouter, Request, Response, Cookie, UploadFile
-from typing import Optional
+from typing import Optional, List
 import shutil
 import sys
 import os
@@ -15,7 +15,7 @@ from database import *
 from auth.auth_handler import decodeJWT
 
 @router.post("/createBlog/", tags=["blog"])
-async def createBlog(response: Response, request: Request, title: str, text: str, media: Optional[list[UploadFile]] = None, access_token: str = Cookie(None)):
+async def createBlog(response: Response, request: Request, title: str, text: str, media: Optional[List[UploadFile]] = None, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -26,7 +26,7 @@ async def createBlog(response: Response, request: Request, title: str, text: str
             os.makedirs("uploads")
             
         mediaID = list()
-        if media == None:
+        if media != None:
             for file in media:
                 file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
                 with open(file_path, "wb") as buffer:
@@ -77,7 +77,7 @@ async def removeBlog(response: Response, request: Request, blogID: int, access_t
         return {"detail": str(e)}
     
 @router.post("/editBlog/", tags=["blog"])
-async def editBlog(response: Response, request: Request, blogID: int, title: str, text: str, media: Optional[list[UploadFile]] = None, access_token: str = Cookie(None)):
+async def editBlog(response: Response, request: Request, blogID: int, title: str, text: str, media: Optional[List[UploadFile]] = None, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
