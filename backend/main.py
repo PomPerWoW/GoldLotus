@@ -32,6 +32,8 @@ app.mount("/resetpassword-static",
 app.mount("/blog-static",
           StaticFiles(directory="../pages/04-blog"), name="blog-static")
 
+app.mount("/setpassword-static",
+          StaticFiles(directory="../pages/05-setpassword"), name="setpassword-static")
 # =============================================================================
 
 
@@ -61,4 +63,7 @@ async def resetPasswordPage(request: Request):
 async def blogPage(request: Request):
     return pages.TemplateResponse("04-blog/blog.html", {"request": request})
 
+@app.get("/setpassword/{token}", response_class=HTMLResponse, tags=["website"])
+async def resetPasswordPage(request: Request, token: str):
+    return pages.TemplateResponse("05-setpassword/setpassword.html", {"request": request, "token": token})
 # =============================================================================
