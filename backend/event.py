@@ -1,7 +1,7 @@
 
 from typing import List
 from fastapi import APIRouter, Request, Response, Cookie, UploadFile
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 import shutil
 import sys
@@ -17,7 +17,7 @@ from database import *
 from auth.auth_handler import decodeJWT
 
 @router.post("/createEvent/", tags=["event"])
-async def createEvent(response: Response, request: Request, title: str, text: str, date: datetime, media: Optional[list[UploadFile]] = None, access_token: str = Cookie(None)):
+async def createEvent(response: Response, request: Request, title: str, text: str, date: datetime, media: Optional[List[UploadFile]] = None, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -28,7 +28,7 @@ async def createEvent(response: Response, request: Request, title: str, text: st
             os.makedirs("uploads")
             
         mediaID = list()
-        if media == None:
+        if media != None:
             for file in media:
                 file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
                 with open(file_path, "wb") as buffer:
@@ -78,7 +78,7 @@ async def removeEvent(response: Response, request: Request, eventID: str, access
         return {"detail": str(e)}
     
 @router.post("/editEvent/")
-async def editEvent(response: Response, request: Request, eventID: int, title: str, text: str, date: datetime, media: Optional[list[UploadFile]] = None, access_token: str = Cookie(None)):
+async def editEvent(response: Response, request: Request, eventID: int, title: str, text: str, date: datetime, media: Optional[List[UploadFile]] = None, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -90,29 +90,29 @@ async def editEvent(response: Response, request: Request, eventID: int, title: s
         
         if media == None:
             media = list()
-        
-        for current in root.event[eventID].media:
-            if not current in media:
-                if os.path.exists(os.path.join("uploads", str(current)) + ".png"):
-                    os.remove(os.path.join("uploads", str(current)) + ".png")
-                elif os.path.exists(os.path.join("uploads", str(current)) + ".jpg"):
-                    os.remove(os.path.join("uploads", str(current)) + ".jpg")
-                elif os.path.exists(os.path.join("uploads", str(current)) + ".jpeg"):
-                    os.remove(os.path.join("uploads", str(current)) + ".jpeg")
-                elif os.path.exists(os.path.join("uploads", str(current)) + ".MP4"):
-                    os.remove(os.path.join("uploads", str(current)) + ".MP4")
-                else:
-                    raise Exception("File not found in the db.")
-        
-        for file in media:
-            filename, file_extension = os.path.splitext(file)
-            if not filename in root.event[eventID].media:
-                file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
-                with open(file_path, "wb") as buffer:
-                    shutil.copyfileobj(file.file, buffer)
-                
-                root.event[eventID].media.append(root.config["currentMediaID"])
-                root.config["currentMediaID"] += 1
+        else:
+            for current in root.event[eventID].media:
+                if not current in media:
+                    if os.path.exists(os.path.join("uploads", str(current)) + ".png"):
+                        os.remove(os.path.join("uploads", str(current)) + ".png")
+                    elif os.path.exists(os.path.join("uploads", str(current)) + ".jpg"):
+                        os.remove(os.path.join("uploads", str(current)) + ".jpg")
+                    elif os.path.exists(os.path.join("uploads", str(current)) + ".jpeg"):
+                        os.remove(os.path.join("uploads", str(current)) + ".jpeg")
+                    elif os.path.exists(os.path.join("uploads", str(current)) + ".MP4"):
+                        os.remove(os.path.join("uploads", str(current)) + ".MP4")
+                    else:
+                        raise Exception("File not found in the db.")
+            
+            for file in media:
+                filename, file_extension = os.path.splitext(file)
+                if not filename in root.event[eventID].media:
+                    file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
+                    with open(file_path, "wb") as buffer:
+                        shutil.copyfileobj(file.file, buffer)
+                    
+                    root.event[eventID].media.append(root.config["currentMediaID"])
+                    root.config["currentMediaID"] += 1
         
         root.event[eventID].editContent(title, text, media, date)
         
