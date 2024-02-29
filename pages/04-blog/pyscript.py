@@ -183,6 +183,8 @@ class BlogWidget(AbstractWidget):
 
             data = await response.json()
             print(data)
+            self.resetInput(event)
+            self.handleRemoveMediaBtn(event)
         except Exception as error:
             print('Error:', error)
     

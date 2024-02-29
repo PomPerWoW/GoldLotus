@@ -122,3 +122,36 @@
     color: #000;
     background-color: #f0cf95;
 }
+
+.success__box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem;
+    width: 36rem;
+    height: 20rem;
+    background-color: #fff;
+    border-radius: 2rem;
+}
+
+.success__box--header {
+    color: #42ad00;
+}
+
+.success__box--btn,
+.success__box--btn:link,
+.success__box--btn:visited {
+    display: inline-block;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 1.2rem 2.8rem;
+    border-radius: 4rem;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.3s;
+    color: #000;
+    background-color: #f0cf95;
+}

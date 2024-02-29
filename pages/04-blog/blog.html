@@ -44,6 +44,29 @@
         <title>GoldLotus | Community Blog</title>
     </head>
     <body>
+        <div class="hidden background__black--faded" id="error__box">
+            <div class="container">
+                <div class="error__box">
+                    <h2 class="error__box--header heading-tertiary">
+                        Blog Error
+                    </h2>
+                    <p class="error__box--message">Try again.</p>
+                    <a class="error__box--btn" href="/lotusBlog">Ok</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden background__black--faded" id="success__box">
+            <div class="container">
+                <div class="success__box">
+                    <h2 class="success__box--header heading-tertiary">
+                        Blog Created
+                    </h2>
+                    <a class="success__box--btn" href="/lotusBlog">Ok</a>
+                </div>
+            </div>
+        </div>
+
         <!-- Navigation Section -->
 
         {% include "global-component/navbar.html" %}
