@@ -1,6 +1,6 @@
 
 from typing import List
-from fastapi import APIRouter, Request, Response, Cookie, UploadFile
+from fastapi import APIRouter, File, Request, Response, Cookie, UploadFile
 from typing import Optional, List
 from datetime import datetime
 import shutil
@@ -17,7 +17,7 @@ from database import *
 from auth.auth_handler import decodeJWT
 
 @router.post("/createEvent/", tags=["event"])
-async def createEvent(response: Response, request: Request, title: str, text: str, date: datetime, media: Optional[List[UploadFile]] = None, access_token: str = Cookie(None)):
+async def createEvent(response: Response, request: Request, title: str, text: str, date: datetime, media: List[UploadFile] = File(...), access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
