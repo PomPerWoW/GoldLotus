@@ -1,6 +1,6 @@
 
-from fastapi import APIRouter, Request, Response, Cookie, UploadFile
-from typing import Optional, List
+from fastapi import APIRouter, File, Request, Response, Cookie, UploadFile
+from typing import List
 import shutil
 import sys
 import os
@@ -15,7 +15,7 @@ from database import *
 from auth.auth_handler import decodeJWT
 
 @router.post("/createBlog/", tags=["blog"])
-async def createBlog(response: Response, request: Request, title: str, text: str, media: Optional[List[UploadFile]] = None, access_token: str = Cookie(None)):
+async def createBlog(response: Response, request: Request, title: str, text: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -26,14 +26,36 @@ async def createBlog(response: Response, request: Request, title: str, text: str
             os.makedirs("uploads")
             
         mediaID = list()
-        if media != None:
-            for file in media:
-                file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
-                with open(file_path, "wb") as buffer:
-                    shutil.copyfileobj(file.file, buffer)
-                
-                mediaID.append(root.config["currentMediaID"])
-                root.config["currentMediaID"] += 1
+        
+        root.blog[root.config["currentBlogID"]] = Blog(root.config["currentBlogID"], title, userId, text, mediaID)
+        root.user[userId].createBlog(root.config["currentBlogID"])
+        
+        root.config["currentBlogID"] += 1
+        transaction.commit()
+        
+        return root.blog[root.config["currentBlogID"] - 1]
+    except Exception as e:
+        return {"detail": str(e)}
+
+@router.post("/createBlogWithMedia/", tags=["blog"])
+async def createBlogWithMedia(response: Response, request: Request, title: str, text: str, media: List[UploadFile] = File(), access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        if not userId in root.user:
+            raise Exception("author not found")
+        
+        if not os.path.exists("uploads"):
+            os.makedirs("uploads")
+            
+        mediaID = list()
+        for file in media:
+            file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
+            with open(file_path, "wb") as buffer:
+                shutil.copyfileobj(file.file, buffer)
+            
+            mediaID.append(root.config["currentMediaID"])
+            root.config["currentMediaID"] += 1
         
         root.blog[root.config["currentBlogID"]] = Blog(root.config["currentBlogID"], title, userId, text, mediaID)
         root.user[userId].createBlog(root.config["currentBlogID"])
@@ -87,11 +109,9 @@ async def editBlog(response: Response, request: Request, blogID: int, title: str
         if not root.user[userId].editBlog(blogID):
             raise Exception("user has no permission")
         
+        mediaID = list()
         if media == None:
-            media = list()
-        
-        for current in root.blog[blogID].media:
-            if not current in media:
+            for current in root.blog[blogID].media:
                 if os.path.exists(os.path.join("uploads", str(current)) + ".png"):
                     os.remove(os.path.join("uploads", str(current)) + ".png")
                 elif os.path.exists(os.path.join("uploads", str(current)) + ".jpg"):
@@ -102,16 +122,36 @@ async def editBlog(response: Response, request: Request, blogID: int, title: str
                     os.remove(os.path.join("uploads", str(current)) + ".MP4")
                 else:
                     raise Exception("File not found in the db.")
-        
-        for file in media:
-            filename, file_extension = os.path.splitext(file)
-            if not filename in root.blog[blogID].media:
-                file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
-                with open(file_path, "wb") as buffer:
-                    shutil.copyfileobj(file.file, buffer)
+        else:
+            temp = list()
+            for file in media:
+                filename, file_extension = os.path.splitext(file.filename)
+                temp.append(filename)
                 
-                root.blog[blogID].media.append(root.config["currentMediaID"])
-                root.config["currentMediaID"] += 1
+            for current in root.blog[blogID].media:
+                if not current in temp:
+                    if os.path.exists(os.path.join("uploads", str(current)) + ".png"):
+                        os.remove(os.path.join("uploads", str(current)) + ".png")
+                    elif os.path.exists(os.path.join("uploads", str(current)) + ".jpg"):
+                        os.remove(os.path.join("uploads", str(current)) + ".jpg")
+                    elif os.path.exists(os.path.join("uploads", str(current)) + ".jpeg"):
+                        os.remove(os.path.join("uploads", str(current)) + ".jpeg")
+                    elif os.path.exists(os.path.join("uploads", str(current)) + ".MP4"):
+                        os.remove(os.path.join("uploads", str(current)) + ".MP4")
+                    else:
+                        raise Exception("File not found in the db.")
+            
+            for file in media:
+                filename, file_extension = os.path.splitext(file)
+                if not filename in root.blog[blogID].media:
+                    file_path = os.path.join("uploads", str(root.config["currentMediaID"]) + "." + file.filename.split(".")[-1])
+                    with open(file_path, "wb") as buffer:
+                        shutil.copyfileobj(file.file, buffer)
+                    
+                    mediaID.append(root.config["currentMediaID"])
+                    root.config["currentMediaID"] += 1
+                else:
+                    mediaID.append(filename)
         
         root.blog[blogID].editContent(title, text, media)
         
