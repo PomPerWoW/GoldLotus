@@ -85,18 +85,27 @@ class BlogWidget(AbstractWidget):
     
     def deleteElement(self, del_id):
         for i in range(len(self.allFiles)):
-            print(self.allFiles[i])
+            print(self.allFiles[i].name)
+        delIdSplit = del_id.split("-")
+        indexToDelete = int(delIdSplit[2])
+        delElement = document.querySelector(f"#assets-element-{indexToDelete}")
 
-        del_id_split = del_id.split("-")
-        index_to_delete = int(del_id_split[2])
-        del_element = document.querySelector(f"#assets-element-{index_to_delete}")
-
-        if del_element:
-            print(del_element.textContent)
-            del_element.parentNode.removeChild(del_element)
-
+        if delElement:
+            delIndexContent = delElement.textContent
+            delIndexContentSplit = delIndexContent.split(".")
+            delTextContent = delIndexContentSplit[0]
+            
+            for i, v in enumerate(self.allFiles):
+                fileName = self.allFiles[i].name.split(".")
+                checkFileName = fileName[0]
+                if (checkFileName == delTextContent):
+                    del self.allFiles[i]
+            delElement.parentNode.removeChild(delElement)
+        
+        if len(self.allFiles) == 0:
+            print("0")
         for i in range(len(self.allFiles)):
-            print(self.allFiles[i])
+            print(self.allFiles[i].name)
     
     def displayFile(self, file):
         self.listSection.style.display = "flex"
