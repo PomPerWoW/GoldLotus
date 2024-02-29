@@ -111,7 +111,7 @@ class BlogWidget(AbstractWidget):
             delTextContent = delIndexContentSplit[0]
             
             for i, v in enumerate(self.allFiles):
-                fileName = v.split(".")
+                fileName = v.name.split(".")
                 checkFileName = fileName[0]
                 if (checkFileName == delTextContent):
                     del self.allFiles[i]
@@ -167,6 +167,7 @@ class BlogWidget(AbstractWidget):
     async def uploadFile(self, event):
         event.preventDefault()
         form_data = window.FormData.new()
+        form_data.append('media', None)
 
         for i in range(len(self.allFiles)):
             form_data.append('media', self.allFiles[i])

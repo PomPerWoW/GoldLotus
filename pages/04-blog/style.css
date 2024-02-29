@@ -218,6 +218,7 @@
 }
 
 .blog__create-post--assets-list .file-name {
+    max-width: 20rem;
     font-size: 1.2rem;
 }
 
