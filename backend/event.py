@@ -17,7 +17,30 @@ from database import *
 from auth.auth_handler import decodeJWT
 
 @router.post("/createEvent/", tags=["event"])
-async def createEvent(response: Response, request: Request, title: str, text: str, date: datetime, media: List[UploadFile] = File(...), access_token: str = Cookie(None)):
+async def createEvent(response: Response, request: Request, title: str, text: str, date: datetime, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        if not userId in root.user:
+            raise Exception("author not found")
+        
+        if not os.path.exists("uploads"):
+            os.makedirs("uploads")
+            
+        mediaID = list()
+        
+        root.event[root.config["currentEventID"]] = Event(root.config["currentEventID"], title, userId, text, mediaID, date)
+        root.user[userId].createEvent(root.config["currentEventID"])
+        
+        root.config["currentEventID"] += 1
+        transaction.commit()
+        
+        return root.eventID[root.config["currentEventID"] - 1]
+    except Exception as e:
+        return {"detail": str(e)}
+
+@router.post("/createEventWithMedia/", tags=["event"])
+async def createEventWithMedia(response: Response, request: Request, title: str, text: str, date: datetime, media: List[UploadFile] = File(...), access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
