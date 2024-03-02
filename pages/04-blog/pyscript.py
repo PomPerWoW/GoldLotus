@@ -37,6 +37,10 @@ class BlogWidget(AbstractWidget):
         self.mediaFiles = document.querySelector("#media")
         self.blogCreateBtn = document.querySelector("#submit__btn")
         self.resetBtn = document.querySelector("#reset__btn")
+        self.successBox = document.querySelector("#success__box")
+        self.errorBox = document.querySelector("#error__box")
+        self.statusBox1 = document.querySelector("#error__box--btn")
+        self.statusBox2 = document.querySelector("#success__box--btn")
         
         self.addMediaBtn.onclick = lambda e: self.handleAddMediaBtn(e)
         self.removeMediaBtn.onclick = lambda e: self.handleRemoveMediaBtn(e)
@@ -47,17 +51,27 @@ class BlogWidget(AbstractWidget):
         self.dropArea.ondrop = lambda e: self.handleDrop(e)
         self.blogCreateBtn.onclick = self.uploadFile
         self.resetBtn.onclick = self.resetInput
+        self.statusBox1.onclick = lambda e: self.displayStatus(e)
+        self.statusBox2.onclick = lambda e: self.displayStatus(e)
     
     def handleAddMediaBtn(self, event):
         event.preventDefault()
-        self.resetInput(event)
+        document.querySelector("#media").value = ""
+        self.allFiles = []
+        self.counter = 0
+        self.listSection.style.display = "none"
+        self.assetsList.innerHTML = ""
         self.addMediaBtn.style.display = "none"
         self.removeMediaBtn.style.display = "block"
         self.createPostAssets.style.display = "flex"
     
     def handleRemoveMediaBtn(self, event):
         event.preventDefault()
-        self.resetInput(event)
+        document.querySelector("#media").value = ""
+        self.allFiles = []
+        self.counter = 0
+        self.listSection.style.display = "none"
+        self.assetsList.innerHTML = ""
         self.addMediaBtn.style.display = "block"
         self.removeMediaBtn.style.display = "none"
         self.createPostAssets.style.display = "none"
@@ -106,16 +120,10 @@ class BlogWidget(AbstractWidget):
         delElement = document.querySelector(f"#assets-element-{indexToDelete}")
 
         if delElement:
-            delIndexContent = delElement.textContent
-            delIndexContentSplit = delIndexContent.split(".")
-            delTextContent = delIndexContentSplit[0]
-            
-            for i, v in enumerate(self.allFiles):
-                fileName = v.name.split(".")
-                checkFileName = fileName[0]
-                if (checkFileName == delTextContent):
-                    del self.allFiles[i]
+            self.allFiles[indexToDelete] = 0
             delElement.parentNode.removeChild(delElement)
+            for i, v in enumerate(self.allFiles):
+                print(i, v, end="\n")
         
         if len(self.allFiles) == 0:
             self.listSection.style.display = "none"
@@ -163,9 +171,20 @@ class BlogWidget(AbstractWidget):
         
         self.assetsList.appendChild(assetsElement)
         self.counter += 1
+    
+    def updateFile(self):
+        self.tempFiles = []
+        for i in range(len(self.allFiles)):
+            if self.allFiles[i] != 0:
+                self.tempFiles.append(self.allFiles[i])
+        self.allFiles = self.tempFiles
+        for i, v in enumerate(self.allFiles):
+            print(i, v, end="\n")
+        del self.tempFiles
 
     async def uploadFile(self, event):
         event.preventDefault()
+        self.updateFile()
         form_data = window.FormData.new()
 
         for i in range(len(self.allFiles)):
@@ -175,16 +194,28 @@ class BlogWidget(AbstractWidget):
         text = document.querySelector("#text").value
 
         try:
+            urlInput = ""
+            if len(self.allFiles) == 0:
+                urlInput = f"/createBlog/?title={title}&text={text}"
+            else:
+                urlInput = f"/createBlogWithMedia/?title={title}&text={text}"
+            
             response = await pyfetch(
-                url=f"/createBlog/?title={title}&text={text}",
+                url=urlInput,
                 method='POST',
                 body=form_data,
             )
 
-            data = await response.json()
-            print(data)
-            self.resetInput(event)
-            self.handleRemoveMediaBtn(event)
+            if response.ok:
+                data = await response.json()
+                print(data)
+                detail_value = data.get('detail')
+                if detail_value is not None and detail_value:
+                    self.errorBox.classList.remove("hidden")
+                else:
+                    self.successBox.classList.remove("hidden")
+                    self.resetInput(event)
+                    self.handleRemoveMediaBtn(event)
         except Exception as error:
             print('Error:', error)
     
@@ -197,6 +228,11 @@ class BlogWidget(AbstractWidget):
         self.counter = 0
         self.listSection.style.display = "none"
         self.assetsList.innerHTML = ""
+    
+    def displayStatus(self, event):
+        event.preventDefault()
+        self.successBox.classList.add("hidden")
+        self.errorBox.classList.add("hidden")
     
     def printFileDetails(self, file):
         print(f"File Name: {file.name}")
