@@ -4,7 +4,6 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from blog import router as blog_router
 from account_management import router as accounte_management_router
-from account_management import *
 from media_response import router as media_response_router
 
 app = FastAPI()
@@ -47,6 +46,7 @@ app.mount("/blog-static",
 
 app.mount("/setpassword-static",
           StaticFiles(directory="../pages/05-setpassword"), name="setpassword-static")
+
 # =============================================================================
 
 # Templates
