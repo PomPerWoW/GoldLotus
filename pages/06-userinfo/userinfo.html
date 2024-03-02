@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- Shortcut Icon -->
+        <link
+            rel="shortcut icon"
+            type="image/png"
+            href="../../00-assets/icons/logo.svg"
+        />
+
+        <!-- Global CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/general.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/global-style.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/queries.css') }}"
+        />
+
+        <!-- Local CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('userinfo-static', path='/style.css') }}"
+        />
+
+        <title>GoldLotus</title>
+    </head>
+    <body>
+        <!-- Navigation Section -->
+
+        {% include "global-component/navbar.html" %}
+
+        <!-- UserInfo Section -->
+        <div class="container">
+            <div class="userinfo">
+                <div class="userinfo__info">
+                    <div class="userinfo__info--user-header">
+                        <img
+                            class="userinfo__info--img"
+                            src="{{ url_for('assets-static', path='/images/monk-cartoon-1.png') }}"
+                            alt="buddha img"
+                        />
+                        <div>
+                            <div class="userinfo__info--user-id">
+                                <p>ID: 0123402021</p>
+                            </div>
+                            <div class="userinfo__info--user-name">
+                                <p>Thatchapon Chatthanes</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="userinfo__info--header">
+                        <p>Personal info</p>
+                    </div>
+                </div>
+                <div class="userinfo__blog">
+                    <div class="userinfo__blog--header">My blog</div>
+                </div>
+                <div class="userinfo__event">
+                    <div class="userinfo__event--header">My event</div>
+                </div>
+            </div>
+        </div>
+
+        <script
+            src="https://kit.fontawesome.com/1c7eef805a.js"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>
