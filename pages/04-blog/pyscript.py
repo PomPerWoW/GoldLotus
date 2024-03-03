@@ -124,9 +124,9 @@ class BlogWidget(AbstractWidget):
             delElement.parentNode.removeChild(delElement)
             for i, v in enumerate(self.allFiles):
                 print(i, v, end="\n")
-        
-        if len(self.allFiles) == 0:
-            self.listSection.style.display = "none"
+                
+        # self.listSection.style.display = "flex"
+                
     
     def displayFile(self, file):
         self.listSection.style.display = "flex"
@@ -240,6 +240,35 @@ class BlogWidget(AbstractWidget):
         print(f"File Type: {file.type}")
         print(f"Last Modified: {file.lastModified}")
 
+class LoadBlogWidget(AbstractWidget):
+    def __init__(self, element_id):
+        super().__init__(element_id)
+    
+    def initializeWidget(self):
+        js.Promise.resolve(self.onLoad()).catch(lambda e: print(e))
+        
+    async def onLoad(self):
+        self.data = await self.getUserInfo()
+        print(self.data)
+        
+    async def getUserInfo(self):
+        try:
+            response = await pyfetch(
+                url="/user/info", 
+                method='GET', 
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+                return data
+        except Exception as e:
+            print(e)
+    
+    def loadBlog(self):
+        pass
+
 if __name__ == "__main__":
     w = BlogWidget("blog")
     w.initializeWidget()
+    w2 = LoadBlogWidget("blog")
+    w2.initializeWidget()

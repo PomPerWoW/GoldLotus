@@ -28,6 +28,16 @@ class UserWidget(AbstractWidget):
         self.navBoxGuest = document.querySelector("#nav__box--guest")
         self.navBoxUser = document.querySelector("#nav__box--user")
         asyncio.ensure_future(self.getUserInfo())
+        js.Promise.resolve(self.navBoxStatus()).catch(lambda e: print(e))
+    
+    async def navBoxStatus(self):
+        self.data = await self.getUserInfo()
+        if self.data.get('username'):
+            self.navBoxGuest.classList.add("hidden")
+            self.navBoxUser.classList.remove("hidden")
+        else:
+            self.navBoxGuest.classList.remove("hidden")
+            self.navBoxUser.classList.add("hidden")
         
     async def getUserInfo(self):
         try:
@@ -39,13 +49,7 @@ class UserWidget(AbstractWidget):
 
             if response.ok:
                 data = await response.json()
-                print(data)
-                if data.get('username'):
-                    self.navBoxGuest.classList.add("hidden")
-                    self.navBoxUser.classList.remove("hidden")
-                else:
-                    self.navBoxGuest.classList.remove("hidden")
-                    self.navBoxUser.classList.add("hidden")
+                return data
         except Exception as e:
             print(e)
 

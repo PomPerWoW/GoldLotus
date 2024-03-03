@@ -47,6 +47,9 @@ app.mount("/blog-static",
 app.mount("/setpassword-static",
           StaticFiles(directory="../pages/05-setpassword"), name="setpassword-static")
 
+app.mount("/userinfo-static", 
+          StaticFiles(directory="../pages/06-userinfo"), name="userinfo-static")
+
 # =============================================================================
 
 # Templates
@@ -75,5 +78,9 @@ async def blogPage(request: Request):
 @app.get("/setpassword/{token}", response_class=HTMLResponse, tags=["website"])
 async def resetPasswordPage(request: Request, token: str):
     return pages.TemplateResponse("05-setpassword/setpassword.html", {"request": request, "token": token})
-    
+
+@app.get("/userInfo", response_class=HTMLResponse, tags=["website"])
+async def userInfoPage(request: Request):
+    return pages.TemplateResponse("06-userinfo/userinfo.html", {"request": request})
+
 # =============================================================================
