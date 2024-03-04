@@ -49,16 +49,19 @@ class SignUpWidget(AbstractWidget):
             )
             if response.ok:
                 data = await response.json()
-                if data['detail'] == "email already exist":
-                    self.hidden_element_email.classList.remove("hidden")
-                elif data['detail'] == "username is already taken":
-                    self.hidden_element_username.classList.remove("hidden")
-                elif 'detail' in data:
-                    self.hidden_element_default.classList.remove("hidden")
+                    
+                if isinstance(data, dict):
+                    detail_value = data.get('detail')
+                    if detail_value is not None and detail_value == "email already exist":
+                        self.hidden_element_email.classList.remove("hidden")
+                    elif detail_value is not None and detail_value == "username is already taken":
+                        self.hidden_element_username.classList.remove("hidden")
+                    elif detail_value is not None and detail_value:
+                        self.hidden_element_default.classList.remove("hidden")
                 else:
                     window.location.href = "/"
-        except Exception as e:
-            print(e)
+        except Exception as error:
+            print('Error:', error)
 
 if __name__ == "__main__":
     w = SignUpWidget("signup__form")
