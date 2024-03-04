@@ -218,3 +218,7 @@ async def getBlog(response: Response, request: Request, blogID: int):
         return root.blog[blogID]
     except Exception as e:
         return {"detail": str(e)}
+    
+@router.get("/getCurrentBlogID/", tags=["blog"])
+async def getCurrentBlogID(response: Response, request: Request):
+    return {"currentBlogID": root.config["currentBlogID"]}
