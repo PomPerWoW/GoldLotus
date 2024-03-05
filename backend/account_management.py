@@ -123,7 +123,16 @@ async def getUserInfo(response: Response, request: Request, access_token: str = 
         return {"userID": user.userID, "username": user.username, "email": user.email, "blog": user.blog, "event": user.event, "follower": user.follower, "following": user.following}
     except Exception as e:
         return {"detail": str(e)}
-    
+
+@router.get("/user/getUserฺ", tags=["User"])
+async def getUserฺ(response: Response, request: Request, userId: str):
+    try:
+        user = root.user[userId]
+        
+        return {"userID": user.userID, "username": user.username, "email": user.email, "blog": user.blog, "event": user.event, "follower": user.follower, "following": user.following}
+    except Exception as e:
+        return {"detail": str(e)}
+
 @router.get("/user/follow", tags=["User"])
 async def follow(response: Response, request: Request, followingID: str, access_token: str = Cookie(None)):
     try:
