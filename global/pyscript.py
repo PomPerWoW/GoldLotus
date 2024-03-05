@@ -29,6 +29,13 @@ class UserWidget(AbstractWidget):
         self.navBoxUser = document.querySelector("#nav__box--user")
         asyncio.ensure_future(self.getUserInfo())
         js.Promise.resolve(self.navBoxStatus()).catch(lambda e: print(e))
+        self.preloader()
+    
+    def preloader(self):
+        self.loader = document.querySelector("#loader")
+        
+        if self.loader:
+            self.loader.classList.add("hidden")
     
     async def navBoxStatus(self):
         self.data = await self.getUserInfo()

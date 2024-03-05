@@ -61,23 +61,23 @@ body {
 .loader__dots span {
     display: block;
     float: left;
-    width: 16px;
-    height: 16px;
-    margin-left: 16px;
-    filter: blur(4px);
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-left: 1.6rem;
+    filter: blur(0.4rem);
     background: #000;
     border-radius: 50%;
 }
 
 @keyframes dot {
     50% {
-        transform: translateX(96px);
+        transform: translateX(9.6rem);
     }
 }
 
 @keyframes dots {
     50% {
-        transform: translateX(-31px);
+        transform: translateX(-3.1rem);
     }
 }
 
