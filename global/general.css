@@ -11,6 +11,7 @@ html {
 }
 
 body {
+    background-color: white;
     font-family: "Inter", sans-serif;
     font-weight: 400;
     font-size: 1.6rem;
@@ -83,8 +84,12 @@ body {
 
 /* Navigation Section */
 .navigation {
+    background-color: #FFF9E8;
+    padding: 2.8rem 0;
     border-bottom: 3px solid #d8b778;
+    position: fixed;
     width: 100%;
+    z-index: 9999;
 }
 
 .navigation__list {
@@ -92,6 +97,7 @@ body {
     grid-template-columns: 2fr 1fr 2fr;
     justify-content: center;
     align-items: center;
+    list-style: none;
 }
 
 .navigation__left,
@@ -109,18 +115,23 @@ body {
     width: 15rem;
     padding: 3.6rem 2.5rem;
     border-bottom: 3px solid transparent;
-    color: #000;
+    cursor: pointer;
+    padding: 3.6rem 2.5rem;
+    border-bottom: 3px solid transparent;
+    color: #4D4637;
     text-decoration: none;
-    /* transition: padding 0.2s; */
+    transition: background 0.5s ease, padding 0.5s ease, border-bottom 0.5s ease;
 }
 
 .navigation a:hover {
     border-bottom: 3px solid #2e3113;
     background-color: #f0cf95;
-    padding: 3.6rem 2.5rem;
+    padding: 3.3rem 2.5rem;
 }
 
 .navigation__list img {
     margin: 0 auto;
     height: 100%;
 }
+
+

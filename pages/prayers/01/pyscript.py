@@ -50,6 +50,6 @@ def track_timestamp():
             element.style.color = "red"
         else:
             element = document.getElementById(element_id)
-            element.style.color = "black"
+            element.style.color = "#4D4637"
     
 js.setInterval(create_proxy(track_timestamp), 500)

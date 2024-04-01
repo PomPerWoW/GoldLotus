@@ -31,6 +31,8 @@
             href="{{ url_for('main-static', path='/style.css') }}"
         />
 
+        
+
         <title>GoldLotus</title>
     </head>
     <body>
@@ -45,32 +47,46 @@
                     <span></span>
                 </div>
             </div>
-        </div>
+        </nav>
+    </div>
 
-        <!-- {% include "global-component/loader.html" %} -->
+    {% include "global-component/loader.html" %}
 
-        <!-- Navigation Section -->
+    <!-- Navigation Section -->
 
-        {% include "global-component/navbar.html" %}
+    {% include "global-component/navbar.html" %}
+
 
         <!-- Hero Section -->
-        <div class="container">
-            <section class="hero">
-                <div class="hero__text">
-                    <h1 class="hero__text--header heading-primary">
-                        Welcome to GoldLotus
-                    </h1>
-                    <p class="hero__text--message">
-                        where seekers come to experience the profound teachings
-                        of Buddha.
-                    </p>
+        <div class="gradient-bgdown">
+            <div class="container">
+                <section class="hero">
+                    <div class="hero__text">
+                        <h1 class="hero__text--header heading-primary">
+                            Welcome to GoldLotus
+                        </h1>
+                        <p class="hero__text--message">
+                            where seekers come to experience the profound teachings
+                            of Buddha.
+                        </p>
+                    </div>
+                    <div class="hero__slide ">
+                        <div class="slider">
+                            <img
+                                class="hero__image"
+                                src="{{ url_for('assets-static', path='/images/buddha-statue-1.jpg') }}"
+                                alt="logo"
+                            />
+                            <img
+                                class="hero__image"
+                                src="{{ url_for('assets-static', path='/images/buddha-statue-2.jpg') }}"
+                                alt="logo"
+                            />
+                        </div>
+                    </div>
                 </div>
-                <img
-                    class="hero__image"
-                    src="{{ url_for('assets-static', path='/images/buddha-statue-1.jpg') }}"
-                    alt="logo"
-                />
-            </section>
+                </section>
+            </div>
         </div>
 
         <!-- Info Section -->
@@ -119,10 +135,131 @@
                 </div>
             </section>
         </div>
+        
+        <!-- event section -->
+        <section class="event">
+            <div class="evetnblock">
+                <img
+                class="event_image"
+                src="{{ url_for('assets-static', path='/images/event1.jpg') }}"
+                alt="event"
+                />
+            </div> 
+            <div class="eventblock">
+                <div class="event_coloumn">
+                    <h2>Next Event, Makha Bucha Day</h2>
+                    <br>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Suspendisse eget dui lectus. Phasellus quis orci at eros 
+                        euismod suscipit vitae sed lacus. Curabitur eu tincidunt mauris, 
+                        eleifend feugiat lacus. Morbi vel ipsum elit. Maecenas et eros velit. 
+                        Ut sit amet tristique sapien. Nulla et lectus eu velit hendrerit mollis 
+                        in quis arcu. Aenean accumsan lacus massa, </p>
+                    <br>
+                    <div class="event_btn">
+                    <button type="seemore" class="btn">see more</button>
+                    </div>
+                </div>
+            </div>    
+        </section>
+        <div class="gradient-bgup"></div>
+        <!-- community blog section -->
+        <section class="show_blog">
+            <div class="text_">
+                <h2>Community Blog</h2>
+            </div>
+            <div class="blog_block">
+                <div class="blog_message">
+                    
+                    <div class="message">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                            Suspendisse eget dui lectus Phasellus quis orci at eros 
+                            euismod suscipit vitae sed lacus.</p>
+                    </div>
+                    <div class="blog_profile">
+                        <div class="name">
+                            <h3>Jordan potter</h3>
+                            <p>description</p>
+                            
+                        </div>
+                        <img
+                            class="blog_image1"
+                            src="{{ url_for('assets-static', path='/images/profile-1.jpg') }}"
+                            alt="commu-profile"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="blog_block">
+                <div class="blog_message">
+                    
+                    <div class="message">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                            Suspendisse eget dui lectus Phasellus quis orci at eros 
+                            euismod suscipit vitae sed lacus.</p>
+                    </div>
+                    <div class="blog_profile">
+                        <div class="name">
+                            <h3>Muay Ginger</h3>
+                            <p>description</p>
+                            
+                        </div>
+                        <img
+                            class="blog_image1"
+                            src="{{ url_for('assets-static', path='/images/profile-1.jpg') }}"
+                            alt="commu-profile"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="invite">
+                <div class="join-left">
+                    <div class="join_head"> 
+                        <h4>Join our </h4>
+                        <h4>community Blog</h4>
+                        <br>
+                        <p>Explore serenity in our Buddhism blog, where ancient wisdom meets modern seekers. Join us on the path to mindfulness, compassion, and enlightenment.</p>
+                        
+                    </div>
+                    <button type="join" class="join-btn">click to join</button>
+                </div>
+                <div class="join-right">
+                <img
+                    class="group-pic"
+                    src="{{ url_for('assets-static', path='/images/commupic1.png') }}"
+                    alt="group-commu"
+                />
+                </div>
+            </div>
+        </section>
+        
+        <section class="calendar">
+            <div class="container">
+                <h2>Buddhism Calendar</h2>
+                <div class="calendar-block">
+                </div>
+            </div>
 
+        </section>
+        <section class="footer">
+            <div class="container">
+                <div class="head-footer">
+                    <h4>GoldLotus</h4>
+                    <img
+                        class="img-footer"
+                        src="{{ url_for('assets-static', path='/icons/logo.svg') }}"
+                        alt="logo"
+                    />
+                </div>
+                <p>tel: 0812345678 Email:GoldLotus@gmail.com</p>
+            </div>
+
+        </section>
         <script
             src="https://kit.fontawesome.com/1c7eef805a.js"
             crossorigin="anonymous"
-        ></script>
+        >
+            
+        </script>
     </body>
 </html>
