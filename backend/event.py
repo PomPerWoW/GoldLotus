@@ -70,7 +70,7 @@ async def createEventWithMedia(response: Response, request: Request, title: str,
     except Exception as e:
         return {"detail": str(e)}
 
-@router.post("/removeEvent/")
+@router.post("/removeEvent/", tags=["event"])
 async def removeEvent(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -100,7 +100,7 @@ async def removeEvent(response: Response, request: Request, eventID: str, access
     except Exception as e:
         return {"detail": str(e)}
     
-@router.post("/editEvent/")
+@router.post("/editEvent/", tags=["event"])
 async def editEvent(response: Response, request: Request, eventID: int, title: str, text: str, date: datetime, media: Optional[List[UploadFile]] = None, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -161,7 +161,7 @@ async def editEvent(response: Response, request: Request, eventID: int, title: s
     except Exception as e:
         return {"detail": str(e)}
 
-@router.post("/addReplyEvent/")
+@router.post("/addReplyEvent/", tags=["event"])
 async def addReplyEvent(response: Response, request: Request, eventID: int, text: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -173,7 +173,7 @@ async def addReplyEvent(response: Response, request: Request, eventID: int, text
     except Exception as e:
         return {"detail": str(e)}
     
-@router.post("/removeReplyEvent/")
+@router.post("/removeReplyEvent/", tags=["event"])
 async def addReplyEvent(response: Response, request: Request, eventID: int, replyIndex: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -186,7 +186,7 @@ async def addReplyEvent(response: Response, request: Request, eventID: int, repl
     except Exception as e:
         return {"detail": str(e)}
 
-@router.post("/addAttending/")
+@router.post("/addAttending/", tags=["event"])
 async def addAttending(response: Response, request: Request, eventID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -200,7 +200,7 @@ async def addAttending(response: Response, request: Request, eventID: int, acces
     except Exception as e:
         return {"detail": str(e)}
     
-@router.post("/removeAttending/")
+@router.post("/removeAttending/", tags=["event"])
 async def removeAttending(response: Response, request: Request, eventID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -214,7 +214,7 @@ async def removeAttending(response: Response, request: Request, eventID: int, ac
     except Exception as e:
         return {"detail": str(e)}
 
-@router.post("/addMaybe/")
+@router.post("/addMaybe/", tags=["event"])
 async def addMaybe(response: Response, request: Request, eventID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -228,7 +228,7 @@ async def addMaybe(response: Response, request: Request, eventID: int, access_to
     except Exception as e:
         return {"detail": str(e)}
     
-@router.post("/removeMaybe/")
+@router.post("/removeMaybe/", tags=["event"])
 async def removeMaybe(response: Response, request: Request, eventID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -242,7 +242,7 @@ async def removeMaybe(response: Response, request: Request, eventID: int, access
     except Exception as e:
         return {"detail": str(e)}
 
-@router.post("/addNotAttending/")
+@router.post("/addNotAttending/", tags=["event"])
 async def addNotAttending(response: Response, request: Request, eventID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -256,7 +256,7 @@ async def addNotAttending(response: Response, request: Request, eventID: int, ac
     except Exception as e:
         return {"detail": str(e)}
     
-@router.post("/removeNotAttending/")
+@router.post("/removeNotAttending/", tags=["event"])
 async def removeNotAttending(response: Response, request: Request, eventID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -269,3 +269,17 @@ async def removeNotAttending(response: Response, request: Request, eventID: int,
         transaction.commit()
     except Exception as e:
         return {"detail": str(e)}
+    
+@router.get("/getEvent/", tags=["event"])
+async def getEvent(response: Response, request: Request, eventID: int):
+    try:
+        if not eventID in root.event:
+            raise Exception("event not found")
+        
+        return root.event[eventID]
+    except Exception as e:
+        return {"detail": str(e)}
+    
+@router.get("/getCurrentEventID/", tags=["event"])
+async def getCurrentEventID(response: Response, request: Request):
+    return {"currentEventID": root.config["currentEventID"]}

@@ -82,7 +82,7 @@ async def resetPassword(response: Response, request: Request, email: str):
         }
         token = jwt.encode(payload, SECRET_KEY, ALGORITHM)
         
-        body = f"click this link to reset your password: \nhttp://127.0.0.1:8000/user/resetPwd/{token}\n\nThis link will be valid only for 10 mins."
+        body = f"click this link to reset your password: \nhttp://127.0.0.1:8000/setpassword/{token}\n\nThis link will be valid only for 10 mins."
         email_body = MIMEText(body, "plain")
         
         message = MIMEMultipart()
@@ -123,7 +123,16 @@ async def getUserInfo(response: Response, request: Request, access_token: str = 
         return {"userID": user.userID, "username": user.username, "email": user.email, "blog": user.blog, "event": user.event, "follower": user.follower, "following": user.following}
     except Exception as e:
         return {"detail": str(e)}
-    
+
+@router.get("/user/getUserฺ", tags=["User"])
+async def getUserฺ(response: Response, request: Request, userId: str):
+    try:
+        user = root.user[userId]
+        
+        return {"userID": user.userID, "username": user.username, "email": user.email, "blog": user.blog, "event": user.event, "follower": user.follower, "following": user.following}
+    except Exception as e:
+        return {"detail": str(e)}
+
 @router.get("/user/follow", tags=["User"])
 async def follow(response: Response, request: Request, followingID: str, access_token: str = Cookie(None)):
     try:
