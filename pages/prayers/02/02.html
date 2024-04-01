@@ -12,7 +12,7 @@
 
 <body>
     <audio id="myAudio" controls>
-        <source src="02.mp3" type="audio/mpeg">
+        <source src="{{ url_for('prayers-static', path='/02/02.mp3') }}" type="audio/mpeg">
     </audio>
     <div>บทสวดขอขมาพระรัตนตรัย</div>
     <div id="line1">
@@ -37,7 +37,7 @@
         ด้วยกายก็ดี ด้วยวาจาก็ดี ด้วยใจก็ดี กรรมน่าติเตียนอันใดที่ข้าพเจ้ากระทำแล้ว ในพระสงฆ์, ขอพระสงฆ์
         จงงดซึ่งโทษล่วงเกินอันนั้น เพื่อสำรวมระวัง ในพระสงฆ์ในกาลต่อไป
     </div>
-    <script type="py" src="02.py"></script>
+    <script type="py" src="{{ url_for('prayers-static', path='/02/pyscript.py') }}"></script>
 </body>
 
 </html>

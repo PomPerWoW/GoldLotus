@@ -12,7 +12,7 @@
 
 <body>
     <audio id="myAudio" controls>
-        <source src="01.mp3" type="audio/mpeg">
+        <source src="{{ url_for('prayers-static', path='/01/01.mp3') }}" type="audio/mpeg">
     </audio>
     <div>บทสวดนมัสการบูชาพระรัตนตรัย</div>
     <div id="line1">
@@ -33,7 +33,7 @@
         นะโม ตัสสะ ภะคะวะโต อะระหะโต สัมมาสัมพุทธัสสะ
     </div>
 
-    <script type="py" src="01.py"></script>
+    <script type="py" src="{{ url_for('prayers-static', path='/01/pyscript.py') }}"></script>
 </body>
 
 </html>
