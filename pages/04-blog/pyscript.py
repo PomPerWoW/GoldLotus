@@ -246,10 +246,13 @@ class LoadBlogWidget(AbstractWidget):
     
     def initializeWidget(self):
         js.Promise.resolve(self.onLoad()).catch(lambda e: print(e))
-        
+
     async def onLoad(self):
         self.data = await self.getUserInfo()
+        self.blogData = await self.loadBlog()
         print(self.data)
+        print(self.blogData)
+        self.createBlog(self.blogData)
         
     async def getUserInfo(self):
         try:
@@ -264,11 +267,106 @@ class LoadBlogWidget(AbstractWidget):
         except Exception as e:
             print(e)
     
-    def loadBlog(self):
-        pass
+    async def loadBlog(self):
+        try:
+            response = await pyfetch(
+                url="/getBlog/?blogID=1", 
+                method='GET', 
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+                return data
+        except Exception as e:
+            print(e)
+    
+    def checkAssets(self, blogPostAssets, assetsList):
+        for i in range(len(assetsList)):
+            print(assetsList[i])
+    
+    def createBlog(self, blogData):
+        blogPost = document.createElement("div")
+        blogPost.classList.add("blog__post")
+
+        blogPostHeader = document.createElement("div")
+        blogPostHeader.classList.add("blog__post--header")
+        
+        blogPostUsername = document.createElement("div")
+        blogPostUsername.classList.add("blog__post--username")    
+        blogPostUsername.innerHTML = f"{blogData['author']}"
+
+        blogPostPosted = document.createElement("div")
+        blogPostPosted.classList.add("blog__post--posted")
+        blogPostPosted.innerHTML = f"Posted by {blogData['author']}"
+
+        blogPostTimestamp = document.createElement("div")
+        blogPostTimestamp.classList.add("blog__post--timestamp")
+        blogPostTimestamp.innerHTML = f"{blogData['timestamp']}"
+
+        blogPostHeader.appendChild(blogPostUsername)
+        blogPostHeader.appendChild(blogPostPosted)
+        blogPostHeader.appendChild(blogPostTimestamp)
+
+        blogPostField = document.createElement("div")
+        blogPostField.classList.add("blog__post--field")
+
+        blogPostTitle = document.createElement("div")
+        blogPostTitle.classList.add("blog__post--title")
+
+        blogPostTitleH3 = document.createElement("h3")
+        blogPostTitleH3.innerHTML = f"{blogData['title']}"
+
+        blogPostTitle.appendChild(blogPostTitleH3)
+
+        blogPostMessage = document.createElement("div")
+        blogPostMessage.classList.add("blog__post--message")
+
+        blogPostMessageP = document.createElement("p")
+        blogPostMessageP.innerHTML = f"{blogData['text']}"
+
+        blogPostMessage.appendChild(blogPostMessageP)
+
+        blogPostAssets = document.createElement("div")
+        blogPostAssets.classList.add("blog__post--assets")
+
+        self.checkAssets()
+
+        blogPostField.appendChild(blogPostTitle)
+        blogPostField.appendChild(blogPostMessage)
+        blogPostField.appendChild(blogPostAssets)
+
+        blogPostFooter = document.createElement("div")
+        blogPostFooter.classList.add("blog__post--footer")
+
+        blogPostLike = document.createElement("div")
+        blogPostLike.classList.add("blog__post--like")
+
+        iconLike = document.createElement("i")
+        iconLike.classList.add("fa-solid", "fa-heart")
+
+        blogPostLike.appendChild(iconLike)
+        blogPostLike.innerHTML = "61.9 likes"
+
+        blogPostComment = document.createElement("div")
+        blogPostComment.classList.add("blog__post--comment")
+
+        iconComment = document.createElement("i")
+        iconComment.classList.add("fa-solid", "fa-comment")
+
+        blogPostComment.appendChild(iconComment)
+        blogPostComment.innerHTML = "21 comments"
+
+        blogPostFooter.appendChild(blogPostLike)
+        blogPostFooter.appendChild(blogPostComment)
+
+        blogPost.appendChild(blogPostHeader)
+        blogPost.appendChild(blogPostField)
+        blogPost.appendChild(blogPostFooter)
+        
+        self.element.appendChild(blogPost)
 
 if __name__ == "__main__":
     w = BlogWidget("blog")
     w.initializeWidget()
-    w2 = LoadBlogWidget("blog")
+    w2 = LoadBlogWidget("blog__post--box")
     w2.initializeWidget()
