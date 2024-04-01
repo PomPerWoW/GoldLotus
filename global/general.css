@@ -27,7 +27,14 @@ body {
     background-color: #fff;
 }
 
-.loader__box {
+.element__loader {
+    width: 20rem;
+    height: 20rem;
+    background-color: #fff;
+}
+
+.loader__box,
+.element__loader {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -38,7 +45,8 @@ body {
     filter: contrast(20);
 }
 
-.loader__dot {
+.loader__dot,
+.element__loader__dots {
     position: absolute;
     width: 1.6rem;
     height: 1.6rem;
@@ -51,14 +59,16 @@ body {
     animation: dot 2.8s infinite;
 }
 
-.loader__dots {
+.loader__dots,
+.element__loader__dots {
     transform: translateX(0);
     margin-top: 1.2rem;
     margin-left: 3.1rem;
     animation: dots 2.8s infinite;
 }
 
-.loader__dots span {
+.loader__dots,
+.element__loader__dots span {
     display: block;
     float: left;
     width: 1.6rem;

@@ -83,7 +83,7 @@
 }
 
 .hidden {
-    display: None;
+    display: None !important;
 }
 
 .error__box {

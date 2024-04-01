@@ -3,6 +3,7 @@ from pyscript import window, document
 from pyodide.ffi import create_proxy
 from pyodide.http import pyfetch
 from abc import ABC, abstractmethod
+import os
 
 class AbstractWidget(ABC):
     def __init__(self, element_id):
@@ -246,13 +247,28 @@ class LoadBlogWidget(AbstractWidget):
     
     def initializeWidget(self):
         js.Promise.resolve(self.onLoad()).catch(lambda e: print(e))
+        self.blogPostBox = document.querySelector("#blog__post--box")
+        self.blogPost = document.querySelector("#blog__post--create")
+        self.blogPostGuest = document.querySelector("#blog__post--guest")
+        self.blogCommunities = document.querySelector("#blog__communities")
+        
+        # Pagination
+        self.blogPagLatest = document.querySelector("#blog__pagination--latest")
+        self.blogPagPopular = document.querySelector("#blog__pagination--popular")
+        self.blogPagFollowing = document.querySelector("#blog__pagination--following")
+        self.blogPagMypost = document.querySelector("#blog__pagination--mypost")
 
     async def onLoad(self):
         self.data = await self.getUserInfo()
-        self.blogData = await self.loadBlog()
-        print(self.data)
-        print(self.blogData)
-        self.createBlog(self.blogData)
+        if self.data.get("detail") == "'NoneType' object is not subscriptable":
+            self.guestUser()
+        
+        self.blogLists = await self.trackBlog()
+        for i in range(self.blogLists.get("currentBlogID") - 1, 0, -1):
+            self.blogData = await self.loadBlog(i)
+            print(self.blogData)
+            if self.blogData.get("detail") != "blog not found":
+                self.createBlog(self.blogData)
         
     async def getUserInfo(self):
         try:
@@ -267,11 +283,11 @@ class LoadBlogWidget(AbstractWidget):
         except Exception as e:
             print(e)
     
-    async def loadBlog(self):
+    async def loadBlog(self, index):
         try:
             response = await pyfetch(
-                url="/getBlog/?blogID=1", 
-                method='GET', 
+                url=f"/getBlog/?blogID={index}", 
+                method='GET',
                 headers={'Content-Type': 'application/json'}
             )
             if response.ok:
@@ -280,10 +296,57 @@ class LoadBlogWidget(AbstractWidget):
         except Exception as e:
             print(e)
     
-    def checkAssets(self, blogPostAssets, assetsList):
-        for i in range(len(assetsList)):
-            print(assetsList[i])
+    async def trackBlog(self):
+        try:
+            response = await pyfetch(
+                url=f"/getCurrentBlogID/", 
+                method='GET',
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+                print(data)
+                return data
+        except Exception as e:
+            print(e)
     
+    async def loadMedia(self, index):
+        try:
+            response = await pyfetch(
+                url=f"/media/?mediaID={index}", 
+                method='GET',
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+                return data
+        except Exception as e:
+            print(e)
+    
+    def guestUser(self):
+        self.blogPostGuest.classList.remove("hidden")
+        self.blogPost.style.display = "none"
+        self.blogPagFollowing.style.display = "none"
+        self.blogPagMypost.style.display = "none"
+    
+    async def checkAssets(self, blogPostAssets, assetsList):
+        for i in range(len(assetsList)):
+            assetUpload = await self.loadMedia(assetsList[i])
+            assetUploadSplit = assetUpload.split(".")
+            if assetUploadSplit[1] == "mp4":
+                blogAssetsVideo = document.createElement("video")
+                blogAssetsVideo.setAttribute("height", "240")
+                blogAssetsVideo.setAttribute("controls", "")
+                blogAssetsSource = document.createElement("source")
+                blogAssetsSource.src = f"/uploads/{assetUpload}"
+                blogAssetsSource.type = "video/mp4"
+                blogAssetsVideo.appendChild(blogAssetsSource)
+                blogPostAssets.appendChild(blogAssetsVideo)
+            else:
+                blogAssetsImg = document.createElement("img")
+                blogAssetsImg.src = f"/uploads/{assetUpload}"
+                blogPostAssets.appendChild(blogAssetsImg)
+            
     def createBlog(self, blogData):
         blogPost = document.createElement("div")
         blogPost.classList.add("blog__post")
@@ -293,15 +356,15 @@ class LoadBlogWidget(AbstractWidget):
         
         blogPostUsername = document.createElement("div")
         blogPostUsername.classList.add("blog__post--username")    
-        blogPostUsername.innerHTML = f"{blogData['author']}"
+        blogPostUsername.innerHTML = f"{blogData.get('author')}"
 
         blogPostPosted = document.createElement("div")
         blogPostPosted.classList.add("blog__post--posted")
-        blogPostPosted.innerHTML = f"Posted by {blogData['author']}"
+        blogPostPosted.innerHTML = f"Posted by {blogData.get('author')}"
 
         blogPostTimestamp = document.createElement("div")
         blogPostTimestamp.classList.add("blog__post--timestamp")
-        blogPostTimestamp.innerHTML = f"{blogData['timestamp']}"
+        blogPostTimestamp.innerHTML = f"{blogData.get('timestamp')}"
 
         blogPostHeader.appendChild(blogPostUsername)
         blogPostHeader.appendChild(blogPostPosted)
@@ -314,7 +377,7 @@ class LoadBlogWidget(AbstractWidget):
         blogPostTitle.classList.add("blog__post--title")
 
         blogPostTitleH3 = document.createElement("h3")
-        blogPostTitleH3.innerHTML = f"{blogData['title']}"
+        blogPostTitleH3.innerHTML = f"{blogData.get('title')}"
 
         blogPostTitle.appendChild(blogPostTitleH3)
 
@@ -322,14 +385,14 @@ class LoadBlogWidget(AbstractWidget):
         blogPostMessage.classList.add("blog__post--message")
 
         blogPostMessageP = document.createElement("p")
-        blogPostMessageP.innerHTML = f"{blogData['text']}"
+        blogPostMessageP.innerHTML = f"{blogData.get('text')}"
 
         blogPostMessage.appendChild(blogPostMessageP)
 
         blogPostAssets = document.createElement("div")
         blogPostAssets.classList.add("blog__post--assets")
 
-        self.checkAssets()
+        js.Promise.resolve(self.checkAssets(blogPostAssets, blogData.get('media'))).catch(lambda e: print(e))
 
         blogPostField.appendChild(blogPostTitle)
         blogPostField.appendChild(blogPostMessage)
@@ -363,10 +426,13 @@ class LoadBlogWidget(AbstractWidget):
         blogPost.appendChild(blogPostField)
         blogPost.appendChild(blogPostFooter)
         
-        self.element.appendChild(blogPost)
+        self.blogPostBox.appendChild(blogPost)
+        
+
 
 if __name__ == "__main__":
     w = BlogWidget("blog")
     w.initializeWidget()
-    w2 = LoadBlogWidget("blog__post--box")
+    w2 = LoadBlogWidget("blog")
     w2.initializeWidget()
+    

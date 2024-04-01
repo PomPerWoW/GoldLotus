@@ -296,6 +296,24 @@
     margin-bottom: 2rem;
 }
 
+.blog__post-guest {
+    margin-bottom: 4rem;
+    display: flex;
+    align-items: center;
+    gap: 2.8rem;
+}
+
+.blog__post-guest--btn a:link,
+.blog__post-guest--btn a:visited {
+    background-color: #d8b778;
+    color: white;
+    font-weight: 500;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    text-align: center;
+    text-decoration: none;
+}
+
 .blog__post--header {
     display: flex;
     align-items: center;

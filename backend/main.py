@@ -26,6 +26,9 @@ pages = Jinja2Templates(directory="../pages/")
 app.mount("/assets",
           StaticFiles(directory="../assets"), name="assets-static")
 
+app.mount("/uploads",
+          StaticFiles(directory="../backend/uploads"), name="uploads-static")
+
 app.mount("/global-static",
           StaticFiles(directory="../global"), name="global-static")
 

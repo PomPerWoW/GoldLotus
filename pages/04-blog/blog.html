@@ -84,12 +84,6 @@
             <div class="blog__pagination">
                 <div
                     class="blog__pagination--element"
-                    id="blog__pagination--post"
-                >
-                    <p>Posts</p>
-                </div>
-                <div
-                    class="blog__pagination--element"
                     id="blog__pagination--latest"
                 >
                     <p>Latest</p>
@@ -99,6 +93,12 @@
                     id="blog__pagination--popular"
                 >
                     <p>Popular</p>
+                </div>
+                <div
+                    class="blog__pagination--element"
+                    id="blog__pagination--following"
+                >
+                    <p>Following</p>
                 </div>
                 <div
                     class="blog__pagination--element"
@@ -229,138 +229,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="blog__post">
-                        <div class="blog__post--header">
-                            <div class="blog__post--username">John Doe</div>
-                            <div class="blog__post--posted">
-                                Posted by John Doe
-                            </div>
-                            <div class="blog__post--timestamp">11 mins ago</div>
+                    <div class="hidden blog__post-guest" id="blog__post--guest">
+                        <div>
+                            <h2 class="blog__post-guest--suggest">
+                                Create your own post now!
+                            </h2>
                         </div>
-                        <div class="blog__post--field">
-                            <div class="blog__post--title"><h3>Hello</h3></div>
-                            <div class="blog__post--message">
-                                <p>
-                                    Lorem, ipsum dolor sit amet consectetur
-                                    adipisicing elit. Voluptatem delectus ullam
-                                    sit quae error modi animi nostrum. Ducimus
-                                    odio ipsam est a. Veritatis perferendis at
-                                    sint cupiditate, expedita consequatur sunt
-                                    aperiam sapiente maxime beatae fugit
-                                    quisquam nemo voluptas alias aliquam rem
-                                    repudiandae itaque veniam delectus, tempora
-                                    officia debitis? Repellendus, deleniti?
-                                </p>
-                            </div>
-                            <div class="blog__post--assets"></div>
+                        <div class="blog__post-guest--btn" id="nav__box--guest">
+                            <a href="/signIn">Join Us</a>
                         </div>
-                        <div class="blog__post--footer">
-                            <div class="blog__post--like">
-                                <i class="fa-solid fa-heart"></i>61.9 likes
-                            </div>
-                            <div class="blog__post--comment">
-                                <i class="fa-solid fa-comment"></i>21 comments
-                            </div>
-                        </div>
-                    </div>
-                    <div class="blog__post">
-                        <div class="blog__post--header">
-                            <div class="blog__post--username">John Doe</div>
-                            <div class="blog__post--posted">
-                                Posted by John Doe
-                            </div>
-                            <div class="blog__post--timestamp">11 mins ago</div>
-                        </div>
-                        <div class="blog__post--field">
-                            <div class="blog__post--title"><h3>Hello</h3></div>
-                            <div class="blog__post--message">
-                                <p>
-                                    Lorem ipsum, dolor sit amet consectetur
-                                    adipisicing elit. Tempore, molestiae, beatae
-                                    alias officiis qui assumenda laborum, ullam
-                                    explicabo quasi animi ipsam distinctio illo
-                                    aperiam temporibus.
-                                </p>
-                            </div>
-                            <div class="blog__post--assets"></div>
-                        </div>
-                        <div class="blog__post--footer">
-                            <div class="blog__post--like">
-                                <i class="fa-solid fa-heart"></i>61.9 likes
-                            </div>
-                            <div class="blog__post--comment">
-                                <i class="fa-solid fa-comment"></i>21 comments
-                            </div>
-                        </div>
-                    </div>
-                    <div class="blog__post">
-                        <div class="blog__post--header">
-                            <div class="blog__post--username">John Doe</div>
-                            <div class="blog__post--posted">
-                                Posted by John Doe
-                            </div>
-                            <div class="blog__post--timestamp">11 mins ago</div>
-                        </div>
-                        <div class="blog__post--field">
-                            <div class="blog__post--title"><h3>Hello</h3></div>
-                            <div class="blog__post--message">
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur
-                                    adipisicing elit. Rerum minima possimus
-                                    fugiat distinctio nemo, repellendus aliquid
-                                    consequatur doloremque tempore eius, sunt
-                                    libero ab ut temporibus eum dignissimos
-                                    minus consequuntur? Provident quia natus
-                                    cupiditate voluptatem ea suscipit, esse
-                                    illum excepturi est perferendis ab tempora
-                                    similique repellat odit, beatae nobis earum!
-                                    Qui quidem non sed quis ipsa rem modi
-                                    veritatis, praesentium aspernatur magni sint
-                                    consequatur velit. Dolores porro corrupti
-                                    odit nulla nesciunt ipsum animi earum. Earum
-                                    a assumenda repudiandae ad perspiciatis
-                                    beatae suscipit illo reiciendis, vero atque
-                                    ut repellat labore autem aut cupiditate!
-                                    Quae, exercitationem! Deserunt, architecto!
-                                    Nostrum soluta accusantium sequi. Dicta.
-                                </p>
-                            </div>
-                            <div class="blog__post--assets">
-                                <img
-                                    src="{{ url_for('assets-static', path='/images/buddha-statue-1.jpg') }}"
-                                    alt=""
-                                />
-                                <img
-                                    src="{{ url_for('assets-static', path='/images/buddha-statue-1.jpg') }}"
-                                    alt=""
-                                />
-                                <img
-                                    src="{{ url_for('assets-static', path='/images/buddha-statue-1.jpg') }}"
-                                    alt=""
-                                />
-                                <img
-                                    src="{{ url_for('assets-static', path='/images/buddha-statue-1.jpg') }}"
-                                    alt=""
-                                />
-                                <video height="240" controls>
-                                    <source src="movie.mp4" type="video/mp4" />
-                                </video>
-                            </div>
-                        </div>
-                        <div class="blog__post--footer">
-                            <div class="blog__post--like">
-                                <i class="fa-solid fa-heart"></i>61.9 likes
-                            </div>
-                            <div class="blog__post--comment">
-                                <i class="fa-solid fa-comment"></i>21 comments
-                            </div>
-                        </div>
-                    </div>
-                    <div class="blog__readmore-btn">
-                        <a href="">Read more posts</a>
                     </div>
                 </div>
-                <div class="blog__communities">
+                <div class="blog__communities" id="blog__communities">
                     <div class="blog__communities--header">
                         GoldLotus members
                     </div>

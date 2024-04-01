@@ -11,25 +11,20 @@ sys.path.insert(1, os.path.join(PARENT_DIRECTORY, "data"))
 
 from database import *
 
-@router.get("/media/")
+@router.get("/media/", tags=["blog"])
 async def get_media(request: Request, response: Response, mediaID: str):
     try:
         if os.path.exists(os.path.join("uploads", str(mediaID)) + ".png"):
-            return FileResponse(os.path.join("uploads", str(mediaID)) + ".png")
+            return str(mediaID) + ".png"
         
         elif os.path.exists(os.path.join("uploads", str(mediaID)) + ".jpg"):
-            return FileResponse(os.path.join("uploads", str(mediaID)) + ".jpg")
+            return str(mediaID) + ".jpg"
         
         elif os.path.exists(os.path.join("uploads", str(mediaID)) + ".jpeg"):
-            return FileResponse(os.path.join("uploads", str(mediaID)) + ".jpeg")
+            return str(mediaID) + ".jpeg"
         
         elif os.path.exists(os.path.join("uploads", str(mediaID)) + ".MP4"):
-            video_size = os.path.join("uploads", str(mediaID)) + ".MP4".stat().st_size
-            def iter_file():
-                with open(os.path.join("uploads", str(mediaID)) + ".MP4", "rb") as video_file:
-                    while chunk := video_file.read(65536):
-                        yield chunk
-            return StreamingResponse(iter_file(), media_type="video/mp4", headers={"Accept-Ranges": "bytes", "Content-Length": str(video_size)})
+            return str(mediaID) + ".mp4"
         
         else:
             raise Exception("File not found in the db.")
