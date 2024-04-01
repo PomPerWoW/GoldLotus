@@ -134,4 +134,31 @@ body {
     height: 100%;
 }
 
+/* footer section */
+.footer{
+    height: 20rem;
+    background-color: #A08F65;
+    display: flex;
+    justify-content: center;
+    /* padding: 3rem; */
+    flex-direction: column;
+    color: #FFF9E8;
 
+}
+.footer p {
+    font-size: 1.2rem;
+}
+.head-footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.head-footer h4{
+    font-size: 2.4rem;
+    margin: 0.8rem 1rem 0 0;
+}
+.img-footer{
+    width: 4rem;
+    height: 4rem;
+    margin-top: 0;
+}

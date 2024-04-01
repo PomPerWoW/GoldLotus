@@ -37,7 +37,7 @@
     </head>
     <body>
         <!-- Loader Section -->
-
+<!-- 
         <div class="loader">
             <div class="loader__box">
                 <span class="loader__dot"></span>
@@ -50,7 +50,7 @@
         </nav>
     </div>
 
-    {% include "global-component/loader.html" %}
+    {% include "global-component/loader.html" %} -->
 
     <!-- Navigation Section -->
 
@@ -237,24 +237,12 @@
             <div class="container">
                 <h2>Buddhism Calendar</h2>
                 <div class="calendar-block">
+                    <iframe src="https://calendar.google.com/calendar/embed?src=n7kthnfuc8uldm955sfkpjt244%40group.calendar.google.com&ctz=America%2FNew_York" style="border: 0" width="1100" height="600" frameborder="0" scrolling="no"></iframe>
                 </div>
             </div>
 
         </section>
-        <section class="footer">
-            <div class="container">
-                <div class="head-footer">
-                    <h4>GoldLotus</h4>
-                    <img
-                        class="img-footer"
-                        src="{{ url_for('assets-static', path='/icons/logo.svg') }}"
-                        alt="logo"
-                    />
-                </div>
-                <p>tel: 0812345678 Email:GoldLotus@gmail.com</p>
-            </div>
-
-        </section>
+        {% include "global-component/footer.html" %}
         <script
             src="https://kit.fontawesome.com/1c7eef805a.js"
             crossorigin="anonymous"
