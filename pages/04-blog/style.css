@@ -6,16 +6,22 @@
     margin-top: 8rem;
 }
 
-.blog__pagination--element {
-    cursor: pointer;
+.blog__pagination--element,
+.blog__pagination--element :link,
+.blog__pagination--element :visited {
+    display: inline-block;
+    background-color: #d8b778;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.6rem;
+    text-decoration: none;
     padding: 1rem 2rem;
     border-radius: 2rem;
-    color: #fff;
-    background-color: #d8b778;
-}
-
-.blog__pagination--element p {
-    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s;
 }
 
 /* Blog Section */
@@ -358,10 +364,7 @@
 
 .blog__post--assets img {
     width: 30rem;
-}
-
-.blog__post--assets video {
-    width: 30rem;
+    object-fit: contain;
 }
 
 .blog__post--footer {

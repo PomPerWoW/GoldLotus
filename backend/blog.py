@@ -13,6 +13,9 @@ sys.path.insert(1, os.path.join(PARENT_DIRECTORY, "data"))
 from content import Blog
 from database import *
 from auth.auth_handler import decodeJWT
+        
+if not os.path.exists("uploads"):
+    os.makedirs("uploads")
 
 @router.post("/createBlog/", tags=["blog"])
 async def createBlog(response: Response, request: Request, title: str, text: str, access_token: str = Cookie(None)):
@@ -21,9 +24,6 @@ async def createBlog(response: Response, request: Request, title: str, text: str
         userId = token["userId"]
         if not userId in root.user:
             raise Exception("author not found")
-        
-        if not os.path.exists("uploads"):
-            os.makedirs("uploads")
             
         mediaID = list()
         

@@ -27,14 +27,7 @@ body {
     background-color: #fff;
 }
 
-.element__loader {
-    width: 20rem;
-    height: 20rem;
-    background-color: #fff;
-}
-
-.loader__box,
-.element__loader {
+.loader__box {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -45,8 +38,7 @@ body {
     filter: contrast(20);
 }
 
-.loader__dot,
-.element__loader__dots {
+.loader__dot {
     position: absolute;
     width: 1.6rem;
     height: 1.6rem;
@@ -59,16 +51,14 @@ body {
     animation: dot 2.8s infinite;
 }
 
-.loader__dots,
-.element__loader__dots {
+.loader__dots {
     transform: translateX(0);
     margin-top: 1.2rem;
     margin-left: 3.1rem;
     animation: dots 2.8s infinite;
 }
 
-.loader__dots,
-.element__loader__dots span {
+.loader__dots span {
     display: block;
     float: left;
     width: 1.6rem;
@@ -88,6 +78,33 @@ body {
 @keyframes dots {
     50% {
         transform: translateX(-3.1rem);
+    }
+}
+
+/* Element loader */
+
+.element__loader--box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.element__loader {
+    width: 4.8rem;
+    height: 4.8rem;
+    border: 0.5rem solid #000;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }
 

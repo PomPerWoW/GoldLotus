@@ -3,7 +3,7 @@ from pyscript import window, document
 from pyodide.ffi import create_proxy
 from pyodide.http import pyfetch
 from abc import ABC, abstractmethod
-import os
+from datetime import datetime
 
 class AbstractWidget(ABC):
     def __init__(self, element_id):
@@ -126,8 +126,6 @@ class BlogWidget(AbstractWidget):
             for i, v in enumerate(self.allFiles):
                 print(i, v, end="\n")
                 
-        # self.listSection.style.display = "flex"
-                
     
     def displayFile(self, file):
         self.listSection.style.display = "flex"
@@ -209,7 +207,6 @@ class BlogWidget(AbstractWidget):
 
             if response.ok:
                 data = await response.json()
-                print(data)
                 detail_value = data.get('detail')
                 if detail_value is not None and detail_value:
                     self.errorBox.classList.remove("hidden")
@@ -253,22 +250,54 @@ class LoadBlogWidget(AbstractWidget):
         self.blogCommunities = document.querySelector("#blog__communities")
         
         # Pagination
-        self.blogPagLatest = document.querySelector("#blog__pagination--latest")
-        self.blogPagPopular = document.querySelector("#blog__pagination--popular")
-        self.blogPagFollowing = document.querySelector("#blog__pagination--following")
-        self.blogPagMypost = document.querySelector("#blog__pagination--mypost")
+        self.blogPagLatest = document.querySelector(".blog__pagination--latest")
+        self.blogPagPopular = document.querySelector(".blog__pagination--popular")
+        self.blogPagFollowing = document.querySelector(".blog__pagination--following")
+        self.blogPagMypost = document.querySelector(".blog__pagination--mypost")
+        # Btn
+        self.blogPagLatestBtn = document.querySelector("#blog__pagination--latest")
+        self.blogPagPopularBtn = document.querySelector("#blog__pagination--popular")
+        self.blogPagFollowingBtn = document.querySelector("#blog__pagination--following")
+        self.blogPagMypostBtn = document.querySelector("#blog__pagination--mypost")
+        
+        self.blogPagLatest.onclick = self.loadLatest
+        self.blogPagMypostBtn.onclick = self.loadMyPost
 
     async def onLoad(self):
         self.data = await self.getUserInfo()
         if self.data.get("detail") == "'NoneType' object is not subscriptable":
             self.guestUser()
         
+        await self.loadLatest()
+    
+    def removeBlogPosts(self):
+        blogPosts = document.querySelectorAll(".blog__post--element")
+        for post in blogPosts:
+            post.parentNode.removeChild(post)
+    
+    async def loadLatest(self, event=None):
+        if event:
+            event.preventDefault()
+        self.removeBlogPosts()
         self.blogLists = await self.trackBlog()
         for i in range(self.blogLists.get("currentBlogID") - 1, 0, -1):
             self.blogData = await self.loadBlog(i)
+            if self.blogData.get("detail") != "blog not found":
+                await self.createBlog(self.blogData)
+    
+    async def loadMyPost(self, event):
+        if event:
+            event.preventDefault()
+        self.removeBlogPosts()
+        self.data = await self.getUserInfo()
+        print(self.data)
+        self.blogLists = self.data.get("blog").get("data")
+        print(self.blogLists)
+        for i in range(len(self.blogLists) - 1, -1, -1):
+            self.blogData = await self.loadBlog(self.blogLists[i])
             print(self.blogData)
             if self.blogData.get("detail") != "blog not found":
-                self.createBlog(self.blogData)
+                await self.createBlog(self.blogData)
         
     async def getUserInfo(self):
         try:
@@ -305,7 +334,6 @@ class LoadBlogWidget(AbstractWidget):
             )
             if response.ok:
                 data = await response.json()
-                print(data)
                 return data
         except Exception as e:
             print(e)
@@ -335,7 +363,7 @@ class LoadBlogWidget(AbstractWidget):
             assetUploadSplit = assetUpload.split(".")
             if assetUploadSplit[1] == "mp4":
                 blogAssetsVideo = document.createElement("video")
-                blogAssetsVideo.setAttribute("height", "240")
+                blogAssetsVideo.setAttribute("height", "200")
                 blogAssetsVideo.setAttribute("controls", "")
                 blogAssetsSource = document.createElement("source")
                 blogAssetsSource.src = f"/uploads/{assetUpload}"
@@ -346,25 +374,62 @@ class LoadBlogWidget(AbstractWidget):
                 blogAssetsImg = document.createElement("img")
                 blogAssetsImg.src = f"/uploads/{assetUpload}"
                 blogPostAssets.appendChild(blogAssetsImg)
+
+    def createLoad(self):
+        elementLoaderBox = document.createElement("div")
+        elementLoaderBox.classList.add("element__loader--box")
+
+        elementLoader = document.createElement("div")
+        elementLoader.classList.add("element__loader")
+        
+        elementLoaderBox.appendChild(elementLoader)
+        
+        self.blogPostBox.appendChild(elementLoaderBox)
+    
+    async def getUserDetail(self, userID):
+        try:
+            response = await pyfetch(
+                url=f"/user/getUserฺ?userId={userID}", 
+                method='GET',
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+                return data
+        except Exception as e:
+            print(e)
             
-    def createBlog(self, blogData):
+    async def createBlog(self, blogData):
+        self.createLoad()
+        
+        userDetail = await self.getUserDetail(blogData.get("author"))
+        authorName = userDetail.get("username")
+        
         blogPost = document.createElement("div")
-        blogPost.classList.add("blog__post")
+        blogPost.classList.add("blog__post", "blog__post--element")
 
         blogPostHeader = document.createElement("div")
         blogPostHeader.classList.add("blog__post--header")
         
         blogPostUsername = document.createElement("div")
         blogPostUsername.classList.add("blog__post--username")    
-        blogPostUsername.innerHTML = f"{blogData.get('author')}"
+        blogPostUsername.innerHTML = f"{authorName}"
 
         blogPostPosted = document.createElement("div")
         blogPostPosted.classList.add("blog__post--posted")
-        blogPostPosted.innerHTML = f"Posted by {blogData.get('author')}"
+        blogPostPosted.innerHTML = f"Posted by {authorName}"
 
         blogPostTimestamp = document.createElement("div")
         blogPostTimestamp.classList.add("blog__post--timestamp")
-        blogPostTimestamp.innerHTML = f"{blogData.get('timestamp')}"
+        
+        timestampObj = datetime.fromisoformat(blogData.get('timestamp'))
+        current_time = datetime.now()
+        time_difference = current_time - timestampObj
+        days = time_difference.days
+        hours, remainder = divmod(time_difference.seconds, 3600)
+        minutes, _ = divmod(remainder, 60)
+        
+        blogPostTimestamp.innerHTML = f"{days} days {hours} hours {minutes} minutes"
 
         blogPostHeader.appendChild(blogPostUsername)
         blogPostHeader.appendChild(blogPostPosted)
@@ -408,7 +473,12 @@ class LoadBlogWidget(AbstractWidget):
         iconLike.classList.add("fa-solid", "fa-heart")
 
         blogPostLike.appendChild(iconLike)
-        blogPostLike.innerHTML = "61.9 likes"
+        blogPostLikeCount = blogData.get("like")
+        if blogPostLikeCount.get("data"):
+            likesText = document.createTextNode(f"{len(blogPostLikeCount.get('data'))} likes")
+        else:
+            likesText = document.createTextNode(f"0 likes")
+        blogPostLike.appendChild(likesText)
 
         blogPostComment = document.createElement("div")
         blogPostComment.classList.add("blog__post--comment")
@@ -417,7 +487,12 @@ class LoadBlogWidget(AbstractWidget):
         iconComment.classList.add("fa-solid", "fa-comment")
 
         blogPostComment.appendChild(iconComment)
-        blogPostComment.innerHTML = "21 comments"
+        blogPostReplyCount = blogData.get("reply")
+        if blogPostReplyCount.get("data"):
+            commentText = document.createTextNode(f"{len(blogPostReplyCount.get('data'))} comments")
+        else:
+            commentText = document.createTextNode(f"0 comment")
+        blogPostComment.appendChild(commentText)
 
         blogPostFooter.appendChild(blogPostLike)
         blogPostFooter.appendChild(blogPostComment)
@@ -428,6 +503,8 @@ class LoadBlogWidget(AbstractWidget):
         
         self.blogPostBox.appendChild(blogPost)
         
+        elementLoader = document.querySelector(".element__loader--box")
+        self.blogPostBox.removeChild(elementLoader)
 
 
 if __name__ == "__main__":
