@@ -46,7 +46,11 @@ async def signUpPage(request: Request):
     return pages.TemplateResponse("02-signup/signup.html", {"request": request})
 
 @app.get("/testBlog", response_class=HTMLResponse, tags=["website"])
-async def signUpPage(request: Request):
+async def testBlog(request: Request):
     return pages.TemplateResponse("upload_test.html", {"request": request})
+
+@app.get("/testPrayers", response_class=HTMLResponse, tags=["website"])
+async def testPrayers(request: Request):
+    return pages.TemplateResponse("prayers/01/01.html", {"request": request})
 
 # =============================================================================
