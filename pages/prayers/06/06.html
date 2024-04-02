@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บทสวดกรวดน้ำ</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <link rel="stylesheet" href="{{ url_for('global-static', path='/prayers.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('global-static', path='/general.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('global-static', path='/global-style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('global-static', path='/queries.css') }}" />
+</head>
+
+{% include "global-component/navbar.html" %}
+
+<body>
+    <div class="block">
+        <div class="spine"></div>
+        <div class="box">
+            <div class="box__header">
+                <div>บทสวดกรวดน้ำ</div>
+            </div>
+            <div class="box__body">
+                <div id="line1">
+                    อิมินา ปุญญะกัมเมนะ อุปัชฌายา คุณุตตะรา
+                    อาจะริยูปะการา จะ มาตาปิตา จะ ญาตะกา
+                    สุริโย จันทิมา ราชา คุณะวันตา นะราปิ จะ
+                    พ์รัห์มะมารา จะ อินทา จะตุ- โลกะปาลา จะ เทวะตา
+                </div>
+                <div id="line2">
+                    ยะโม มิตตา มะนุสสา จะ มัชฌัตตา เวริกาปิ จะ
+                    สัพเพ สัตตา สุขี โหนตุ ปุญญานิ ปะกะตานิ เม
+                    สุขัญจะ ติวิธัง เทนตุ ขิปปัง ปาเปถะ โว มะตัง
+                </div>
+                <div id="line3">
+                    อิมินา ปุญญะกัมเมนะ อิมินา อุททิเสนะ จะ
+                    ขิปปาหัง สุละเภ เจวะ ตัณหุปาทานะเฉทะนัง
+                    เย สันตาเน หินา ธัมมา ยาวะ นิพพานะโต มะมัง
+                    นัสสันตุ สัพพะทาเยวะ ยัตถะ ชาโต ภะเว ภะเว
+                    อุชุจิตตัง สะติปัญญา สัลเลโข วิริยัมหินา
+                </div>
+                <div id="line4">
+                    มารา ละภันตุ โนกาสัง กาตุญจะ วิริเยสุ เม
+                    พุทธาทิปะวะโร นาโถ ธัมโม นาโถ วะรุตตะโม
+                    นาโถ ปัจเจกะพุทโธ จะ สังโฆ นาโถตตะโร มะมัง
+                    เตโสตตะมานุภาเวนะ มาโรกาสัง ละภันตุ มา ฯ
+                </div>
+            </div>
+        </div>
+        <audio id="myAudio" controls class="tab_audio">
+            <source src="{{ url_for('prayers-static', path='/06/06.mp3') }}" type="audio/mpeg">
+        </audio>
+    </div>
+    {% include "global-component/footer.html" %}
+    <script type="py" src="{{ url_for('prayers-static', path='/06/pyscript.py') }}"></script>
+</body>
+
+</html>

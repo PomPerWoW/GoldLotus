@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บทสวดบูชาพระรัตนตรัย</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <link rel="stylesheet" href="{{ url_for('global-static', path='/prayers.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('global-static', path='/general.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('global-static', path='/global-style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('global-static', path='/queries.css') }}" />
+</head>
+
+{% include "global-component/navbar.html" %}
+
+<body>
+    <div class="block">
+        <div class="spine"></div>
+        <div class="box">
+            <div class="box__header">
+                <div>บทสวดบูชาพระรัตนตรัย</div>
+            </div>
+            <div class="box__body">
+                <div id="line1">
+                    อะระหัง สัมมาสัมพุทโธ ภะคะวา
+                    พุทธัง ภะคะวันตัง อะภิวาเทมิ
+                </div>
+                <div id="line2">
+                    สวากขาโต ภะคะวะตา ธัมโม
+                    ธัมมัง นะมัสสามิ
+                </div>
+                <div id="line3">
+                    สุปะฏิปันโน ภะคะวะโต สาวะกะสังโฆ
+                    สังฆัง นะมามิ
+                </div>
+                <div id="line4">
+                    พระผู้มีพระภาคเจ้า เป็นพระอรหันต์ ดับเพลิงกิเลสเพลิงทุกข์สิ้นเชิง ตรัสรู้โดยชอบได้โดยพระองค์เอง
+                    ข้าพเจ้าอภิวาทพระผู้มีพระภาคเจ้า ผู้รู้ ผู้ตื่น ผู้เบิกบาน
+                    พระธรรม เป็นธรรมที่พระผู้มีพระภาคเจ้า ตรัสไว้ดีแล้ว ข้าพเจ้าขอนมัสการพระธรรม
+                    พระสงฆ์สาวกของพระผู้มีพระภาคเจ้า ปฏิบัติดีแล้ว ข้าพเจ้าขอนอบน้อมพระสงฆ์
+                </div>
+            </div>
+        </div>
+        <audio id="myAudio" controls class="tab_audio">
+            <source src="{{ url_for('prayers-static', path='/07/07.mp3') }}" type="audio/mpeg">
+        </audio>
+    </div>
+    {% include "global-component/footer.html" %}
+    <script type="py" src="{{ url_for('prayers-static', path='/07/pyscript.py') }}"></script>
+</body>
+
+</html>
