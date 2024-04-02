@@ -9,6 +9,7 @@ from fastapi import APIRouter, Request, Response, Cookie
 from datetime import datetime
 import sys
 import os
+import operator
 
 router = APIRouter()
 
@@ -160,5 +161,16 @@ async def unfollow(response: Response, request: Request, followingID: str, acces
         root.user[followingID].removeFollower(userId)
         
         transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+    
+@router.get("/user/getSortedIdByFollower", tags=["User"])
+async def getSortedIdByFollower(response: Response, request: Request):
+    try:
+        result = []
+        for u in sorted(root.user.values(), key=lambda user: len(user.follower)):
+            result.append(u.userID)
+        
+        return result
     except Exception as e:
         return {"detail": str(e)}
