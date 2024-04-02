@@ -93,8 +93,17 @@ async def index(request: Request):
 async def index(request: Request):
     return pages.TemplateResponse("prayers/02/02.html", {"request": request})
 
+
 @app.get("/prayers/03", response_class=HTMLResponse, tags=["prayers"])
 async def index(request: Request):
     return pages.TemplateResponse("prayers/03/03.html", {"request": request})
 
+
+@app.get("/prayers/04", response_class=HTMLResponse, tags=["prayers"])
+async def index(request: Request):
+    return pages.TemplateResponse("prayers/04/04.html", {"request": request})
+
+@app.get("/prayers/05", response_class=HTMLResponse, tags=["prayers"])
+async def index(request: Request):
+    return pages.TemplateResponse("prayers/05/05.html", {"request": request})
 # =============================================================================
