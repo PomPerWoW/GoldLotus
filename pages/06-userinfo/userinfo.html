@@ -54,22 +54,14 @@
 
         <!-- UserInfo Section -->
         <div class="container">
-            <div class="userinfo">
+            <div class="userinfo" id="userinfo">
                 <div class="userinfo__info">
-                    <div class="userinfo__info--user-header">
+                    <div class="userinfo__user--header">
                         <img
-                            class="userinfo__info--img"
+                            class="userinfo--img"
                             src="{{ url_for('assets-static', path='/images/monk-cartoon-1.png') }}"
                             alt="buddha img"
                         />
-                        <div>
-                            <div class="userinfo__info--user-id">
-                                <p>ID: 0123402021</p>
-                            </div>
-                            <div class="userinfo__info--user-name">
-                                <p>Thatchapon Chatthanes</p>
-                            </div>
-                        </div>
                     </div>
                     <div class="userinfo__info--header">
                         <p>Personal info</p>
@@ -93,6 +85,12 @@
         <script
             type="py"
             src="{{ url_for('global-static', path='/pyscript.py') }}"
+        ></script>
+
+        <!-- Local PyScript -->
+        <script
+            type="py"
+            src="{{ url_for('userinfo-static', path='/pyscript.py') }}"
         ></script>
     </body>
 </html>

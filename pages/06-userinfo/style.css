@@ -10,23 +10,23 @@
     margin-bottom: 4rem;
 }
 
-.userinfo__info--user-header {
+.userinfo__user--header {
     display: flex;
     align-items: center;
     margin-bottom: 4rem;
 }
 
-.userinfo__info--user-id {
+.userinfo__user--id {
     color: #666666;
     font-size: 1.4rem;
 }
 
-.userinfo__info--user-name {
+.userinfo__user--name {
     text-transform: uppercase;
     font-size: 2.8rem;
     font-weight: 500;
 }
 
-.userinfo__info--img {
+.userinfo--img {
     width: 15rem;
 }

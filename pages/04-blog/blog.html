@@ -75,6 +75,33 @@
             </div>
         </div>
 
+        <div class="hidden background__black--faded" id="user__likes">
+            <div class="container">
+                <div class="user__likes">
+                    <h2 class="user__likes--header heading-tertiary">Likes</h2>
+                    <div class="user__likes--body">
+                        <div
+                            class="user__likes--person"
+                            id="user__likes--person-1"
+                        >
+                            <div class="user__likes--left">
+                                <div class="user__likes--name">PomPer123</div>
+                                <div class="user__likes--follower">
+                                    xxxx follower
+                                </div>
+                            </div>
+                            <div class="user__likes--follow-btn">
+                                <p>Follow</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="user__likes--btn" id="user__likes--btn">
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Navigation Section -->
 
         {% include "global-component/navbar.html" %}
@@ -312,6 +339,14 @@
                         >
                     </div>
                 </div>
+            </div>
+
+            <div class="hidden blog__like--status-box" id="liked__box">
+                <p>Liked</p>
+            </div>
+
+            <div class="hidden blog__like--status-box" id="unliked__box">
+                <p>Unliked</p>
             </div>
         </div>
 

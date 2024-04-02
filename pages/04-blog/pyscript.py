@@ -1,9 +1,11 @@
+import asyncio
 import js
 from pyscript import window, document
 from pyodide.ffi import create_proxy
 from pyodide.http import pyfetch
 from abc import ABC, abstractmethod
 from datetime import datetime
+import time
 
 class AbstractWidget(ABC):
     def __init__(self, element_id):
@@ -263,6 +265,9 @@ class LoadBlogWidget(AbstractWidget):
         self.blogPagLatest.onclick = self.loadLatest
         self.blogPagMypostBtn.onclick = self.loadMyPost
 
+        self.likedBox = document.querySelector("#liked__box")
+        self.unLikedBox = document.querySelector("#unliked__box")
+
     async def onLoad(self):
         self.data = await self.getUserInfo()
         if self.data.get("detail") == "'NoneType' object is not subscriptable":
@@ -289,15 +294,13 @@ class LoadBlogWidget(AbstractWidget):
         if event:
             event.preventDefault()
         self.removeBlogPosts()
-        self.data = await self.getUserInfo()
-        print(self.data)
         self.blogLists = self.data.get("blog").get("data")
-        print(self.blogLists)
-        for i in range(len(self.blogLists) - 1, -1, -1):
-            self.blogData = await self.loadBlog(self.blogLists[i])
-            print(self.blogData)
-            if self.blogData.get("detail") != "blog not found":
-                await self.createBlog(self.blogData)
+        if self.blogLists:
+            for i in range(len(self.blogLists) - 1, -1, -1):
+                self.blogData = await self.loadBlog(self.blogLists[i])
+                print(self.blogData)
+                if self.blogData.get("detail") != "blog not found":
+                    await self.createBlog(self.blogData)
         
     async def getUserInfo(self):
         try:
@@ -389,7 +392,7 @@ class LoadBlogWidget(AbstractWidget):
     async def getUserDetail(self, userID):
         try:
             response = await pyfetch(
-                url=f"/user/getUserฺ?userId={userID}", 
+                url=f"/user/getUser?userId={userID}", 
                 method='GET',
                 headers={'Content-Type': 'application/json'}
             )
@@ -397,10 +400,69 @@ class LoadBlogWidget(AbstractWidget):
                 data = await response.json()
                 return data
         except Exception as e:
+            print(e) 
+    
+    async def likeBtnAdd(self, event, blogID, btnLiked):
+        event.preventDefault()
+        try:
+            response = await pyfetch(
+                url=f"/addLikeBlog/?blogID={blogID}", 
+                method='POST',
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+
+                blogLikesCount = document.querySelector(f"#blog__likes--count-{blogID}")
+                counter = blogLikesCount.innerHTML.split()[0]
+                counterNew = int(counter) + 1
+                
+                blogLikesCount.innerHTML = f"{counterNew} likes"
+                
+                btnLiked.classList.add("clicked")
+                btnLiked.onclick = lambda event: asyncio.ensure_future(self.likeBtnRemove(event, blogID, btnLiked))
+                self.likedBox.classList.remove("hidden")
+                await asyncio.sleep(2)
+                self.likedBox.classList.add("hidden")
+                return data
+        except Exception as e:
             print(e)
+        
+    async def likeBtnRemove(self, event, blogID, btnLiked):
+        event.preventDefault()
+        try:
+            response = await pyfetch(
+                url=f"/removeLikeBlog/?blogID={blogID}", 
+                method='POST',
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+
+                blogLikesCount = document.querySelector(f"#blog__likes--count-{blogID}")
+                counter = blogLikesCount.innerHTML.split()[0]
+                counterNew = int(counter) - 1
+                
+                blogLikesCount.innerHTML = f"{counterNew} likes"
+
+                btnLiked.classList.remove("clicked")
+                btnLiked.onclick = lambda event: asyncio.ensure_future(self.likeBtnAdd(event, blogID, btnLiked))
+                self.unLikedBox.classList.remove("hidden")
+                await asyncio.sleep(2)
+                self.unLikedBox.classList.add("hidden")
+                return data
+        except Exception as e:
+            print(e)
+    
+    async def listLikedUser(self, event, blogID):
+        event.preventDefault()
+        currentBlog = await self.loadBlog(blogID)
+        print(currentBlog.get("like"))
             
     async def createBlog(self, blogData):
         self.createLoad()
+        
+        blogID = blogData.get("blogID")
         
         userDetail = await self.getUserDetail(blogData.get("author"))
         authorName = userDetail.get("username")
@@ -427,9 +489,18 @@ class LoadBlogWidget(AbstractWidget):
         time_difference = current_time - timestampObj
         days = time_difference.days
         hours, remainder = divmod(time_difference.seconds, 3600)
-        minutes, _ = divmod(remainder, 60)
+        minutes, seconds = divmod(remainder, 60)
         
-        blogPostTimestamp.innerHTML = f"{days} days {hours} hours {minutes} minutes"
+        if days == 0:
+            if hours == 0:
+                if minutes == 0:
+                    blogPostTimestamp.innerHTML = f"{seconds} {'seconds' if seconds > 1 else 'second'} ago"
+                else:
+                    blogPostTimestamp.innerHTML = f"{minutes} {'minutes' if minutes > 1 else 'minute'} ago"
+            else:
+                blogPostTimestamp.innerHTML = f"{hours} {'hours' if hours > 1 else 'hour'} ago"
+        else:
+            blogPostTimestamp.innerHTML = f"{days} {'days' if days > 1 else 'day'} ago"
 
         blogPostHeader.appendChild(blogPostUsername)
         blogPostHeader.appendChild(blogPostPosted)
@@ -465,23 +536,44 @@ class LoadBlogWidget(AbstractWidget):
 
         blogPostFooter = document.createElement("div")
         blogPostFooter.classList.add("blog__post--footer")
+        
+        # Like
+        blogDataLike = blogData.get("like")
 
         blogPostLike = document.createElement("div")
-        blogPostLike.classList.add("blog__post--like")
+        blogPostLike.classList.add("blog__post--like", "blog__post--footer-btn")
+        
+        iconLiked = document.createElement("i")
+        iconLiked.id = f"blog__likes--icon-{blogID}"
+        
+        if not self.data.get("detail"):
+            iconLiked.classList.add("fa-solid", "fa-heart")
+            if blogDataLike.get("data"):
+                if self.data.get("userID") in blogDataLike.get("data"):
+                    iconLiked.classList.add("clicked")
+                    iconLiked.onclick = lambda event: asyncio.ensure_future(self.likeBtnRemove(event, blogID, iconLiked))
+                else:
+                    iconLiked.onclick = lambda event: asyncio.ensure_future(self.likeBtnAdd(event, blogID, iconLiked))
+            else:
+                iconLiked.onclick = lambda event: asyncio.ensure_future(self.likeBtnAdd(event, blogID, iconLiked))
 
-        iconLike = document.createElement("i")
-        iconLike.classList.add("fa-solid", "fa-heart")
-
-        blogPostLike.appendChild(iconLike)
-        blogPostLikeCount = blogData.get("like")
-        if blogPostLikeCount.get("data"):
-            likesText = document.createTextNode(f"{len(blogPostLikeCount.get('data'))} likes")
+        blogPostLike.appendChild(iconLiked)
+        
+        likesText = document.createElement("span")
+        likesText.id = f"blog__likes--count-{blogID}"
+        likesText.onclick = lambda event: asyncio.ensure_future(self.listLikedUser(event, blogID))
+        
+        if blogDataLike.get("data"):
+            likesText.innerHTML = f"{len(blogDataLike.get('data'))} likes"
         else:
-            likesText = document.createTextNode(f"0 likes")
+            likesText.innerHTML = "0 likes"
+        
         blogPostLike.appendChild(likesText)
 
+        # Comment
         blogPostComment = document.createElement("div")
-        blogPostComment.classList.add("blog__post--comment")
+        blogPostComment.classList.add("blog__post--comment", "blog__post--footer-btn")
+        blogPostComment.id = f"blog__post--comment"
 
         iconComment = document.createElement("i")
         iconComment.classList.add("fa-solid", "fa-comment")

@@ -371,11 +371,33 @@
     display: flex;
     align-items: center;
     gap: 3.2rem;
+}
+
+.blog__post--footer-btn,
+.blog__post--footer-btn :link,
+.blog__post--footer-btn :visited {
+    display: inline-block;
+    background-color: #fff;
     color: #929292;
+    text-decoration: none;
+    font-size: 1.6rem;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.blog__post--footer-btn:hover {
+    transform: translateY(-0.15rem);
 }
 
 .blog__post--footer i {
     margin-right: 0.6rem;
+}
+
+.clicked {
+    color: #dcb60e;
 }
 
 .blog__post--footer i:hover {
@@ -441,4 +463,86 @@
     text-decoration: none;
     color: #000;
     border: 0.2rem solid #000;
+}
+
+.blog__like--status {
+    width: 100%;
+}
+
+.blog__like--status-box {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-weight: 700;
+    padding: 2rem 2rem;
+}
+
+#liked__box {
+    color: #fff;
+    background-color: #57ad68;
+}
+
+#unliked__box {
+    color: #fff;
+    background-color: #ad5757;
+}
+
+.user__likes {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 36rem;
+    height: 100%;
+    border-radius: 2rem;
+    background-color: #fff;
+    padding: 2.8rem;
+}
+
+.user__likes--header {
+    text-align: center;
+}
+
+.user__likes--body {
+    margin-bottom: 4rem;
+}
+
+.user__likes--person {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user__likes--name {
+    margin-bottom: 0.5rem;
+}
+
+.user__likes--follower {
+    color: #616161;
+}
+
+.user__likes--follow-btn {
+    cursor: pointer;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    color: #000;
+    background-color: #f0cf95;
+}
+
+.user__likes--btn,
+.user__likes--btn:link,
+.user__likes--btn:visited {
+    display: inline-block;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 1.2rem 2.8rem;
+    border-radius: 4rem;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.3s;
+    color: #000;
+    background-color: #f0cf95;
 }

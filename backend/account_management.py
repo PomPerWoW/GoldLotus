@@ -124,8 +124,8 @@ async def getUserInfo(response: Response, request: Request, access_token: str = 
     except Exception as e:
         return {"detail": str(e)}
 
-@router.get("/user/getUserฺ", tags=["User"])
-async def getUserฺ(response: Response, request: Request, userId: str):
+@router.get("/user/getUser", tags=["User"])
+async def getUser(response: Response, request: Request, userId: str):
     try:
         user = root.user[userId]
         
