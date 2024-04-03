@@ -1,0 +1,48 @@
+
+.block {
+    display: flex;
+    background: #FFF9E8;
+    padding: 2rem;
+    height: 100%;
+    flex-direction: column;
+    margin-top: 10rem;
+}
+
+.box {
+    display: flex;
+    background-color: white;
+    width: 90%;
+    margin-top: 15rem;
+    max-height: 90%; 
+    overflow-y: auto;
+    flex-direction: column;
+
+    padding: 3rem;
+    box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.box__header {
+    font-size: 2.5rem;
+    color: #4D4637;
+    padding: 2.6rem;
+}
+
+.prayer__name{
+    padding: 1.2rem 0 1.2rem 1rem;
+
+}
+
+.prayer__name:hover{
+    background-color: aliceblue;
+}
+
+.box__body {
+    font-size: 1.8rem;
+    line-height: 1.5;
+    padding: 0 0 2rem 0;
+}
+
+.tab_audio {
+    position: fixed;
+    bottom: 1.8rem;
+}

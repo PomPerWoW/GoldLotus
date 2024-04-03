@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prayers</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+
+        <!-- global style -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('global-static', path='/prayers.css') }}"
+    />
+    <link
+        rel="stylesheet"
+        href="{{ url_for('global-static', path='/general.css') }}"
+    />
+    <link
+        rel="stylesheet"
+        href="{{ url_for('global-static', path='/global-style.css') }}"
+    />
+    <link           
+        rel="stylesheet"
+        href="{{ url_for('global-static', path='/queries.css') }}"
+    />
+
+    <!-- local style -->
+    <link           
+        rel="stylesheet"
+        href="{{ url_for('prayer-static', path='/style.css') }}"
+    />
+
+</head>
+{% include "global-component/navbar.html" %}
+<body>
+    <div class="block">    
+        <div class="box__header ">
+            <div>Prayers</div>
+        </div>
+        <div class="box container">
+            <div style="color:darkgrey; border-bottom:1px solid darkgray; padding: 1.5rem 0 1.5rem 0;"> name</div>
+            <div class="prayer__name">บทสวดนมัสการบูชาพระรัตนตรัย</div>
+            <div class="prayer__name">บทสวดขอขมาพระรัตนตรัย</div>
+            <div class="prayer__name">บทสวดบูชาไตรสรณคมน์</div>
+            <div class="prayer__name">บทสวดแผ่เมตตาให้สรรพสัตว์</div>
+            <div class="prayer__name">บทสวดแผ่ส่วนบุญส่วนกุศล</div>
+            <div class="prayer__name">บทสวดกรวดน้ำ</div>
+            <div class="prayer__name">บทสวดบูชาพระรัตนตรัย</div>
+            <div class="prayer__name">บทสวดถวายดอกไม้ ธูปเทียน</div>
+            <div class="prayer__name">บทกล่าวถวายผ้าไตร</div>
+            <div class="prayer__name">บทกล่าวถวายพระพุทธรูป</div>
+            <div class="prayer__name">บทกล่าวถวายสังฆทาน</div>
+            <div class="prayer__name">บทกล่าวถวายผ้าป่า</div>
+        </div>
+    </div>
+    {% include "global-component/footer.html" %}
+</body>
+</html>
