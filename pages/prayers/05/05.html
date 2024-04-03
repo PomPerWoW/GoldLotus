@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Audio Player</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <link rel="stylesheet" href="{{ url_for('global-static', path='/prayers.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('global-static', path='/general.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('global-static', path='/global-style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('global-static', path='/queries.css') }}" />
+</head>
+
+{% include "global-component/navbar.html" %}
+
+<body>
+    <div class="block">
+        <div class="spine"></div>
+        <div class="box">
+            <div class="box__header">
+                <div>บทสวดแผ่ส่วนบุญส่วนกุศล</div>
+            </div>
+            <div class="box__body">
+                <div id="line1">
+                    อิทัง เม มาตาปิตูนัง โหตุ สุขิตา โหนตุ มาตาปิตะโร
+                    ขอส่วนบุญนี้จงสำเร็จแก่มารดา บิดาของข้าพเจ้า ขอให้มารดา บิดาของข้าพเจ้ามีความสุข
+                </div>
+                <div id="line2">
+                    อิทัง เม ญาตีนัง โหตุ สุขิตา โหนตุ ญาตะโย
+                    ขอส่วนบุญนี้จงสำเร็จแก่ญาติทั้งหลายของข้าพเจ้า ขอให้ญาติทั้งหลายของข้าพเจ้ามีความสุข
+                </div>
+                <div id="line3">
+                    อิทัง เม คุรูปัชฌายาจริยานัง โหตุ สุขิตา โหนตุ คุรูปัชฌายาจริยา
+                    ขอส่วนบุญนี้จงสำเร็จแก่ครูอุปัชฌาย์อาจารย์ของข้าพเจ้า ขอให้ครูอุปัชฌาย์อาจารย์ของข้าพเจ้ามีความสุข
+                </div>
+                <div id="line4">
+                    อิทัง สัพพะเทวะตานัง โหตุ สุขิตา โหนตุ สัพเพเทวา
+                    ขอส่วนบุญนี้จงสำเร็จแก่เทวดาทั้งหลายทั้งปวง ขอให้เทวดาทั้งหลายทั้งปวงมีความสุข
+                </div>
+                <div id="line5">
+                    อิทัง สัพพะเปตานัง โหตุ สุขิตา โหนตุ สัพเพ เปตา
+                    ขอส่วนบุญนี้จงสำเร็จแก่เปรตทั้งหลายทั้งปวง ขอให้เปรตทั้งหลายทั้งปวงมีความสุข
+                </div>
+                <div id="line6">
+                    อิทัง สัพพะเวรีนัง โหตุ สุขิตา โหนตุ สัพเพเวรี
+                    ขอส่วนบุญนี้จงสำเร็จแก่เจ้ากรรมนายเวรทั้งหลายทั้งปวง ขอให้เจ้ากรรมนายเวรทั้งหลายทั้งปวงมีความสุข
+                </div>
+                <div id="line7">
+                    อิทัง สัพพะสัตตานัง โหตุ สุขิตา โหนตุ สัพเพ สัตตา
+                    ขอส่วนบุญนี้จงสำเร็จแก่สัตว์ทั้งหลายทั้งปวง ขอให้สัตว์ทั้งหลายทั้งปวงมีความสุขทั่วหน้ากันเทอญ
+                </div>
+            </div>
+        </div>
+        <audio id="myAudio" controls class="tab_audio">
+            <source src="{{ url_for('prayers-static', path='/05/05.mp3') }}" type="audio/mpeg">
+        </audio>
+    </div>
+    {% include "global-component/footer.html" %}
+    <script type="py" src="{{ url_for('prayers-static', path='/05/pyscript.py') }}"></script>
+</body>
+
+</html>

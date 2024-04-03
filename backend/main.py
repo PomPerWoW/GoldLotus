@@ -53,6 +53,9 @@ app.mount("/setpassword-static",
 app.mount("/userinfo-static", 
           StaticFiles(directory="../pages/06-userinfo"), name="userinfo-static")
 
+app.mount("/prayers-static", 
+          StaticFiles(directory="../pages/prayers"), name="prayers-static")
+
 # =============================================================================
 
 # Templates
@@ -85,5 +88,69 @@ async def resetPasswordPage(request: Request, token: str):
 @app.get("/userInfo", response_class=HTMLResponse, tags=["website"])
 async def userInfoPage(request: Request):
     return pages.TemplateResponse("06-userinfo/userinfo.html", {"request": request})
+
+# =============================================================================
+
+
+# Prayers
+# =============================================================================
+
+@app.get("/prayers/01", response_class=HTMLResponse, tags=["prayers"])
+async def index(request: Request):
+    return pages.TemplateResponse("prayers/01/01.html", {"request": request})
+
+
+@app.get("/prayers/02", response_class=HTMLResponse, tags=["prayers"])
+async def index(request: Request):
+    return pages.TemplateResponse("prayers/02/02.html", {"request": request})
+
+
+@app.get("/prayers/03", response_class=HTMLResponse, tags=["prayers"])
+async def index(request: Request):
+    return pages.TemplateResponse("prayers/03/03.html", {"request": request})
+
+
+@app.get("/prayers/04", response_class=HTMLResponse, tags=["prayers"])
+async def index(request: Request):
+    return pages.TemplateResponse("prayers/04/04.html", {"request": request})
+
+
+@app.get("/prayers/05", response_class=HTMLResponse, tags=["prayers"])
+async def index(request: Request):
+    return pages.TemplateResponse("prayers/05/05.html", {"request": request})
+
+
+@app.get("/prayers/06", response_class=HTMLResponse, tags=["prayers"])
+async def index(request: Request):
+    return pages.TemplateResponse("prayers/06/06.html", {"request": request})
+
+@app.get("/prayers/07", response_class=HTMLResponse, tags=["prayers"])
+async def index(request: Request):
+    return pages.TemplateResponse("prayers/07/07.html", {"request": request})
+
+
+@app.get("/prayers/08", response_class=HTMLResponse, tags=["prayers"])
+async def index(request: Request):
+    return pages.TemplateResponse("prayers/08/08.html", {"request": request})
+
+
+@app.get("/prayers/09", response_class=HTMLResponse, tags=["prayers"])
+async def index(request: Request):
+    return pages.TemplateResponse("prayers/09/09.html", {"request": request})
+
+
+@app.get("/prayers/10", response_class=HTMLResponse, tags=["prayers"])
+async def index(request: Request):
+    return pages.TemplateResponse("prayers/10/10.html", {"request": request})
+
+
+@app.get("/prayers/11", response_class=HTMLResponse, tags=["prayers"])
+async def index(request: Request):
+    return pages.TemplateResponse("prayers/11/11.html", {"request": request})
+
+
+@app.get("/prayers/12", response_class=HTMLResponse, tags=["prayers"])
+async def index(request: Request):
+    return pages.TemplateResponse("prayers/12/12.html", {"request": request})
 
 # =============================================================================
