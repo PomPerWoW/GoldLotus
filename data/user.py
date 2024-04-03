@@ -17,7 +17,7 @@ class User(persistent.Persistent):
         self.userID = userID                            # str
         self.username = username
         self.email = email
-        self.__password = self.hashPassword(password)
+        self.__password = self.__hashPassword(password)
         self.blog = PersistentList()                    # Store as ID
         self.event = PersistentList()                   # Store as ID
         self.follower = PersistentList()                # Store as ID
@@ -43,16 +43,16 @@ class User(persistent.Persistent):
         if policy.test(password):
             raise ValueError("Invalid password format")
 
-    def hashPassword(self, password: str):  
+    def __hashPassword(self, password: str):  
         hash_algorithm = hashlib.new("SHA256") 
         hash_algorithm.update(password.encode())
         return hash_algorithm.hexdigest()
     
     def verifyPassword(self, password: str):
-        return True if self.hashPassword(password) == self.__password else False
+        return True if self.__hashPassword(password) == self.__password else False
 
     def changePassword(self, password: str):
-        self.__password = self.hashPassword(password)
+        self.__password = self.__hashPassword(password)
     
     def createBlog(self, blogID: int):
         self.blog.append(blogID)
