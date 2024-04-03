@@ -419,10 +419,9 @@
             </div>
         </div>
 
-        <script
-            type="py"
-            src="{{ url_for('blog-static', path='/pyscript.py') }}"
-        ></script>
+        <!-- Footer Section -->
+
+        {% include "global-component/footer.html" %}
 
         <!-- Global PyScript -->
         <script
@@ -431,6 +430,11 @@
         ></script>
 
         <!-- Local Pyscript -->
+
+        <script
+            type="py"
+            src="{{ url_for('blog-static', path='/pyscript.py') }}"
+        ></script>
 
         <script
             src="https://kit.fontawesome.com/1c7eef805a.js"
