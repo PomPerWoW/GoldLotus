@@ -48,6 +48,14 @@
 
         {% include "global-component/loader.html" %}
 
+        <div class="hidden blog__like--status-box" id="liked__box">
+            <p>Liked</p>
+        </div>
+
+        <div class="hidden blog__like--status-box" id="unliked__box">
+            <p>Unliked</p>
+        </div>
+
         <div class="hidden background__black--faded" id="error__box">
             <div class="container">
                 <div class="error__box">
@@ -77,25 +85,93 @@
 
         <div class="hidden background__black--faded" id="user__likes">
             <div class="container">
-                <div class="user__likes">
-                    <h2 class="user__likes--header heading-tertiary">Likes</h2>
-                    <div class="user__likes--body">
+                <div class="user__component">
+                    <h2 class="user__component--header heading-tertiary">
+                        Likes
+                    </h2>
+                    <div class="user__component--body"></div>
+                    <button class="user__component--btn" id="user__likes--btn">
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden background__black--faded" id="user__comments">
+            <div class="container">
+                <div class="user__component">
+                    <h2 class="user__component--header heading-tertiary">
+                        Comments
+                    </h2>
+                    <div
+                        class="user__component--body"
+                        id="user__component--body"
+                    >
+                        <div class="add__comment" id="add__comment">
+                            Add your comment
+                        </div>
                         <div
-                            class="user__likes--person"
-                            id="user__likes--person-1"
+                            class="hidden cancel__comment"
+                            id="cancel__comment"
                         >
-                            <div class="user__likes--left">
-                                <div class="user__likes--name">PomPer123</div>
-                                <div class="user__likes--follower">
-                                    xxxx follower
+                            Cancel
+                        </div>
+                        <div
+                            class="hidden user__comments--create"
+                            id="user__comments--create"
+                        >
+                            <div class="user__comments--name">
+                                Express your thought
+                            </div>
+                            <div class="user__comments--text">
+                                <textarea
+                                    id="user__comments--text-input"
+                                    name="Text..."
+                                    class="user__comments--text-input"
+                                    placeholder="Text..."
+                                    cols="30"
+                                    rows="2"
+                                ></textarea>
+                            </div>
+                            <div
+                                class="user__comments--comment-btn"
+                                id="user__comments--publish-btn"
+                            >
+                                Comment
+                            </div>
+                        </div>
+                        <div
+                            class="user__comments--person"
+                            id="user__comments--person-1"
+                        >
+                            <div class="user__comments--upper">
+                                <div class="user__comments--name">
+                                    PomPer123
+                                </div>
+                                <div class="user__comments--timestamp">
+                                    11 minutes ago
                                 </div>
                             </div>
-                            <div class="user__likes--follow-btn">
-                                <p>Follow</p>
+                            <div class="user__comments--text">
+                                <p>Amazing!</p>
+                            </div>
+                            <div class="user__comments--like">
+                                <i class="fa-solid fa-heart"></i>
+                                <span id="user__likes--count-1">0 likes</span>
+                            </div>
+                        </div>
+                        <div class="user__comments--person">
+                            <div class="user__comments--upper">
+                                <div class="user__comments--name">
+                                    No Comments.
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <button class="user__likes--btn" id="user__likes--btn">
+                    <button
+                        class="user__component--btn"
+                        id="user__comments--btn"
+                    >
                         Ok
                     </button>
                 </div>
@@ -290,7 +366,7 @@
                                 </div>
                             </div>
                             <div class="blog__communities--follow-btn">
-                                <a href="">Follow</a>
+                                <p>Follow</p>
                             </div>
                         </div>
                         <div class="blog__communities--people">
@@ -303,7 +379,7 @@
                                 </div>
                             </div>
                             <div class="blog__communities--follow-btn">
-                                <a href="">Follow</a>
+                                <p>Follow</p>
                             </div>
                         </div>
                         <div class="blog__communities--people">
@@ -316,7 +392,7 @@
                                 </div>
                             </div>
                             <div class="blog__communities--follow-btn">
-                                <a href="">Follow</a>
+                                <p>Follow</p>
                             </div>
                         </div>
                         <div class="blog__communities--people">
@@ -329,7 +405,7 @@
                                 </div>
                             </div>
                             <div class="blog__communities--follow-btn">
-                                <a href="">Follow</a>
+                                <p>Follow</p>
                             </div>
                         </div>
                     </div>
@@ -339,14 +415,6 @@
                         >
                     </div>
                 </div>
-            </div>
-
-            <div class="hidden blog__like--status-box" id="liked__box">
-                <p>Liked</p>
-            </div>
-
-            <div class="hidden blog__like--status-box" id="unliked__box">
-                <p>Unliked</p>
             </div>
         </div>
 

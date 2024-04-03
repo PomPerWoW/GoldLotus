@@ -29,6 +29,10 @@ class UserInfoWidget(AbstractWidget):
 
         self.userinfoUserHeader = document.querySelector(".userinfo__user--header")
         
+        # Logout
+        self.userinfoLogoutBtn = document.querySelector("#userinfo__logout--btn")
+        self.userinfoLogoutBtn.onclick = lambda e: self.logout(e)
+        
     async def onLoad(self):
         self.data = await self.getUserInfo()
         print(self.data)
@@ -46,6 +50,11 @@ class UserInfoWidget(AbstractWidget):
                 return data
         except Exception as e:
             print(e)
+    
+    def logout(self, event):
+        event.preventDefault()
+        document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+        window.location.href = "/"
 
     def loadUserInfoUser(self, userInfo):
         divFragment = document.createElement("div")

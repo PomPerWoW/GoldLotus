@@ -42,6 +42,10 @@ class UserWidget(AbstractWidget):
         if self.data.get('username'):
             self.navBoxGuest.classList.add("hidden")
             self.navBoxUser.classList.remove("hidden")
+            userGreeting = document.createElement("a")
+            userGreeting.href = "/userInfo"
+            userGreeting.innerHTML = f"{self.data.get('username')}"  
+            self.navBoxUser.appendChild(userGreeting)
         else:
             self.navBoxGuest.classList.remove("hidden")
             self.navBoxUser.classList.add("hidden")

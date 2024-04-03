@@ -442,8 +442,8 @@
     color: #616161;
 }
 
-.blog__communities--follow-btn a {
-    text-decoration: none;
+.blog__communities--follow-btn p {
+    cursor: pointer;
     background-color: #d9d9d9;
     border-radius: 2rem;
     padding: 1rem 2rem;
@@ -489,22 +489,22 @@
     background-color: #ad5757;
 }
 
-.user__likes {
+.user__component {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 36rem;
+    width: 40rem;
     height: 100%;
     border-radius: 2rem;
     background-color: #fff;
-    padding: 2.8rem;
+    padding: 3.2rem;
 }
 
-.user__likes--header {
+.user__component--header {
     text-align: center;
 }
 
-.user__likes--body {
+.user__component--body {
     margin-bottom: 4rem;
 }
 
@@ -512,6 +512,62 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.user__comments--person {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+    border-radius: 2rem;
+}
+
+.user__comments--create {
+    margin-bottom: 2rem;
+    padding: 1rem;
+}
+
+.user__likes--person:not(:last-child),
+.user__comments--person:not(:last-child) {
+    margin-bottom: 2rem;
+}
+
+.user__comments--person:hover {
+    box-shadow: 0 0.3rem 0.5rem 0.2rem rgb(0, 0, 0, 0.2);
+}
+
+.user__comments--upper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user__comments--text {
+    padding: 2rem 0;
+    font-size: 1.8rem;
+}
+
+.user__comments--text-input {
+    resize: none;
+    background: transparent;
+    border: 0;
+    outline: none;
+    color: #000;
+    font-size: 1.6rem;
+}
+
+.user__comments--like {
+    color: #616161;
+}
+
+.user__comments--like i {
+    cursor: pointer;
+    margin-right: 0.5rem;
+}
+
+.user__comments--like i:hover {
+    margin-right: 0.5rem;
+    color: #d8b778;
 }
 
 .user__likes--name {
@@ -530,9 +586,24 @@
     background-color: #f0cf95;
 }
 
-.user__likes--btn,
-.user__likes--btn:link,
-.user__likes--btn:visited {
+.add__comment,
+.cancel__comment {
+    padding: 1rem;
+    color: #4190c9;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.user__comments--comment-btn,
+.user__comments--comment-btn:link,
+.user__comments--comment-btn:visited {
+    cursor: pointer;
+    color: #4190c9;
+}
+
+.user__component--btn,
+.user__component--btn:link,
+.user__component--btn:visited {
     display: inline-block;
     text-transform: uppercase;
     text-decoration: none;

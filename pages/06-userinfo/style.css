@@ -30,3 +30,17 @@
 .userinfo--img {
     width: 15rem;
 }
+
+.userinfo__logout {
+    width: 10rem;
+    text-align: center;
+}
+
+.userinfo__logout--btn {
+    cursor: pointer;
+    padding: 1rem 2rem;
+    font-weight: 500;
+    border-radius: 2rem;
+    color: #fff;
+    background-color: #d8b778;
+}

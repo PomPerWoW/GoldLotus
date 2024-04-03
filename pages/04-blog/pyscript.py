@@ -125,10 +125,7 @@ class BlogWidget(AbstractWidget):
         if delElement:
             self.allFiles[indexToDelete] = 0
             delElement.parentNode.removeChild(delElement)
-            for i, v in enumerate(self.allFiles):
-                print(i, v, end="\n")
-                
-    
+            
     def displayFile(self, file):
         self.listSection.style.display = "flex"
         
@@ -179,8 +176,6 @@ class BlogWidget(AbstractWidget):
             if self.allFiles[i] != 0:
                 self.tempFiles.append(self.allFiles[i])
         self.allFiles = self.tempFiles
-        for i, v in enumerate(self.allFiles):
-            print(i, v, end="\n")
         del self.tempFiles
 
     async def uploadFile(self, event):
@@ -224,10 +219,7 @@ class BlogWidget(AbstractWidget):
         document.querySelector("#title").value = ""
         document.querySelector("#text").value = ""
         document.querySelector("#media").value = ""
-        self.allFiles = []
-        self.counter = 0
-        self.listSection.style.display = "none"
-        self.assetsList.innerHTML = ""
+        self.handleRemoveMediaBtn(event)
     
     def displayStatus(self, event):
         event.preventDefault()
@@ -250,6 +242,7 @@ class LoadBlogWidget(AbstractWidget):
         self.blogPost = document.querySelector("#blog__post--create")
         self.blogPostGuest = document.querySelector("#blog__post--guest")
         self.blogCommunities = document.querySelector("#blog__communities")
+        self.successBoxBtn = document.querySelector("#success__box--btn")
         
         # Pagination
         self.blogPagLatest = document.querySelector(".blog__pagination--latest")
@@ -267,6 +260,20 @@ class LoadBlogWidget(AbstractWidget):
 
         self.likedBox = document.querySelector("#liked__box")
         self.unLikedBox = document.querySelector("#unliked__box")
+
+        # Blog comment
+        self.userComments = document.querySelector("#user__comments")
+        self.addComments = document.querySelector("#add__comment")
+        self.cancelComments = document.querySelector("#cancel__comment")
+        self.userCommentCreate = document.querySelector("#user__comments--create")
+        self.userComponentBody = document.querySelector("#user__component--body")
+        self.userCommentOkBtn = document.querySelector("#user__comments--btn")
+        self.userCommentTextInput = document.querySelector("#user__comments--text-input")
+        self.userCommentsPublishBtn = document.querySelector("#user__comments--publish-btn")
+        
+        self.addComments.onclick = lambda _: self.showAddComments()
+        self.cancelComments.onclick = lambda _: self.showCancelComments()
+        self.userCommentOkBtn.onclick = lambda _: self.showOk()
 
     async def onLoad(self):
         self.data = await self.getUserInfo()
@@ -286,21 +293,22 @@ class LoadBlogWidget(AbstractWidget):
         self.removeBlogPosts()
         self.blogLists = await self.trackBlog()
         for i in range(self.blogLists.get("currentBlogID") - 1, 0, -1):
-            self.blogData = await self.loadBlog(i)
-            if self.blogData.get("detail") != "blog not found":
-                await self.createBlog(self.blogData)
+            # {'detail': 'blog not found'}
+            blogData = await self.loadBlog(i)
+            if blogData.get("detail") != "blog not found":
+                await self.createBlog(blogData)
     
     async def loadMyPost(self, event):
         if event:
             event.preventDefault()
         self.removeBlogPosts()
-        self.blogLists = self.data.get("blog").get("data")
+        userData = await self.getUserInfo()
+        self.blogLists = userData.get("blog").get("data")
         if self.blogLists:
             for i in range(len(self.blogLists) - 1, -1, -1):
-                self.blogData = await self.loadBlog(self.blogLists[i])
-                print(self.blogData)
-                if self.blogData.get("detail") != "blog not found":
-                    await self.createBlog(self.blogData)
+                blogData = await self.loadBlog(self.blogLists[i])
+                if blogData.get("detail") != "blog not found":
+                    await self.createBlog(blogData)
         
     async def getUserInfo(self):
         try:
@@ -458,6 +466,159 @@ class LoadBlogWidget(AbstractWidget):
         event.preventDefault()
         currentBlog = await self.loadBlog(blogID)
         print(currentBlog.get("like"))
+    
+    def showAddComments(self):
+        self.userCommentCreate.classList.remove("hidden")
+        self.addComments.classList.add("hidden")
+        self.cancelComments.classList.remove("hidden")
+        
+    def showCancelComments(self):
+        self.userCommentCreate.classList.add("hidden")
+        self.addComments.classList.remove("hidden")
+        self.cancelComments.classList.add("hidden")
+    
+    def showOk(self):
+        self.userComments.classList.add("hidden")
+        self.showCancelComments()
+    
+    async def listCommentUser(self, event, blogDataComment, blogID):
+        event.preventDefault()
+        self.userComments.classList.remove("hidden")
+        blogComments = document.querySelectorAll(".user__comments--person")
+        for post in blogComments:
+            post.parentNode.removeChild(post)
+        dataComment = blogDataComment.get("data")
+        self.userCommentsPublishBtn.onclick = lambda event: asyncio.ensure_future(self.publishComment(event, blogID))
+        for index, data in enumerate(dataComment):
+            userDetail = await self.getUserDetail(data.get("author"))
+            self.createComments(data, index, userDetail)
+    
+    def listNoComment(self, blogID):
+        self.userComments.classList.remove("hidden")
+        blogComments = document.querySelectorAll(".user__comments--person")
+        for post in blogComments:
+            post.parentNode.removeChild(post)
+        
+        self.userCommentsPublishBtn.onclick = lambda event: asyncio.ensure_future(self.publishComment(event, blogID))
+        
+        userCommentsNoComment = document.createElement("div")
+        userCommentsNoComment.classList.add("user__comments--person")
+
+        userCommentsUpper = document.createElement("div")
+        userCommentsUpper.classList.add("user__comments--upper")
+
+        userCommentsName = document.createElement("div")
+        userCommentsName.classList.add("user__comments--name")
+        userCommentsName.innerHTML = "No Comments."
+
+        userCommentsUpper.appendChild(userCommentsName)
+        userCommentsNoComment.appendChild(userCommentsUpper)
+        self.userComponentBody.appendChild(userCommentsNoComment)
+    
+    async def publishComment(self, event, blogID):
+        event.preventDefault()
+        commentText = self.userCommentTextInput.value
+        try:
+            response = await pyfetch(
+                url=f"/addReplyBlog/?blogID={blogID}&text={commentText}", 
+                method='POST',
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+                self.showCancelComments()
+                self.userCommentTextInput.value = ""
+                blogCommentsCount = document.querySelector(f"#blog__comments--count-{blogID}")
+                counter = blogCommentsCount.innerHTML.split()[0]
+                counterNew = int(counter) + 1
+                
+                blogCommentsCount.innerHTML = f"{counterNew} comments"
+                
+                self.likedBox.classList.remove("hidden")
+                await asyncio.sleep(2)
+                self.likedBox.classList.add("hidden")
+                
+                blogData = await self.loadBlog(blogID)
+                blogDataComment = blogData.get("reply")
+                
+                await self.listCommentUser(event, blogDataComment, blogID)
+                
+                return data
+        except Exception as e:
+            print(e)
+    
+    def createComments(self, commentData, commentID, userDetail):
+        # { commentData
+            # 'author': '0000000000000', 
+            # 'text': 'Amazing!', 
+            # 'edited': False, 
+            # 'timestamp': 
+            # '2024-04-02T00:47:39.119881', 
+            # 'like': {}
+            # }'
+        print(commentData, commentID)
+        
+        userCommentsPerson = document.createElement("div")
+        userCommentsPerson.classList.add("user__comments--person")
+        userCommentsPerson.id = f"user__comments--person-{commentID}"
+        
+        userCommentsUpper = document.createElement("div")
+        userCommentsUpper.classList.add("user__comments--upper")
+        
+        userCommentsName = document.createElement("div")
+        userCommentsName.classList.add("user__comments--name")
+        userCommentsName.innerHTML = f"{userDetail.get('username')}"
+
+        userCommentsTimestamp = document.createElement("div")
+        userCommentsTimestamp.classList.add("user__comments--timestamp")
+        
+        timestampObj = datetime.fromisoformat(commentData.get('timestamp'))
+        current_time = datetime.now()
+        time_difference = current_time - timestampObj
+        days = time_difference.days
+        hours, remainder = divmod(time_difference.seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        
+        if days == 0:
+            if hours == 0:
+                if minutes == 0:
+                    userCommentsTimestamp.innerHTML = f"{seconds} {'seconds' if seconds > 1 else 'second'} ago"
+                else:
+                    userCommentsTimestamp.innerHTML = f"{minutes} {'minutes' if minutes > 1 else 'minute'} ago"
+            else:
+                userCommentsTimestamp.innerHTML = f"{hours} {'hours' if hours > 1 else 'hour'} ago"
+        else:
+            userCommentsTimestamp.innerHTML = f"{days} {'days' if days > 1 else 'day'} ago"
+        
+        userCommentsUpper.appendChild(userCommentsName)
+        userCommentsUpper.appendChild(userCommentsTimestamp)
+
+        userCommentsText = document.createElement("div")
+        userCommentsText.classList.add("user__comments--text")
+        
+        text = document.createElement("p")
+        text.innerHTML = f"{commentData.get('text')}"
+
+        userCommentsText.appendChild(text)
+
+        userCommentsLike = document.createElement("div")
+        userCommentsLike.classList.add("user__comments--like")
+
+        likeIcon = document.createElement("i")
+        likeIcon.classList.add("fa-solid", "fa-heart")
+
+        likeSpan = document.createElement("span")
+        likeSpan.id = f"comment__likes--count-{commentID}"
+        likeSpan.innerHTML = "0 likes"
+
+        userCommentsLike.appendChild(likeIcon)
+        userCommentsLike.appendChild(likeSpan)
+
+        userCommentsPerson.appendChild(userCommentsUpper)
+        userCommentsPerson.appendChild(userCommentsText)
+        userCommentsPerson.appendChild(userCommentsLike)
+        
+        self.userComponentBody.appendChild(userCommentsPerson)
             
     async def createBlog(self, blogData):
         self.createLoad()
@@ -574,16 +735,30 @@ class LoadBlogWidget(AbstractWidget):
         blogPostComment = document.createElement("div")
         blogPostComment.classList.add("blog__post--comment", "blog__post--footer-btn")
         blogPostComment.id = f"blog__post--comment"
+        
+        blogDataComment = blogData.get("reply")
 
         iconComment = document.createElement("i")
-        iconComment.classList.add("fa-solid", "fa-comment")
-
+        iconComment.id = f"blog__likes--icon-{blogID}"
+                
+        if not self.data.get("detail"):
+            iconComment.classList.add("fa-solid", "fa-comment")
+            if blogDataComment.get("data"):
+                iconComment.onclick = lambda event: asyncio.ensure_future(self.listCommentUser(event, blogDataComment, blogID))
+            else:
+                iconComment.onclick = lambda _: self.listNoComment(blogID)
+                        
         blogPostComment.appendChild(iconComment)
+        
+        commentText = document.createElement("span")
+        commentText.id = f"blog__comments--count-{blogID}"
+        
         blogPostReplyCount = blogData.get("reply")
         if blogPostReplyCount.get("data"):
-            commentText = document.createTextNode(f"{len(blogPostReplyCount.get('data'))} comments")
+            commentText.innerHTML = f"{len(blogPostReplyCount.get('data'))} comments"
         else:
-            commentText = document.createTextNode(f"0 comment")
+            commentText.innerHTML = "0 comment"
+
         blogPostComment.appendChild(commentText)
 
         blogPostFooter.appendChild(blogPostLike)
@@ -597,7 +772,6 @@ class LoadBlogWidget(AbstractWidget):
         
         elementLoader = document.querySelector(".element__loader--box")
         self.blogPostBox.removeChild(elementLoader)
-
 
 if __name__ == "__main__":
     w = BlogWidget("blog")
