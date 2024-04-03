@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <!-- Shortcut Icon -->
         <link
@@ -11,19 +12,10 @@
             href="../../assets/icons/logo.svg"
         />
 
-        <!-- Global CSS -->
-        <link
-            rel="stylesheet"
-            href="{{ url_for('global-static', path='/general.css') }}"
-        />
-        <link
-            rel="stylesheet"
-            href="{{ url_for('global-static', path='/global-style.css') }}"
-        />
-        <link
-            rel="stylesheet"
-            href="{{ url_for('global-static', path='/queries.css') }}"
-        />
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="{{ url_for('global-static', path='/general.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('global-static', path='/global-style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('global-static', path='/queries.css') }}" />
 
         <!-- Local CSS -->
         <link
@@ -41,18 +33,33 @@
             src="https://pyscript.net/releases/2024.1.1/core.js"
         ></script>
 
-        <title>GoldLotus</title>
-    </head>
-    <body>
-        <!-- Loader Section -->
+    <title>GoldLotus</title>
+</head>
 
-        {% include "global-component/loader.html" %}
+<body>
+    <!-- Loader Section -->
+    <!-- 
+        <div class="loader">
+            <div class="loader__box">
+                <span class="loader__dot"></span>
+                <div class="loader__dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </div>
 
-        <!-- Navigation Section -->
+    {% include "global-component/loader.html" %} -->
 
-        {% include "global-component/navbar.html" %}
+    <!-- Navigation Section -->
 
-        <!-- Hero Section -->
+    {% include "global-component/navbar.html" %}
+
+
+    <!-- Hero Section -->
+    <div class="gradient-bgdown">
         <div class="container">
             <section class="hero">
                 <div class="hero__text">
@@ -64,70 +71,160 @@
                         of Buddha.
                     </p>
                 </div>
-                <img
-                    class="hero__image"
-                    src="{{ url_for('assets-static', path='/images/buddha-statue-1.jpg') }}"
-                    alt="logo"
-                />
-            </section>
-        </div>
-
-        <!-- Info Section -->
-        <div class="container">
-            <section class="info">
-                <div class="row">
-                    <div class="serviceBox">
-                        <h3 class="subheading">Service box</h3>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Suspendisse eget dui lectus. Phasellus quis
-                            orci at eros euismod suscipit vitae sed lacus.
-                            Curabitur eu tincidunt mauris, eleifend feugiat
-                            lacus. Morbi vel ipsum elit. Maecenas et eros velit.
-                            Ut sit amet tristique sapien. Nulla et lectus eu
-                            velit hendrerit mollis in quis arcu. Aenean accumsan
-                            lacus massa, 
-                        </p>
-                    </div>
-                    <div class="serviceBox">
-                        <h3 class="subheading">Service box</h3>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Suspendisse eget dui lectus. Phasellus quis
-                            orci at eros euismod suscipit vitae sed lacus.
-                            Curabitur eu tincidunt mauris, eleifend feugiat
-                            lacus. Morbi vel ipsum elit. Maecenas et eros velit.
-                            Ut sit amet tristique sapien. Nulla et lectus eu
-                            velit hendrerit mollis in quis arcu. Aenean accumsan
-                            lacus massa, 
-                        </p>
-                    </div>
-                    <div class="serviceBox">
-                        <h3 class="subheading">Service box</h3>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Suspendisse eget dui lectus. Phasellus quis
-                            orci at eros euismod suscipit vitae sed lacus.
-                            Curabitur eu tincidunt mauris, eleifend feugiat
-                            lacus. Morbi vel ipsum elit. Maecenas et eros velit.
-                            Ut sit amet tristique sapien. Nulla et lectus eu
-                            velit hendrerit mollis in quis arcu. Aenean accumsan
-                            lacus massa, 
-                        </p>
+                <div class="hero__slide ">
+                    <div class="slider">
+                        <img class="hero__image"
+                            src="{{ url_for('assets-static', path='/images/buddha-statue-1.jpg') }}" alt="logo" />
+                        <img class="hero__image"
+                            src="{{ url_for('assets-static', path='/images/buddha-statue-2.jpg') }}" alt="logo" />
                     </div>
                 </div>
-            </section>
+        </div>
+        </section>
+    </div>
+    </div>
+
+    <!-- Info Section -->
+    <div class="container">
+        <section class="info">
+            <div class="row">
+                <div class="serviceBox">
+                    <h3 class="subheading">Service box</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit. Suspendisse eget dui lectus. Phasellus quis
+                        orci at eros euismod suscipit vitae sed lacus.
+                        Curabitur eu tincidunt mauris, eleifend feugiat
+                        lacus. Morbi vel ipsum elit. Maecenas et eros velit.
+                        Ut sit amet tristique sapien. Nulla et lectus eu
+                        velit hendrerit mollis in quis arcu. Aenean accumsan
+                        lacus massa, 
+                    </p>
+                </div>
+                <div class="serviceBox">
+                    <h3 class="subheading">Service box</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit. Suspendisse eget dui lectus. Phasellus quis
+                        orci at eros euismod suscipit vitae sed lacus.
+                        Curabitur eu tincidunt mauris, eleifend feugiat
+                        lacus. Morbi vel ipsum elit. Maecenas et eros velit.
+                        Ut sit amet tristique sapien. Nulla et lectus eu
+                        velit hendrerit mollis in quis arcu. Aenean accumsan
+                        lacus massa, 
+                    </p>
+                </div>
+                <div class="serviceBox">
+                    <h3 class="subheading">Service box</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing
+                        elit. Suspendisse eget dui lectus. Phasellus quis
+                        orci at eros euismod suscipit vitae sed lacus.
+                        Curabitur eu tincidunt mauris, eleifend feugiat
+                        lacus. Morbi vel ipsum elit. Maecenas et eros velit.
+                        Ut sit amet tristique sapien. Nulla et lectus eu
+                        velit hendrerit mollis in quis arcu. Aenean accumsan
+                        lacus massa, 
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- event section -->
+    <section class="event">
+        <div class="evetnblock">
+            <img class="event_image" src="{{ url_for('assets-static', path='/images/event1.jpg') }}" alt="event" />
+        </div>
+        <div class="eventblock">
+            <div class="event_coloumn">
+                <h2>Next Event, Makha Bucha Day</h2>
+                <br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Suspendisse eget dui lectus. Phasellus quis orci at eros
+                    euismod suscipit vitae sed lacus. Curabitur eu tincidunt mauris,
+                    eleifend feugiat lacus. Morbi vel ipsum elit. Maecenas et eros velit.
+                    Ut sit amet tristique sapien. Nulla et lectus eu velit hendrerit mollis
+                    in quis arcu. Aenean accumsan lacus massa, </p>
+                <br>
+                <div class="event_btn">
+                    <button type="seemore" class="btn">see more</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="gradient-bgup"></div>
+    <!-- community blog section -->
+    <section class="show_blog">
+        <div class="text_">
+            <h2>Latest Community Blog</h2>
+        </div>
+        <div class="blog_block">
+            <div class="blog_message">
+                <div class="message" id="latestBlog1">
+                    <p>Loading..</p>
+                </div>
+                <div class="blog_profile">
+                    <div class="name">
+                        <h3 id="latestAuthor1">Loading..</h3>
+                        <p id="latestDate1">Loading..</p>
+
+                    </div>
+                    <img class="blog_image1" src="{{ url_for('assets-static', path='/images/profile-1.jpg') }}"
+                        alt="commu-profile" />
+                </div>
+            </div>
+        </div>
+        <div class="blog_block">
+            <div class="blog_message">
+
+                <div class="message" id="latestBlog2">
+                    <p>Loading..</p>
+                </div>
+                <div class="blog_profile">
+                    <div class="name">
+                        <h3 id="latestAuthor2">Loading..</h3>
+                        <p id="latestDate2">Loading..</p>
+
+                    </div>
+                    <img class="blog_image1" src="{{ url_for('assets-static', path='/images/profile-1.jpg') }}"
+                        alt="commu-profile" />
+                </div>
+            </div>
+        </div>
+        <div class="invite">
+            <div class="join-left">
+                <div class="join_head">
+                    <h4>Join our </h4>
+                    <h4>community Blog</h4>
+                    <br>
+                    <p>Explore serenity in our Buddhism blog, where ancient wisdom meets modern seekers. Join us on the
+                        path to mindfulness, compassion, and enlightenment.</p>
+
+                </div>
+                <button type="join" class="join-btn">click to join</button>
+            </div>
+            <div class="join-right">
+                <img class="group-pic" src="{{ url_for('assets-static', path='/images/commupic1.png') }}"
+                    alt="group-commu" />
+            </div>
+        </div>
+    </section>
+
+    <section class="calendar">
+        <div class="container">
+            <h2>Buddhism Calendar</h2>
+            <div class="calendar-block">
+                <iframe
+                    src="https://calendar.google.com/calendar/embed?src=n7kthnfuc8uldm955sfkpjt244%40group.calendar.google.com&ctz=America%2FNew_York"
+                    style="border: 0" width="1100" height="600" frameborder="0" scrolling="no"></iframe>
+            </div>
         </div>
 
-        <script
-            src="https://kit.fontawesome.com/1c7eef805a.js"
-            crossorigin="anonymous"
-        ></script>
+    </section>
+    {% include "global-component/footer.html" %}
+    <script src="https://kit.fontawesome.com/1c7eef805a.js" crossorigin="anonymous"></script>
+    <script type="py" src="{{ url_for('main-static', path='/pyscript.py') }}"></script>
+</body>
 
-        <!-- Global PyScript -->
-        <script
-            type="py"
-            src="{{ url_for('global-static', path='/pyscript.py') }}"
-        ></script>
-    </body>
 </html>
