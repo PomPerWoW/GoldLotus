@@ -243,6 +243,8 @@ class LoadBlogWidget(AbstractWidget):
         self.blogPostGuest = document.querySelector("#blog__post--guest")
         self.blogCommunities = document.querySelector("#blog__communities")
         self.successBoxBtn = document.querySelector("#success__box--btn")
+        self.currentLatestBlogIDSaved = 0
+        self.currentMyPostBlogIDSaved = 0
         
         # Pagination
         self.blogPagLatest = document.querySelector(".blog__pagination--latest")
@@ -287,29 +289,85 @@ class LoadBlogWidget(AbstractWidget):
         for post in blogPosts:
             post.parentNode.removeChild(post)
     
-    async def loadLatest(self, event=None):
+    async def loadLatest(self, event=None, viewMore=False, notView=True):
         if event:
             event.preventDefault()
-        self.removeBlogPosts()
+        
+        if not viewMore:
+            self.removeBlogPosts()
+        
+        if notView:
+            self.currentLatestBlogIDSaved = 0
+
+        viewMoreElement = document.querySelector("#blog__readmore-btn")
+        if viewMoreElement:
+            viewMoreElement.parentNode.removeChild(viewMoreElement)
+
         self.blogLists = await self.trackBlog()
-        for i in range(self.blogLists.get("currentBlogID") - 1, 0, -1):
-            # {'detail': 'blog not found'}
-            blogData = await self.loadBlog(i)
+        counter = 0
+        currentBlogID = self.currentLatestBlogIDSaved if self.currentLatestBlogIDSaved != 0 else self.blogLists.get("currentBlogID") - 1
+
+        while counter < 10 and currentBlogID != 0:
+            blogData = await self.loadBlog(currentBlogID)
             if blogData.get("detail") != "blog not found":
                 await self.createBlog(blogData)
-    
-    async def loadMyPost(self, event):
+                counter += 1
+            currentBlogID -= 1
+
+        self.currentLatestBlogIDSaved = currentBlogID
+        
+        if currentBlogID != 0 and self.currentLatestBlogIDSaved != 0:
+            self.createViewMore("loadLatest")
+                    
+    async def loadMyPost(self, event, viewMore=False, notView = True):
         if event:
             event.preventDefault()
-        self.removeBlogPosts()
+            
+        if viewMore == False:
+            self.removeBlogPosts()
+        
+        if notView:
+            self.currentMyPostBlogIDSaved = 0
+        
+        viewMoreElement = document.querySelector("#blog__readmore-btn")
+        if viewMoreElement:
+            viewMoreElement.parentNode.removeChild(viewMoreElement)
+            
         userData = await self.getUserInfo()
-        self.blogLists = userData.get("blog").get("data")
-        if self.blogLists:
-            for i in range(len(self.blogLists) - 1, -1, -1):
-                blogData = await self.loadBlog(self.blogLists[i])
+        self.blogLists = userData.get("blog")
+        if self.blogLists.get("data"):
+            blogListsData = self.blogLists.get("data")
+            counter = 0
+            currentBlogID = self.currentMyPostBlogIDSaved if self.currentMyPostBlogIDSaved != 0 else len(blogListsData)
+
+            while counter < 10 and currentBlogID != 0:
+                blogData = await self.loadBlog(blogListsData[currentBlogID - 1])
                 if blogData.get("detail") != "blog not found":
                     await self.createBlog(blogData)
+                    counter += 1
+                currentBlogID -= 1
+
+            self.currentMyPostBlogIDSaved = currentBlogID
+            
+            if currentBlogID != 0 and self.currentMyPostBlogIDSaved != 0:
+                self.createViewMore("loadMyPost")
+
+    def createViewMore(self, blogType):
+        viewMore = document.createElement("div")
+        viewMore.id = "blog__readmore-btn"
+        viewMore.classList.add("blog__readmore-btn")
         
+        viewMoreBtn = document.createElement("p")
+        viewMoreBtn.innerHTML = "View More"
+        if blogType == "loadLatest":
+            viewMoreBtn.onclick = lambda event: asyncio.ensure_future(self.loadLatest(event, True, False))
+        elif blogType == "loadMyPost":
+            viewMoreBtn.onclick = lambda event: asyncio.ensure_future(self.loadMyPost(event, True, False))
+        
+        viewMore.appendChild(viewMoreBtn)
+        
+        self.blogPostBox.appendChild(viewMore)
+
     async def getUserInfo(self):
         try:
             response = await pyfetch(
@@ -534,14 +592,14 @@ class LoadBlogWidget(AbstractWidget):
                 
                 blogCommentsCount.innerHTML = f"{counterNew} comments"
                 
-                self.likedBox.classList.remove("hidden")
-                await asyncio.sleep(2)
-                self.likedBox.classList.add("hidden")
-                
                 blogData = await self.loadBlog(blogID)
                 blogDataComment = blogData.get("reply")
                 
                 await self.listCommentUser(event, blogDataComment, blogID)
+                
+                self.likedBox.classList.remove("hidden")
+                await asyncio.sleep(2)
+                self.likedBox.classList.add("hidden")
                 
                 return data
         except Exception as e:
@@ -772,6 +830,16 @@ class LoadBlogWidget(AbstractWidget):
         
         elementLoader = document.querySelector(".element__loader--box")
         self.blogPostBox.removeChild(elementLoader)
+
+    def createMembers(self, memberID):
+        pass
+
+    def follow(self, userID):
+        # 01042024000001
+        # 03042024000002
+        # 03042024000003
+        # 03042024000004
+        pass
 
 if __name__ == "__main__":
     w = BlogWidget("blog")

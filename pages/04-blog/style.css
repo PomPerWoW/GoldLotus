@@ -420,8 +420,8 @@
 }
 
 .blog__communities--btn {
+    cursor: pointer;
     color: #4190c9;
-    text-decoration: none;
 }
 
 .blog__communities--people {
@@ -452,17 +452,23 @@
 
 /* Read more btn */
 .blog__readmore-btn {
+    cursor: pointer;
     align-self: center;
     margin-top: 4rem;
     padding-bottom: 8rem;
 }
 
-.blog__readmore-btn a {
+.blog__readmore-btn p {
     padding: 1rem 2rem;
     border-radius: 4rem;
-    text-decoration: none;
     color: #000;
     border: 0.2rem solid #000;
+    transition: all 0.2s;
+}
+
+.blog__readmore-btn:hover p {
+    color: #fff;
+    background-color: #000;
 }
 
 .blog__like--status {
