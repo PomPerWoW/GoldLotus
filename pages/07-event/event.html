@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- Shortcut Icon -->
+        <link
+            rel="shortcut icon"
+            type="image/png"
+            href="../../00-assets/icons/logo.svg"
+        />
+
+        <!-- Global CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/general.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/global-style.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/queries.css') }}"
+        />
+
+        <!-- Local CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('blog-static', path='/style.css') }}"
+        />
+
+        <title>event</title>
+    </head>
+    <body>
+    
+      <!-- Navigation Section -->
+
+      {% include "global-component/navbar.html" %}
+
+      <!-- Blog Section -->
+ <!-- Blog Section -->
+      <div class="container">
+          <div class="blog__pagination">
+              <div
+                  class="blog__pagination--element"
+                  id="blog__pagination--post"
+              >
+                  <p>Posts</p>
+              </div>
+              <div
+                  class="blog__pagination--element"
+                  id="blog__pagination--latest"
+              >
+                  <p>Latest</p>
+              </div>
+              <div
+                  class="blog__pagination--element"
+                  id="blog__pagination--popular"
+              >
+                  <p>Popular</p>
+              </div>
+              <div
+                  class="blog__pagination--element"
+                  id="blog__pagination--mypost"
+              >
+                  <p>My posts</p>
+              </div>
+              <div class="blog__search">
+                  <input type="text" placeholder="Search" />
+                  <a href="">
+                      <i class="fa-solid fa-magnifying-glass"></i>
+                  </a>
+              </div>
+          </div>
+          <div  class="blog__pagination blog__sub">
+              <div
+                  class="blog__pagination--element"
+                  id="blog__pagination--mypost"
+              >
+                  <p>Attending</p>
+              </div>
+              <div
+                  class="blog__pagination--element"
+                  id="blog__pagination--mypost"
+              >
+                  <p>Maybe</p>
+              </div>
+              <div
+                  class="blog__pagination--element"
+                  id="blog__pagination--mypost"
+              >
+                  <p>Not Attending</p>
+              </div>
+          </div>   
+
+          <div class="blog">
+              <div class="blog__post--box">
+                  <div class="blog__post" id="blog__post--create">
+                      <div class="blog__create-post--header">
+                          <p>Create your own post</p>
+                      </div>
+                      <div class="blog__create-post--field">
+                          <div>
+                              <input
+                                  type="text"
+                                  placeholder="Title"
+                                  class="blog__create-post--title"
+                              />
+                          </div>
+                          <div class="blog__create-post--message">
+                              <textarea
+                                  name="insert message..."
+                                  class="blog__create-post--message"
+                                  placeholder="insert messages..."
+                                  cols="60"
+                                  rows="5"
+                              ></textarea>
+                          </div>
+                          <div class="blog__create-post--assets">
+                              <div class="blog__create-post--assets-header">
+                                  <h1>Upload Files</h1>
+                                  <p>
+                                      Upload images and videos to express your
+                                      mind.
+                                  </p>
+                                  <p>PNG, JPG, and MP4 are allowed.</p>
+                              </div>
+                              <div
+                                  class="blog__create-post--assets-draganddrop"
+                              >
+                                  <div class="col">
+                                      <div class="cloud-icon">
+                                          <i class="fa-solid fa-cloud"></i>
+                                      </div>
+                                      <span>Drag & Drog your files here</span>
+                                      <span>OR</span>
+                                      <button
+                                          class="blog__create-post--assets-btn-selector"
+                                      >
+                                          Browse Files
+                                      </button>
+                                      <input
+                                          type="file"
+                                          class="blog__create-post--assets-btn-input"
+                                          multiple
+                                      />
+                                  </div>
+                                  <div class="col">
+                                      <div class="drop-here">Drop Here</div>
+                                  </div>
+                              </div>
+                              <div class="blog__create-post--assets-list">
+                                  <div
+                                      class="blog__create-post--assets-list-title"
+                                  >
+                                      <div class="assets-list-title">
+                                          Upload Files
+                                      </div>
+                                      <div class="list">
+                                          <li class="in-prog">
+                                              <div class="col">
+                                                  <i
+                                                      class="fa-solid fa-file"
+                                                  ></i>
+                                              </div>
+                                              <div class="col">
+                                                  <div class="file-name">
+                                                      <div class="name">
+                                                          File Name Here
+                                                      </div>
+                                                      <span>50%</span>
+                                                  </div>
+                                                  <div class="file-progress">
+                                                      <span></span>
+                                                  </div>
+                                                  <div class="file-size">
+                                                      2.2 MB
+                                                  </div>
+                                              </div>
+                                              <div class="col">
+                                                  <i
+                                                      class="fa-solid fa-xmark cross"
+                                                  ></i>
+                                                  <i
+                                                      class="fa-solid fa-check tick"
+                                                  ></i>
+                                              </div>
+                                          </li>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="blog__post--footer">
+                          <div class="blog__create-post--btn">
+                              <a href="">Create</a>
+                          </div>
+                          <div class="blog__create-post--btn">
+                              <a href="">Reset</a>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="blog__post">
+                      <div class="blog__post--header">
+                          <div class="blog__post--username">John Doe</div>
+                          <div class="blog__post--posted">
+                              Posted by John Doe
+                          </div>
+                          <div class="blog__post--timestamp">11 mins ago</div>
+                      </div>
+                      <div class="blog__post--field">
+                          <div class="blog__post--title"><h3>Hello</h3></div>
+                          <div class="blog__post--message">
+                              <p>
+                                  Lorem, ipsum dolor sit amet consectetur
+                                  adipisicing elit. Voluptatem delectus ullam
+                                  sit quae error modi animi nostrum. Ducimus
+                                  odio ipsam est a. Veritatis perferendis at
+                                  sint cupiditate, expedita consequatur sunt
+                                  aperiam sapiente maxime beatae fugit
+                                  quisquam nemo voluptas alias aliquam rem
+                                  repudiandae itaque veniam delectus, tempora
+                                  officia debitis? Repellendus, deleniti?
+                              </p>
+                          </div>
+                          <div class="blog__post--assets"></div>
+                      </div>
+                      <div class="blog__post--footer">
+                          <div><i class="fa-solid fa-eye"></i>attend</div>
+                          <div><i class="fa-solid fa-eye-low-vision"></i>maybe</div>
+                          <div><i class="fa-solid fa-eye-slash"></i>not attending</div>
+                          <div class="blog__post--comment">
+                              <i class="fa-solid fa-comment"></i>21 comments
+                          </div>
+                      </div>
+                  </div>
+                  <div class="blog__post">
+                      <div class="blog__post--header">
+                          <div class="blog__post--username">John Doe</div>
+                          <div class="blog__post--posted">
+                              Posted by John Doe
+                          </div>
+                          <div class="blog__post--timestamp">11 mins ago</div>
+                      </div>
+                      <div class="blog__post--field">
+                          <div class="blog__post--title"><h3>Hello</h3></div>
+                          <div class="blog__post--message">
+                              <p>
+                                  Lorem ipsum, dolor sit amet consectetur
+                                  adipisicing elit. Tempore, molestiae, beatae
+                                  alias officiis qui assumenda laborum, ullam
+                                  explicabo quasi animi ipsam distinctio illo
+                                  aperiam temporibus.
+                              </p>
+                          </div>
+                          <div class="blog__post--assets"></div>
+                      </div>
+                      <div class="blog__post--footer">
+                          <div><i class="fa-solid fa-eye"></i>attend</div>
+                          <div><i class="fa-solid fa-eye-low-vision"></i>maybe</div>
+                          <div><i class="fa-solid fa-eye-slash"></i>not attending</div>
+                          <div class="blog__post--comment">
+                              <i class="fa-solid fa-comment"></i>21 comments
+                          </div>
+                      </div>
+                  </div>
+                  <div class="blog__post">
+                      <div class="blog__post--header">
+                          <div class="blog__post--username">John Doe</div>
+                          <div class="blog__post--posted">
+                              Posted by John Doe
+                          </div>
+                          <div class="blog__post--timestamp">11 mins ago</div>
+                      </div>
+                      <div class="blog__post--field">
+                          <div class="blog__post--title"><h3>Hello</h3></div>
+                          <div class="blog__post--message">
+                              <p>
+                                  Lorem ipsum dolor sit amet consectetur
+                                  adipisicing elit. Rerum minima possimus
+                                  fugiat distinctio nemo, repellendus aliquid
+                                  consequatur doloremque tempore eius, sunt
+                                  libero ab ut temporibus eum dignissimos
+                                  minus consequuntur? Provident quia natus
+                                  cupiditate voluptatem ea suscipit, esse
+                                  illum excepturi est perferendis ab tempora
+                                  similique repellat odit, beatae nobis earum!
+                                  Qui quidem non sed quis ipsa rem modi
+                                  veritatis, praesentium aspernatur magni sint
+                                  consequatur velit. Dolores porro corrupti
+                                  odit nulla nesciunt ipsum animi earum. Earum
+                                  a assumenda repudiandae ad perspiciatis
+                                  beatae suscipit illo reiciendis, vero atque
+                                  ut repellat labore autem aut cupiditate!
+                                  Quae, exercitationem! Deserunt, architecto!
+                                  Nostrum soluta accusantium sequi. Dicta.
+                              </p>
+                          </div>
+                          <div class="blog__post--assets">
+                              <img
+                                  src="{{ url_for('assets-static', path='/images/buddha-statue-1.jpg') }}"
+                                  alt=""
+                              />
+                              <img
+                                  src="{{ url_for('assets-static', path='/images/buddha-statue-1.jpg') }}"
+                                  alt=""
+                              />
+                              <img
+                                  src="{{ url_for('assets-static', path='/images/buddha-statue-1.jpg') }}"
+                                  alt=""
+                              />
+                              <img
+                                  src="{{ url_for('assets-static', path='/images/buddha-statue-1.jpg') }}"
+                                  alt=""
+                              />
+                              <video height="240" controls>
+                                  <source src="movie.mp4" type="video/mp4" />
+                              </video>
+                          </div>
+                      </div>
+                      <div class="blog__post--footer">
+                          <div><i class="fa-solid fa-eye"></i>attend</div>
+                          <div><i class="fa-solid fa-eye-low-vision"></i>maybe</div>
+                          <div><i class="fa-solid fa-eye-slash"></i>not attending</div>
+                          <div class="blog__post--comment">
+                              <i class="fa-solid fa-comment"></i>21 comments
+                          </div>
+                      </div>
+                  </div>
+                  <div class="blog__readmore-btn">
+                      <a href="">Read more posts</a>
+                  </div>
+              </div>
+              <div class="blog__communities">
+                  <div class="blog__communities--header">
+                      GoldLotus members
+                  </div>
+                  <div class="blog__communities--list">
+                      <div class="blog__communities--people">
+                          <div class="blog__communities--details">
+                              <div class="blog__communities--name">
+                                  John Doe
+                              </div>
+                              <div class="blog__communities--follower">
+                                  xxxx follower
+                              </div>
+                          </div>
+                          <div class="blog__communities--follow-btn">
+                              <a href="">Follow</a>
+                          </div>
+                      </div>
+                      <div class="blog__communities--people">
+                          <div class="blog__communities--details">
+                              <div class="blog__communities--name">
+                                  John Doe
+                              </div>
+                              <div class="blog__communities--follower">
+                                  xxxx follower
+                              </div>
+                          </div>
+                          <div class="blog__communities--follow-btn">
+                              <a href="">Follow</a>
+                          </div>
+                      </div>
+                      <div class="blog__communities--people">
+                          <div class="blog__communities--details">
+                              <div class="blog__communities--name">
+                                  John Doe
+                              </div>
+                              <div class="blog__communities--follower">
+                                  xxxx follower
+                              </div>
+                          </div>
+                          <div class="blog__communities--follow-btn">
+                              <a href="">Follow</a>
+                          </div>
+                      </div>
+                      <div class="blog__communities--people">
+                          <div class="blog__communities--details">
+                              <div class="blog__communities--name">
+                                  John Doe
+                              </div>
+                              <div class="blog__communities--follower">
+                                  xxxx follower
+                              </div>
+                          </div>
+                          <div class="blog__communities--follow-btn">
+                              <a href="">Follow</a>
+                          </div>
+                      </div>
+                  </div>
+                  <div>
+                      <a href="" class="blog__communities--btn">
+                          see more members</a
+                      >
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <script
+          src="https://kit.fontawesome.com/1c7eef805a.js"
+          crossorigin="anonymous"
+      ></script>
+  </body>
+</html>

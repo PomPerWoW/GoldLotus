@@ -33,7 +33,7 @@
 
         <title>GoldLotus</title>
     </head>
-    <body>
+    <body style="background-color: #FFF9E8;">
         <!-- Navigation Section -->
 
         {% include "global-component/navbar.html" %}
@@ -42,33 +42,96 @@
         <div class="container">
             <div class="userinfo">
                 <div class="userinfo__info">
-                    <div class="userinfo__info--user-header">
-                        <img
-                            class="userinfo__info--img"
-                            src="{{ url_for('assets-static', path='/images/monk-cartoon-1.png') }}"
-                            alt="buddha img"
-                        />
-                        <div>
-                            <div class="userinfo__info--user-id">
-                                <p>ID: 0123402021</p>
+                    <div class="userinfo__block">
+                        <div class="userinfo__info--user-header">
+                            <img
+                                class="userinfo__info--img"
+                                src="{{ url_for('assets-static', path='/images/monk-cartoon-1.png') }}"
+                                alt="buddha img"
+                            />
+                            <div>
+                                <div class="userinfo__info--header">
+                                    <div class="userinfo__info--user-id">
+                                        <p>ID: 0123402021</p>
+                                    </div>
+                                    <div class="userinfo__info--user-name">
+                                        <p>Thatchapon Chatthanes</p>
+                                    </div>
+                                    <div class="personal__info">
+                                        <p>Personal info</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="userinfo__info--user-name">
-                                <p>Thatchapon Chatthanes</p>
+                            <div class="down">
+                                
+                                <div class="personal__info--sub1">
+                                    <p>Follower xxxxx</p>
+                                </div>
+                                <div class="personal__info--sub2">
+                                    <p>Following xxxx</p>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        
+                    </div>
+                </div>
+                <div class="blog__event">
+                    <div class="userinfo__event">
+                        <div class="userinfo__event--header">My event</div>
+                        <div class="blog__post">
+                            <div class="blog__post--header">
+                                <div class="blog__post--username">John Doe</div>
+                                <div class="blog__post--posted">
+                                    Posted by John Doe
+                                </div>
+                                <div class="blog__post--timestamp">11 mins ago</div>
+                            </div>
+                            <div class="blog__post--field">
+                                <div class="blog__post--title"><h3>Hello</h3></div>
+                                <div class="blog__post--message">
+                                    <p>
+                                        Lorem ipsum, dolor sit amet consectetur
+                                        adipisicing elit. Tempore, molestiae, beatae
+                                        alias officiis qui assumenda laborum, ullam
+                                        explicabo quasi animi ipsam distinctio illo
+                                        aperiam temporibus.
+                                    </p>
+                                </div>
+                                <div class="blog__post--assets"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="userinfo__info--header">
-                        <p>Personal info</p>
+                    <div class="userinfo__blog">
+                        <div class="userinfo__blog--header">My blog</div>
+                        <div class="blog__post">
+                            <div class="blog__post--header">
+                                <div class="blog__post--username">John Doe</div>
+                                <div class="blog__post--posted">
+                                    Posted by John Doe
+                                </div>
+                                <div class="blog__post--timestamp">11 mins ago</div>
+                            </div>
+                            <div class="blog__post--field">
+                                <div class="blog__post--title"><h3>Hello</h3></div>
+                                <div class="blog__post--message">
+                                    <p>
+                                        Lorem ipsum, dolor sit amet consectetur
+                                        adipisicing elit. Tempore, molestiae, beatae
+                                        alias officiis qui assumenda laborum, ullam
+                                        explicabo quasi animi ipsam distinctio illo
+                                        aperiam temporibus.
+                                    </p>
+                                </div>
+                                <div class="blog__post--assets"></div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="userinfo__blog">
-                    <div class="userinfo__blog--header">My blog</div>
-                </div>
-                <div class="userinfo__event">
-                    <div class="userinfo__event--header">My event</div>
+                    </div>
                 </div>
             </div>
         </div>
+        {% include "global-component/footer.html" %}
 
         <script
             src="https://kit.fontawesome.com/1c7eef805a.js"

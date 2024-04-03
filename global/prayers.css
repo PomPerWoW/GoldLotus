@@ -1,7 +1,7 @@
 .block-wrapper{
     background-color: #FFF9E8;
-    height: 30rem;
     display: flex;
+    height: 100%;
 }
 
 .block {
@@ -9,6 +9,7 @@
     justify-content: center;
     background: #FFF9E8;
     padding: 2rem; /* Add some padding to give space */
+    height: 100%;
 }
 
 .spine {

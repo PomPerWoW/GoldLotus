@@ -1,19 +1,23 @@
 .userinfo {
-    margin-top: 8rem;
+    margin-top: 17rem;
 }
 
-.userinfo__info--header,
+
 .userinfo__blog--header,
 .userinfo__event--header {
     font-size: 1.8rem;
     font-weight: 500;
     margin-bottom: 2rem;
+    padding: 1.8rem;
 }
 
 .userinfo__info--user-header {
     display: flex;
     align-items: center;
     margin-bottom: 2rem;
+    width: 100%;
+    position: relative; /* Make it a positioned container for absolute positioning */
+    padding: 0 2rem; 
 }
 
 .userinfo__info--user-id {
@@ -27,6 +31,119 @@
     font-weight: 500;
 }
 
+.userinfo__info--header{
+    display: flex;
+    flex-direction: column;
+    width: 50rem;
+}
+
 .userinfo__info--img {
     width: 15rem;
+    border-radius: 30rem;
+}
+
+.userinfo__block{
+    background-color: rgba(216, 183, 120, 0.5);
+    padding: 1.8rem;
+    width: 100%;
+}
+
+.down{
+    display: flex;
+    flex-direction: row;
+    padding: 10rem 0 0 20rem;
+}
+.personal__info{
+    width: auto; /* Adjust width as needed */
+    margin-right: 1rem; 
+}
+
+.blog__event{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 2rem 0 2rem 0;
+    height: auto;
+}
+
+.userinfo__event{
+    width: 40%;
+    margin-right: 2.5rem;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.userinfo__blog{
+    width: 60%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.text_{
+    width: 80%;     
+    border-bottom: 2px solid #d8b778;
+    color: #4D4637;
+    justify-items: center;
+    padding-bottom: 2rem;
+    margin-bottom: 2%;
+    justify-content: center;
+}
+
+.blog__post {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2rem;
+    height: 100%;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #c0c0c0;
+    border-top: 2px solid #c0c0c0;
+
+}
+
+.blog__post--header {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.blog__post--username {
+    font-weight: 500;
+}
+
+.blog__post--username:hover {
+    cursor: pointer;
+    color: #dcb60e;
+}
+
+.blog__post--posted {
+    color: #929292;
+}
+
+
+.blog__post--timestamp {
+    color: #929292;
+}
+
+.blog__post--field {
+    padding: 2rem 0;
+
+}
+
+.blog__post--title {
+    margin-bottom: 1.2rem;
+}
+
+.blog__post--message p {
+    font-size: 1.8rem;
+}
+
+.blog__post--assets {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
 }
