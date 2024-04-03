@@ -66,7 +66,7 @@ async def signIn(response: Response, request: Request, key: str, password: str):
     except Exception as e:
         return {"detail": str(e)}
 
-@router.get("/user/resetPassword/", tags=["User"])
+@router.post("/user/resetPassword/", tags=["User"])
 async def resetPassword(response: Response, request: Request, email: str):
     try:
         userID = None
@@ -101,7 +101,7 @@ async def resetPassword(response: Response, request: Request, email: str):
     except Exception as e:
         return {"detail": str(e)}
 
-@router.get("/user/setNewPassword/", tags=["User"])
+@router.post("/user/setNewPassword/", tags=["User"])
 async def setNewPassword(response: Response, request: Request, token: str, password: str):
     try:
         userID = decodeJWT(token)["id"]
@@ -134,7 +134,7 @@ async def getUserฺ(response: Response, request: Request, userId: str):
     except Exception as e:
         return {"detail": str(e)}
 
-@router.get("/user/follow", tags=["User"])
+@router.post("/user/follow", tags=["User"])
 async def follow(response: Response, request: Request, followingID: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
@@ -149,7 +149,7 @@ async def follow(response: Response, request: Request, followingID: str, access_
     except Exception as e:
         return {"detail": str(e)}
     
-@router.get("/user/unfollow", tags=["User"])
+@router.post("/user/unfollow", tags=["User"])
 async def unfollow(response: Response, request: Request, followingID: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
