@@ -163,11 +163,11 @@ async def editBlog(response: Response, request: Request, blogID: int, title: str
 @router.post("/addLikeBlog/", tags=["blog"])
 async def addLikeBlog(response: Response, request: Request, blogID: int, access_token: str = Cookie(None)):
     try:
-        if userId in root.blog[blogID].like:
-            return
-        
         token = decodeJWT(access_token)
         userId = token["userId"]
+        
+        if userId in root.blog[blogID].like:
+            return
         
         root.blog[blogID].addLike(userId)
         
@@ -178,11 +178,11 @@ async def addLikeBlog(response: Response, request: Request, blogID: int, access_
 @router.post("/removeLikeBlog/", tags=["blog"])
 async def removeLikeBlog(response: Response, request: Request, blogID: int, access_token: str = Cookie(None)):
     try:
-        if not userId in root.blog[blogID].like:
-            return
-        
         token = decodeJWT(access_token)
         userId = token["userId"]
+        
+        if not userId in root.blog[blogID].like:
+            return
         
         root.blog[blogID].removeLike(userId)
         
