@@ -12,9 +12,9 @@ latestBlog = [
              ]
 
 mostLikedBlog = [
-    [document.getElementById("mostLikedBlog"), document.getElementById("mostLikedBlog"), document.getElementById("mostLikedBlog")],
-    [document.getElementById("mostLikedBlog"), document.getElementById("mostLikedBlog"), document.getElementById("mostLikedBlog")],
-    [document.getElementById("mostLikedBlog"), document.getElementById("mostLikedBlog"), document.getElementById("mostLikedBlog")]
+    [document.getElementById("mostLikedBlog1"), document.getElementById("mostLikedAuthor1"), document.getElementById("mostLikedDate1")],
+    [document.getElementById("mostLikedBlog2"), document.getElementById("mostLikedAuthor2"), document.getElementById("mostLikedDate2")],
+    [document.getElementById("mostLikedBlog3"), document.getElementById("mostLikedAuthor3"), document.getElementById("mostLikedDate3")]
              ]
 
 async def getCurrentBlogID():
