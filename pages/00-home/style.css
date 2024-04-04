@@ -110,6 +110,10 @@
     align-items: center;
 }
 
+.mgb8 {
+    margin-bottom: 8rem;
+}
+
 .text_ {
     display: flex;
     flex-direction: column;

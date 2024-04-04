@@ -75,8 +75,17 @@ class UserInfoWidget(AbstractWidget):
 
         userInfoUserName.appendChild(userName)
         
+        userInfoUserEmail = document.createElement("div")
+        userInfoUserEmail.classList.add("userinfo__user--email")
+
+        userEmail = document.createElement("p")
+        userEmail.innerHTML = f"Email: {userInfo.get('email')}"
+        
+        userInfoUserEmail.appendChild(userEmail)
+        
         divFragment.appendChild(userInfoUserID)
         divFragment.appendChild(userInfoUserName)
+        divFragment.appendChild(userInfoUserEmail)
 
         self.userinfoUserHeader.appendChild(divFragment)
         

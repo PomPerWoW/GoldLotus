@@ -53,32 +53,31 @@
         {% include "global-component/navbar.html" %}
 
         <!-- UserInfo Section -->
-        <div class="container">
-            <div class="userinfo" id="userinfo">
-                <div class="userinfo__info">
-                    <div class="userinfo__user--header">
-                        <img
-                            class="userinfo--img"
-                            src="{{ url_for('assets-static', path='/images/monk-cartoon-1.png') }}"
-                            alt="buddha img"
-                        />
+        <div class="bgc">
+            <div class="container">
+                <div class="userinfo" id="userinfo">
+                    <div class="userinfo__info">
+                        <div class="userinfo__user--header">
+                            <img
+                                class="userinfo--img"
+                                src="{{ url_for('assets-static', path='/images/monk-cartoon-1.png') }}"
+                                alt="buddha img"
+                            />
+                        </div>
                     </div>
-                    <div class="userinfo__info--header">
-                        <p>Personal info</p>
+                    <div class="userinfo__blog">
+                        <div class="userinfo__blog--header">My blog</div>
                     </div>
-                </div>
-                <div class="userinfo__blog">
-                    <div class="userinfo__blog--header">My blog</div>
-                </div>
-                <div class="userinfo__event">
-                    <div class="userinfo__event--header">My event</div>
-                </div>
-                <div class="userinfo__logout">
-                    <div
-                        class="userinfo__logout--btn"
-                        id="userinfo__logout--btn"
-                    >
-                        Logout
+                    <div class="userinfo__event">
+                        <div class="userinfo__event--header">My event</div>
+                    </div>
+                    <div class="userinfo__logout">
+                        <div
+                            class="userinfo__logout--btn"
+                            id="userinfo__logout--btn"
+                        >
+                            Logout
+                        </div>
                     </div>
                 </div>
             </div>

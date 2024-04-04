@@ -242,6 +242,7 @@ class LoadBlogWidget(AbstractWidget):
         self.successBoxBtn = document.querySelector("#success__box--btn")
         self.currentLatestBlogIDSaved = 0
         self.currentMyPostBlogIDSaved = 0
+        self.currentPopularBlogIDSaved = 0
         
         self.successBoxBtn.onclick = self.createNewPostSuccess
         
@@ -257,10 +258,11 @@ class LoadBlogWidget(AbstractWidget):
         self.blogPagMypostBtn = document.querySelector("#blog__pagination--mypost")
         
         self.blogPagLatest.onclick = self.loadLatest
+        self.blogPagPopularBtn.onclick = self.loadPopular
         self.blogPagMypostBtn.onclick = self.loadMyPost
 
         self.likedBox = document.querySelector("#liked__box")
-        self.unLikedBox = document.querySelector("#liked__box")
+        self.unLikedBox = document.querySelector("#unliked__box")
         self.commentedBox = document.querySelector("#commented__box")
         self.followedBox = document.querySelector("#followed__box")
         self.unFollowedBox = document.querySelector("#unfollowed__box")
@@ -290,10 +292,11 @@ class LoadBlogWidget(AbstractWidget):
         
         await self.loadLatest()
         
-        self.members = ["02042024000001", "04042024000002", "04042024000003", "04042024000004"]
+        self.membersList = await self.getListMembers()
         
-        for i in range(len(self.members)):
-            await self.loadMembers(self.members[i])
+        for i in range(len(self.membersList)):
+            if self.membersList[i] != self.data.get("userID"):
+                await self.loadMembers(self.membersList[i])
     
     async def createNewPostSuccess(self, event):
         event.preventDefault()
@@ -336,7 +339,7 @@ class LoadBlogWidget(AbstractWidget):
         if currentBlogID != 0 and self.currentLatestBlogIDSaved != 0:
             self.createViewMore("loadLatest")
                     
-    async def loadMyPost(self, event, viewMore=False, notView = True):
+    async def loadMyPost(self, event, viewMore=False, notView=True):
         if event:
             event.preventDefault()
             
@@ -369,6 +372,51 @@ class LoadBlogWidget(AbstractWidget):
             if currentBlogID != 0 and self.currentMyPostBlogIDSaved != 0:
                 self.createViewMore("loadMyPost")
 
+    async def loadPopular(self, event, viewMore=False, notView=True):
+        if event:
+            event.preventDefault()
+            
+        if viewMore == False:
+            self.removeBlogPosts()
+        
+        if notView:
+            self.currentPopularBlogIDSaved = 0
+        
+        viewMoreElement = document.querySelector("#blog__readmore-btn")
+        if viewMoreElement:
+            viewMoreElement.parentNode.removeChild(viewMoreElement)
+            
+        getSortedPostByLike = await self.sortedBlogByLike()
+        sortedPostByLike = getSortedPostByLike[::-1]
+        
+        counter = 0
+        currentBlogID = self.currentPopularBlogIDSaved if self.currentPopularBlogIDSaved != 0 else len(sortedPostByLike)
+
+        while counter < 10 and currentBlogID != 0:
+            blogData = await self.loadBlog(sortedPostByLike[currentBlogID - 1])
+            if blogData.get("detail") != "blog not found":
+                await self.createBlog(blogData)
+                counter += 1
+            currentBlogID -= 1
+
+        self.currentPopularBlogIDSaved = currentBlogID
+        
+        if currentBlogID != 0 and self.currentPopularBlogIDSaved != 0:
+            self.createViewMore("loadPopular")
+                
+    async def sortedBlogByLike(self):
+        try:
+            response = await pyfetch(
+                url="/getSortedBlogByLike", 
+                method='GET', 
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+                return data
+        except Exception as e:
+            print(e)
+
     def createViewMore(self, blogType):
         viewMore = document.createElement("div")
         viewMore.id = "blog__readmore-btn"
@@ -380,6 +428,8 @@ class LoadBlogWidget(AbstractWidget):
             viewMoreBtn.onclick = lambda event: asyncio.ensure_future(self.loadLatest(event, True, False))
         elif blogType == "loadMyPost":
             viewMoreBtn.onclick = lambda event: asyncio.ensure_future(self.loadMyPost(event, True, False))
+        elif blogType == "loadPopular":
+            viewMoreBtn.onclick = lambda event: asyncio.ensure_future(self.loadPopular(event, True, False))
         
         viewMore.appendChild(viewMoreBtn)
         
@@ -566,7 +616,7 @@ class LoadBlogWidget(AbstractWidget):
         self.userCommentsPublishBtn.onclick = lambda event: asyncio.ensure_future(self.publishComment(event, blogID))
         for index, data in enumerate(dataComment):
             userDetail = await self.getUserDetail(data.get("author"))
-            self.createComments(data, index, userDetail)
+            self.createComments(blogID, data, index, userDetail)
     
     def listNoComment(self, blogID):
         self.userComments.classList.remove("hidden")
@@ -622,17 +672,59 @@ class LoadBlogWidget(AbstractWidget):
         except Exception as e:
             print(e)
     
-    def createComments(self, commentData, commentID, userDetail):
-        # { commentData
-            # 'author': '0000000000000', 
-            # 'text': 'Amazing!', 
-            # 'edited': False, 
-            # 'timestamp': 
-            # '2024-04-02T00:47:39.119881', 
-            # 'like': {}
-            # }'
-        # print(commentData, commentID)
-        
+    async def replyLikeBtnAdd(self, event, blogID, commentID, btnLiked):
+        event.preventDefault()
+        try:
+            response = await pyfetch(
+                url=f"/addLikeReplyBlog/?blogID={blogID}&replyIndex={commentID}", 
+                method='POST',
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+
+                commentLikeCount = document.querySelector(f"#comment__likes--count-{commentID}")
+                counter = commentLikeCount.innerHTML.split()[0]
+                counterNew = int(counter) + 1
+                
+                commentLikeCount.innerHTML = f"{counterNew} likes"
+                
+                btnLiked.classList.add("clicked")
+                btnLiked.onclick = lambda event: asyncio.ensure_future(self.replyLikeBtnRemove(event, blogID, commentID, btnLiked))
+                self.likedBox.classList.remove("hidden")
+                await asyncio.sleep(2)
+                self.likedBox.classList.add("hidden")
+                return data
+        except Exception as e:
+            print(e)
+    
+    async def replyLikeBtnRemove(self, event, blogID, commentID, btnLiked):
+        event.preventDefault()
+        try:
+            response = await pyfetch(
+                url=f"/removeLikeReplyBlog/?blogID={blogID}&replyIndex={commentID}", 
+                method='POST',
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+                print(data)
+                commentLikeCount = document.querySelector(f"#comment__likes--count-{commentID}")
+                counter = commentLikeCount.innerHTML.split()[0]
+                counterNew = int(counter) - 1
+                
+                commentLikeCount.innerHTML = f"{counterNew} likes"
+
+                btnLiked.classList.remove("clicked")
+                btnLiked.onclick = lambda event: asyncio.ensure_future(self.replyLikeBtnAdd(event, blogID, commentID,btnLiked))
+                self.unLikedBox.classList.remove("hidden")
+                await asyncio.sleep(2)
+                self.unLikedBox.classList.add("hidden")
+                return data
+        except Exception as e:
+            print(e)
+    
+    def createComments(self, blogID, commentData, commentID, userDetail):
         userCommentsPerson = document.createElement("div")
         userCommentsPerson.classList.add("user__comments--person")
         userCommentsPerson.id = f"user__comments--person-{commentID}"
@@ -676,17 +768,32 @@ class LoadBlogWidget(AbstractWidget):
 
         userCommentsText.appendChild(text)
 
+        commentLikeData = commentData.get("like")
+
         userCommentsLike = document.createElement("div")
         userCommentsLike.classList.add("user__comments--like")
 
-        likeIcon = document.createElement("i")
-        likeIcon.classList.add("fa-solid", "fa-heart")
+        iconLiked = document.createElement("i")
+        iconLiked.classList.add("fa-solid", "fa-heart")
 
         likeSpan = document.createElement("span")
         likeSpan.id = f"comment__likes--count-{commentID}"
-        likeSpan.innerHTML = "0 likes"
+        
+        if not self.data.get("detail"):
+            if commentLikeData.get("data"):
+                likeList = commentLikeData.get("data")
+                likeSpan.innerHTML = f"{len(likeList)} likes"
+                if self.data.get("userID") in commentLikeData.get("data"):
+                    iconLiked.classList.add("clicked")
+                    iconLiked.onclick = lambda event: asyncio.ensure_future(self.replyLikeBtnRemove(event, blogID, commentID, iconLiked))
+                else:
+                    print(10)
+                    iconLiked.onclick = lambda event: asyncio.ensure_future(self.replyLikeBtnAdd(event, blogID, commentID, iconLiked))
+            else:      
+                iconLiked.onclick = lambda event: asyncio.ensure_future(self.replyLikeBtnAdd(event, blogID, commentID, iconLiked))
+                likeSpan.innerHTML = "0 likes"
 
-        userCommentsLike.appendChild(likeIcon)
+        userCommentsLike.appendChild(iconLiked)
         userCommentsLike.appendChild(likeSpan)
 
         userCommentsPerson.appendChild(userCommentsUpper)
@@ -848,20 +955,20 @@ class LoadBlogWidget(AbstractWidget):
         elementLoader = document.querySelector(".element__loader--box")
         self.blogPostBox.removeChild(elementLoader)
 
+    async def getListMembers(self):
+        try:
+            response = await pyfetch(
+                url=f"/user/getSortedIdByFollower", 
+                method='GET',
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+                return data
+        except Exception as e:
+            print(e)
+
     async def loadMembers(self, memberID):
-        # <div class="blog__communities--people">
-        #   <div class="blog__communities--details">
-        #       <div class="blog__communities--name">
-        #           John Doe
-        #       </div>
-        #       <div class="blog__communities--follower">
-        #           xxxx follower
-        #       </div>
-        #   </div>
-        #   <div class="blog__communities--follow-btn">
-        #       <p>Follow</p>
-        #   </div>
-        # </div>
         memberDetail = await self.getUserDetail(memberID)
         
         blogCommunitiesPeople = document.createElement("div")
@@ -914,7 +1021,7 @@ class LoadBlogWidget(AbstractWidget):
         try:
             response = await pyfetch(
                 url=f"/user/follow?followingID={memberID}", 
-                method='GET',
+                method='POST',
                 headers={'Content-Type': 'application/json'}
             )
             if response.ok:
@@ -941,7 +1048,7 @@ class LoadBlogWidget(AbstractWidget):
         try:
             response = await pyfetch(
                 url=f"/user/unfollow?followingID={memberID}", 
-                method='GET',
+                method='POST',
                 headers={'Content-Type': 'application/json'}
             )
             if response.ok:
