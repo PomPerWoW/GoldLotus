@@ -17,6 +17,8 @@ PARENT_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pa
 sys.path.insert(1, os.path.join(PARENT_DIRECTORY, "data"))
 
 from user import User
+from email_validator import validate_email, EmailNotValidError
+from password_strength import PasswordPolicy
 from database import *
 from auth.auth_handler import *
 
@@ -104,10 +106,62 @@ async def resetPassword(response: Response, request: Request, email: str):
 @router.post("/user/setNewPassword/", tags=["User"])
 async def setNewPassword(response: Response, request: Request, token: str, password: str):
     try:
+        policy = PasswordPolicy.from_names(
+            length=8,       # Min length: 8
+            uppercase=1,    # Require min. 1 uppercase letter
+            nonletters=1,   # Require min. 1 non-letter character (digit, special character, etc.)
+        )
+        if policy.test(password):
+            raise Exception("Invalid password format")
+        
         userID = decodeJWT(token)["id"]
         root.user[userID].changePassword(password)
         
         transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+
+@router.post("/user/changeEmail/", tags=["User"])
+async def changeEmail(response: Response, request: Request, email: str, access_token: str = Cookie(None)):
+    try:
+        try:
+            validate_email(email)
+        except EmailNotValidError:
+            raise Exception("Invalid email format")
+        
+        for id in root.user:
+            if email == root.user[id].email:
+                raise Exception("email already exist")
+        
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        
+        root.user[userId].changeEmail(email)
+        
+        transaction.commit()
+        
+        return root.user[userId]
+    except Exception as e:
+        return {"detail": str(e)}
+
+@router.post("/user/changeUsername/", tags=["User"])
+async def changeUsername(response: Response, request: Request, username: str, access_token: str = Cookie(None)):
+    try:
+        if not 8 <= len(username) <= 16:
+            raise Exception("Username must be between 8 and 16 characters long")
+        
+        for id in root.user:
+            if username == root.user[id].username:
+                raise Exception("username is already taken")
+        
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        
+        root.user[userId].changeUsername(username)
+        
+        transaction.commit()
+        
+        return root.user[userId]
     except Exception as e:
         return {"detail": str(e)}
 
