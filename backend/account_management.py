@@ -168,7 +168,7 @@ async def unfollow(response: Response, request: Request, followingID: str, acces
 async def getSortedIdByFollower(response: Response, request: Request):
     try:
         result = []
-        for u in sorted(root.user.values(), key=lambda user: len(user.follower)):
+        for u in sorted(root.user.values(), key=lambda user: len(user.follower), reverse=True):
             result.append(u.userID)
         
         return result

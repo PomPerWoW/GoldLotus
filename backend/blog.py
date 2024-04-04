@@ -263,7 +263,7 @@ async def getCurrentBlogID(response: Response, request: Request):
 async def getSortedBlogByLike(response: Response, request: Request):
     try:
         result = []
-        for b in sorted(root.blog.values(), key=lambda user: len(user.like)):
+        for b in sorted(root.blog.values(), key=lambda user: len(user.like), reverse=True):
             result.append(b.blogID)
         
         return result
