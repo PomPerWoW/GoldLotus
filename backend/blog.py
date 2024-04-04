@@ -259,11 +259,11 @@ async def getBlog(response: Response, request: Request, blogID: int):
 async def getCurrentBlogID(response: Response, request: Request):
     return {"currentBlogID": root.config["currentBlogID"]}
 
-@router.get("/user/getSortedBlogByLike", tags=["User"])
+@router.get("/getSortedBlogByLike", tags=["blog"])
 async def getSortedBlogByLike(response: Response, request: Request):
     try:
         result = []
-        for b in sorted(root.blog.values(), key=lambda user: len(user.like), reverse=True):
+        for b in sorted(root.blog.values(), key=lambda blog: len(blog.like), reverse=True):
             result.append(b.blogID)
         
         return result
