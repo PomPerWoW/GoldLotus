@@ -43,7 +43,6 @@ class BlogWidget(AbstractWidget):
         self.successBox = document.querySelector("#success__box")
         self.errorBox = document.querySelector("#error__box")
         self.statusBox1 = document.querySelector("#error__box--btn")
-        self.statusBox2 = document.querySelector("#success__box--btn")
         
         self.addMediaBtn.onclick = lambda e: self.handleAddMediaBtn(e)
         self.removeMediaBtn.onclick = lambda e: self.handleRemoveMediaBtn(e)
@@ -54,8 +53,7 @@ class BlogWidget(AbstractWidget):
         self.dropArea.ondrop = lambda e: self.handleDrop(e)
         self.blogCreateBtn.onclick = self.uploadFile
         self.resetBtn.onclick = self.resetInput
-        self.statusBox1.onclick = lambda e: self.displayStatus(e)
-        self.statusBox2.onclick = lambda e: self.displayStatus(e)
+        self.statusBox1.onclick = lambda e: self.removeStatus(e)
     
     def handleAddMediaBtn(self, event):
         event.preventDefault()
@@ -221,9 +219,8 @@ class BlogWidget(AbstractWidget):
         document.querySelector("#media").value = ""
         self.handleRemoveMediaBtn(event)
     
-    def displayStatus(self, event):
+    def removeStatus(self, event):
         event.preventDefault()
-        self.successBox.classList.add("hidden")
         self.errorBox.classList.add("hidden")
     
     def printFileDetails(self, file):
@@ -241,10 +238,12 @@ class LoadBlogWidget(AbstractWidget):
         self.blogPostBox = document.querySelector("#blog__post--box")
         self.blogPost = document.querySelector("#blog__post--create")
         self.blogPostGuest = document.querySelector("#blog__post--guest")
-        self.blogCommunities = document.querySelector("#blog__communities")
+        self.successBox = document.querySelector("#success__box")
         self.successBoxBtn = document.querySelector("#success__box--btn")
         self.currentLatestBlogIDSaved = 0
         self.currentMyPostBlogIDSaved = 0
+        
+        self.successBoxBtn.onclick = self.createNewPostSuccess
         
         # Pagination
         self.blogPagLatest = document.querySelector(".blog__pagination--latest")
@@ -261,7 +260,10 @@ class LoadBlogWidget(AbstractWidget):
         self.blogPagMypostBtn.onclick = self.loadMyPost
 
         self.likedBox = document.querySelector("#liked__box")
-        self.unLikedBox = document.querySelector("#unliked__box")
+        self.unLikedBox = document.querySelector("#liked__box")
+        self.commentedBox = document.querySelector("#commented__box")
+        self.followedBox = document.querySelector("#followed__box")
+        self.unFollowedBox = document.querySelector("#unfollowed__box")
 
         # Blog comment
         self.userComments = document.querySelector("#user__comments")
@@ -276,11 +278,26 @@ class LoadBlogWidget(AbstractWidget):
         self.addComments.onclick = lambda _: self.showAddComments()
         self.cancelComments.onclick = lambda _: self.showCancelComments()
         self.userCommentOkBtn.onclick = lambda _: self.showOk()
+        
+        # Communities
+        self.blogCommunities = document.querySelector("#blog__communities")
+        self.blogCommunitiesList = document.querySelector("#blog__communities--list")
 
     async def onLoad(self):
         self.data = await self.getUserInfo()
         if self.data.get("detail") == "'NoneType' object is not subscriptable":
             self.guestUser()
+        
+        await self.loadLatest()
+        
+        self.members = ["02042024000001", "04042024000002", "04042024000003", "04042024000004"]
+        
+        for i in range(len(self.members)):
+            await self.loadMembers(self.members[i])
+    
+    async def createNewPostSuccess(self, event):
+        event.preventDefault()
+        self.successBox.classList.add("hidden")
         
         await self.loadLatest()
     
@@ -597,9 +614,9 @@ class LoadBlogWidget(AbstractWidget):
                 
                 await self.listCommentUser(event, blogDataComment, blogID)
                 
-                self.likedBox.classList.remove("hidden")
+                self.commentedBox.classList.remove("hidden")
                 await asyncio.sleep(2)
-                self.likedBox.classList.add("hidden")
+                self.commentedBox.classList.add("hidden")
                 
                 return data
         except Exception as e:
@@ -614,7 +631,7 @@ class LoadBlogWidget(AbstractWidget):
             # '2024-04-02T00:47:39.119881', 
             # 'like': {}
             # }'
-        print(commentData, commentID)
+        # print(commentData, commentID)
         
         userCommentsPerson = document.createElement("div")
         userCommentsPerson.classList.add("user__comments--person")
@@ -831,15 +848,121 @@ class LoadBlogWidget(AbstractWidget):
         elementLoader = document.querySelector(".element__loader--box")
         self.blogPostBox.removeChild(elementLoader)
 
-    def createMembers(self, memberID):
-        pass
+    async def loadMembers(self, memberID):
+        # <div class="blog__communities--people">
+        #   <div class="blog__communities--details">
+        #       <div class="blog__communities--name">
+        #           John Doe
+        #       </div>
+        #       <div class="blog__communities--follower">
+        #           xxxx follower
+        #       </div>
+        #   </div>
+        #   <div class="blog__communities--follow-btn">
+        #       <p>Follow</p>
+        #   </div>
+        # </div>
+        memberDetail = await self.getUserDetail(memberID)
+        
+        blogCommunitiesPeople = document.createElement("div")
+        blogCommunitiesPeople.classList.add("blog__communities--people")
 
-    def follow(self, userID):
-        # 01042024000001
-        # 03042024000002
-        # 03042024000003
-        # 03042024000004
-        pass
+        blogCommunitiesDetais = document.createElement("div")
+        blogCommunitiesDetais.classList.add("blog__communities--details")
+
+        blogCommunitiesName = document.createElement("div")
+        blogCommunitiesName.classList.add("blog__communities--name")
+        blogCommunitiesName.innerHTML = f"{memberDetail.get('username')}"
+
+        blogCommunitiesFollower = document.createElement("div")
+        blogCommunitiesFollower.classList.add("blog__communities--follower")
+        blogCommunitiesFollower.id = f"blog__communities--follower-{memberID}"
+        
+        followerData = memberDetail.get('follower')
+        
+        if followerData.get("data"):
+            followerCount = followerData.get("data")
+            blogCommunitiesFollower.innerHTML = f"{len(followerCount)} followers"
+        else:
+            blogCommunitiesFollower.innerHTML = f"0 follower"
+
+        blogCommunitiesDetais.appendChild(blogCommunitiesName)
+        blogCommunitiesDetais.appendChild(blogCommunitiesFollower)
+
+        blogCommunitiesFollowBtn = document.createElement("div")
+        blogCommunitiesFollowBtn.classList.add("blog__communities--follow-btn")
+        
+        followBtn = document.createElement("p")
+        followBtn.id = f"follow-btn-{memberID}"
+        
+        if self.data.get("following").get("data") and memberDetail.get("userID") in self.data.get("following").get("data"):
+            followBtn.innerHTML = "Following"
+            followBtn.onclick = lambda event: asyncio.ensure_future(self.unfollow(event, memberID))
+        else: 
+            followBtn.innerHTML = "Follow"
+            followBtn.onclick = lambda event: asyncio.ensure_future(self.follow(event, memberID))
+
+        blogCommunitiesFollowBtn.appendChild(followBtn)
+
+        blogCommunitiesPeople.appendChild(blogCommunitiesDetais)
+        blogCommunitiesPeople.appendChild(blogCommunitiesFollowBtn)
+
+        self.blogCommunitiesList.appendChild(blogCommunitiesPeople)
+
+    async def follow(self, event, memberID):
+        event.preventDefault()
+        try:
+            response = await pyfetch(
+                url=f"/user/follow?followingID={memberID}", 
+                method='GET',
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+                
+                followerCount = document.querySelector(f"#blog__communities--follower-{memberID}")
+                count = followerCount.innerHTML
+                countNum = count.split()[0]
+                countNum = int(countNum) + 1
+                followerCount.innerHTML = f"{countNum} followers"
+                
+                followBtnClicked = document.querySelector(f"#follow-btn-{memberID}")
+                followBtnClicked.innerHTML = "Following"
+                followBtnClicked.onclick = lambda event: asyncio.ensure_future(self.unfollow(event, memberID))
+                self.followedBox.classList.remove("hidden")
+                await asyncio.sleep(2)
+                self.followedBox.classList.add("hidden")
+                return data
+        except Exception as e:
+            print(e)
+    
+    async def unfollow(self, event, memberID):
+        event.preventDefault()
+        try:
+            response = await pyfetch(
+                url=f"/user/unfollow?followingID={memberID}", 
+                method='GET',
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+                
+                followerCount = document.querySelector(f"#blog__communities--follower-{memberID}")
+                count = followerCount.innerHTML
+                countNum = count.split()[0]
+                countNum = int(countNum) - 1
+                countCheck = f"0 follower" if countNum == 0 else f"{countNum} followers"
+                followerCount.innerHTML = countCheck
+                
+                followBtnClicked = document.querySelector(f"#follow-btn-{memberID}")
+                followBtnClicked.innerHTML = "Follow"
+                followBtnClicked.onclick = lambda event: asyncio.ensure_future(self.follow(event, memberID))
+                self.unFollowedBox.classList.remove("hidden")
+                await asyncio.sleep(2)
+                self.unFollowedBox.classList.add("hidden")
+                return data
+        except Exception as e:
+            print(e)
 
 if __name__ == "__main__":
     w = BlogWidget("blog")

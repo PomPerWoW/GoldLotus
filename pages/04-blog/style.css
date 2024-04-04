@@ -485,12 +485,17 @@
     padding: 2rem 2rem;
 }
 
-#liked__box {
+#liked__box,
+#commented__box,
+#followed__box {
+    z-index: 1000;
     color: #fff;
     background-color: #57ad68;
 }
 
-#unliked__box {
+#unliked__box,
+#unfollowed__box {
+    z-index: 1000;
     color: #fff;
     background-color: #ad5757;
 }
