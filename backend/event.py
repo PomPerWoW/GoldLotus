@@ -172,7 +172,37 @@ async def addReplyEvent(response: Response, request: Request, eventID: int, text
         transaction.commit()
     except Exception as e:
         return {"detail": str(e)}
-    
+
+@router.post("/addLikeReplyEvent/", tags=["event"])
+async def addLikeReplyEvent(response: Response, request: Request, eventID: int, replyIndex: int, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        
+        if userId in root.event[eventID].reply[replyIndex].like:
+            return
+            
+        root.event[eventID].reply[replyIndex].addLike(userId)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+
+@router.post("/removeLikeReplyEvent/", tags=["event"])
+async def removeLikeReplyEvent(response: Response, request: Request, eventID: int, replyIndex: int, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        
+        if not userId in root.event[eventID].reply[replyIndex].like:
+            return
+            
+        root.event[eventID].reply[replyIndex].removeLike(userId)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+
 @router.post("/removeReplyEvent/", tags=["event"])
 async def addReplyEvent(response: Response, request: Request, eventID: int, replyIndex: str, access_token: str = Cookie(None)):
     try:

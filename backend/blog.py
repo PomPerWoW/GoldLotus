@@ -166,6 +166,9 @@ async def addLikeBlog(response: Response, request: Request, blogID: int, access_
         token = decodeJWT(access_token)
         userId = token["userId"]
         
+        if userId in root.blog[blogID].like:
+            return
+        
         root.blog[blogID].addLike(userId)
         
         transaction.commit()
@@ -177,6 +180,9 @@ async def removeLikeBlog(response: Response, request: Request, blogID: int, acce
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
+        
+        if not userId in root.blog[blogID].like:
+            return
         
         root.blog[blogID].removeLike(userId)
         
@@ -195,7 +201,37 @@ async def addReplyBlog(response: Response, request: Request, blogID: int, text: 
         transaction.commit()
     except Exception as e:
         return {"detail": str(e)}
-    
+
+@router.post("/addLikeReplyBlog/", tags=["blog"])
+async def addLikeReplyBlog(response: Response, request: Request, blogID: int, replyIndex: int, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        
+        if userId in root.blog[blogID].reply[replyIndex].like:
+            return
+            
+        root.blog[blogID].reply[replyIndex].addLike(userId)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+
+@router.post("/removeLikeReplyBlog/", tags=["blog"])
+async def removeLikeReplyBlog(response: Response, request: Request, blogID: int, replyIndex: int, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        
+        if not userId in root.blog[blogID].reply[replyIndex].like:
+            return
+            
+        root.blog[blogID].reply[replyIndex].removeLike(userId)
+        
+        transaction.commit()
+    except Exception as e:
+        return {"detail": str(e)}
+
 @router.post("/removeReplyBlog/", tags=["blog"])
 async def addReplyBlog(response: Response, request: Request, blogID: int, replyIndex: str, access_token: str = Cookie(None)):
     try:
@@ -222,3 +258,14 @@ async def getBlog(response: Response, request: Request, blogID: int):
 @router.get("/getCurrentBlogID/", tags=["blog"])
 async def getCurrentBlogID(response: Response, request: Request):
     return {"currentBlogID": root.config["currentBlogID"]}
+
+@router.get("/getSortedBlogByLike", tags=["blog"])
+async def getSortedBlogByLike(response: Response, request: Request):
+    try:
+        result = []
+        for b in sorted(root.blog.values(), key=lambda blog: len(blog.like), reverse=True):
+            result.append(b.blogID)
+        
+        return result
+    except Exception as e:
+        return {"detail": str(e)}
