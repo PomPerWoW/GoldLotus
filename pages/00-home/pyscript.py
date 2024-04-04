@@ -7,7 +7,8 @@ document = js.document
 
 latestBlog = [
     [document.getElementById("latestBlog1"), document.getElementById("latestAuthor1"), document.getElementById("latestDate1")],
-    [document.getElementById("latestBlog2"), document.getElementById("latestAuthor2"), document.getElementById("latestDate2")]
+    [document.getElementById("latestBlog2"), document.getElementById("latestAuthor2"), document.getElementById("latestDate2")],
+    [document.getElementById("latestBlog3"), document.getElementById("latestAuthor3"), document.getElementById("latestDate3")]
              ]
 
 async def getCurrentBlogID():
@@ -54,7 +55,7 @@ async def main():
     if current_blog_id:
         current_blog_id = current_blog_id["currentBlogID"]
         count = 0
-        while count < 2:
+        while count < 3 and current_blog_id > 0:
             current_blog_id -= 1
             blog_data = await loadBlog(current_blog_id)
             if blog_data.get("detail"):
