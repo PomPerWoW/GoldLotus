@@ -11,6 +11,12 @@ latestBlog = [
     [document.getElementById("latestBlog3"), document.getElementById("latestAuthor3"), document.getElementById("latestDate3")]
              ]
 
+mostLikedBlog = [
+    [document.getElementById("mostLikedBlog"), document.getElementById("mostLikedBlog"), document.getElementById("mostLikedBlog")],
+    [document.getElementById("mostLikedBlog"), document.getElementById("mostLikedBlog"), document.getElementById("mostLikedBlog")],
+    [document.getElementById("mostLikedBlog"), document.getElementById("mostLikedBlog"), document.getElementById("mostLikedBlog")]
+             ]
+
 async def getCurrentBlogID():
     try:
         response = await pyfetch(
@@ -50,6 +56,19 @@ async def getUserDetail(userID):
     except Exception as e:
         print(e) 
 
+async def getMostLikedBlog():
+    try:
+        response = await pyfetch(
+            url=f"/getSortedBlogByLike/", 
+            method='GET',
+            headers={'Content-Type': 'application/json'}
+        )
+        if response.ok:
+            data = await response.json()
+            return data
+    except Exception as e:
+        print(e)
+
 async def main():
     current_blog_id = await getCurrentBlogID()
     if current_blog_id:
@@ -68,6 +87,20 @@ async def main():
                 latestBlog[count][1].innerText = username.get("username")
                 latestBlog[count][2].innerText = datetime.fromisoformat(blog_data["timestamp"]).strftime("%Y-%m-%d %H:%M:%S")
                 count += 1
+                
+    popular_blog_id = await getMostLikedBlog()
+    if popular_blog_id:
+        for i in range(3):
+            blog_data = await loadBlog(popular_blog_id[i])
+            if blog_data.get("detail"):
+                continue
+        
+            if blog_data:
+                username = await getUserDetail(blog_data["author"])
+                
+                mostLikedBlog[i][0].innerText = blog_data["text"]
+                mostLikedBlog[i][1].innerText = username.get("username")
+                mostLikedBlog[i][2].innerText = datetime.fromisoformat(blog_data["timestamp"]).strftime("%Y-%m-%d %H:%M:%S")
 
 import asyncio
 asyncio.ensure_future(main())
