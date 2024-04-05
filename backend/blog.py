@@ -249,7 +249,7 @@ async def removeLikeReplyBlog(response: Response, request: Request, blogID: int,
         return {"detail": str(e)}
 
 @router.post("/removeReplyBlog/", tags=["blog"])
-async def removeReplyBlog(response: Response, request: Request, blogID: int, replyIndex: str, access_token: str = Cookie(None)):
+async def removeReplyBlog(response: Response, request: Request, blogID: int, replyIndex: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
