@@ -103,3 +103,6 @@ class User(persistent.Persistent):
     
     def removeNotification(self, index):
         self.notification.pop(index)
+    
+    def removeAllNotification(self):
+        self.notification = PersistentList()
