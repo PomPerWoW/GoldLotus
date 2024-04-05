@@ -273,3 +273,17 @@ async def removeNotification(response: Response, request: Request, index: int, a
         return root.user[userId]
     except Exception as e:
         return {"detail": str(e)}
+    
+@router.post("/user/removeAllNotification", tags=["User"])
+async def removeAllNotification(response: Response, request: Request, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        
+        root.user[userId].removeAllNotification()
+        
+        transaction.commit()
+        
+        return root.user[userId]
+    except Exception as e:
+        return {"detail": str(e)}
