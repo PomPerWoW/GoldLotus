@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notication</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+
+    <!-- Global style -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('global-static', path='/general.css') }}"
+    />
+    <link
+        rel="stylesheet"
+        href="{{ url_for('global-static', path='/global-style.css') }}"
+    />
+    <link           
+        rel="stylesheet"
+        href="{{ url_for('global-static', path='/queries.css') }}"
+    />
+    <!-- Local style -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('global-static', path='/style.css') }}"
+    />
+
+</head>
+{% include "global-component/navbar.html" %}
+<body>
+    
+    <div class="block">    
+        <div class="box__header ">
+            <div>Notication</div>
+        </div>
+        <div class="box">
+            <div class="noti--head--box">
+                <div class="noti--head--box--name">name</div>
+                <div class="noti--head--box--text">text</div>
+                <div>time</div>
+            </div>
+            <div class="noti--body">
+                <div class="noti--box--name">John Doe</div>
+                <div class="noti--box--text">Description ssssssssssssssssssssssssssssssssss</div>
+                <div class="noti--box--time">16.25</div>
+                <div class="icon"><i class="fa-solid fa-trash-can"></i></div>
+            </div>
+            <div class="noti--body">
+                <div class="noti--box--name">Muay</div>
+                <div class="noti--box--text">Description ssssssssssssssssssssssssssssssssss</div>
+                <div class="noti--box--time">12.09</div>
+                <div class="icon"><i class="fa-solid fa-trash-can"></i></div>
+            </div>
+            <div class="noti--body">
+                <div class="noti--box--name">Chumnuay</div>
+                <div class="noti--box--text">Description ssssssssssssssssssssssssssssssssss</div>
+                <div class="noti--box--time">7.57</div>
+                <div class="icon"><i class="fa-solid fa-trash-can"></i></div>
+            </div>
+        </div>
+    </div>
+    {% include "global-component/footer.html" %}
+    <script
+        src="https://kit.fontawesome.com/1c7eef805a.js"
+        crossorigin="anonymous"
+    ></script>
+   
+</body>
+
+</html>
