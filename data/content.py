@@ -97,12 +97,18 @@ class Event(Content):
     
     def addAttending(self, userID: str):
         self.attending.append(userID)
+        self.removeMaybe(userID)
+        self.removeNotAttending(userID)
         
     def addMaybe(self, userID: str):
         self.attending.append(userID)
+        self.removeAttending(userID)
+        self.removeNotAttending(userID)
         
     def addNotAttending(self, userID: str):
         self.notAttending.append(userID)
+        self.removeMaybe(userID)
+        self.removeAttending(userID)
                 
     def removeAttending(self, userID: str):
         self.attending.remove(userID)
