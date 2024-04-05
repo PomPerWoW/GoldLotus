@@ -1,6 +1,7 @@
 
 from fastapi import APIRouter, File, Request, Response, Cookie, UploadFile
 from typing import List
+from datetime import datetime
 import shutil
 import sys
 import os
@@ -94,7 +95,8 @@ async def removeBlog(response: Response, request: Request, blogID: int, access_t
         del root.blog[blogID]
         
         transaction.commit()
-        return root.user[userId]
+        
+        return {"detail": f"successfully remove blog {blogID}"}
     except Exception as e:
         return {"detail": str(e)}
     
@@ -156,6 +158,7 @@ async def editBlog(response: Response, request: Request, blogID: int, title: str
         root.blog[blogID].editContent(title, text, media)
         
         transaction.commit()
+        
         return root.blog[blogID]
     except Exception as e:
         return {"detail": str(e)}
@@ -170,8 +173,11 @@ async def addLikeBlog(response: Response, request: Request, blogID: int, access_
             return
         
         root.blog[blogID].addLike(userId)
+        root.user[root.blog[blogID].author].addNotification(f"{root.user[userId].username} liked your blog, {root.blog[blogID].title}", datetime.now())
         
         transaction.commit()
+        
+        return root.blog[blogID]
     except Exception as e:
         return {"detail": str(e)}
     
@@ -187,6 +193,8 @@ async def removeLikeBlog(response: Response, request: Request, blogID: int, acce
         root.blog[blogID].removeLike(userId)
         
         transaction.commit()
+        
+        return root.blog[blogID]
     except Exception as e:
         return {"detail": str(e)}
     
@@ -197,8 +205,11 @@ async def addReplyBlog(response: Response, request: Request, blogID: int, text: 
         userId = token["userId"]
         
         root.blog[blogID].addReply(userId, text)
+        root.user[root.blog[blogID].author].addNotification(f"{root.user[userId].username} replied to your blog, {root.blog[blogID].title}", datetime.now())
         
         transaction.commit()
+        
+        return root.blog[blogID]
     except Exception as e:
         return {"detail": str(e)}
 
@@ -212,8 +223,11 @@ async def addLikeReplyBlog(response: Response, request: Request, blogID: int, re
             return
             
         root.blog[blogID].reply[replyIndex].addLike(userId)
+        root.user[root.blog[blogID].reply[replyIndex].author].addNotification(f"{root.user[userId].username} liked your reply in {root.blog[blogID].title}", datetime.now())
         
         transaction.commit()
+        
+        return root.blog[blogID]
     except Exception as e:
         return {"detail": str(e)}
 
@@ -229,11 +243,13 @@ async def removeLikeReplyBlog(response: Response, request: Request, blogID: int,
         root.blog[blogID].reply[replyIndex].removeLike(userId)
         
         transaction.commit()
+        
+        return root.blog[blogID]
     except Exception as e:
         return {"detail": str(e)}
 
 @router.post("/removeReplyBlog/", tags=["blog"])
-async def addReplyBlog(response: Response, request: Request, blogID: int, replyIndex: str, access_token: str = Cookie(None)):
+async def removeReplyBlog(response: Response, request: Request, blogID: int, replyIndex: str, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
@@ -242,6 +258,8 @@ async def addReplyBlog(response: Response, request: Request, blogID: int, replyI
             raise Exception("user has no permission")
         
         transaction.commit()
+        
+        return root.blog[blogID]
     except Exception as e:
         return {"detail": str(e)}
     

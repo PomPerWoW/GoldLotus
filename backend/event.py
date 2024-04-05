@@ -97,6 +97,8 @@ async def removeEvent(response: Response, request: Request, eventID: str, access
         del root.event[eventID]
         
         transaction.commit()
+        
+        return {"detail": f"successfully remove blog {eventID}"}
     except Exception as e:
         return {"detail": str(e)}
     
@@ -158,6 +160,8 @@ async def editEvent(response: Response, request: Request, eventID: int, title: s
         root.event[eventID].editContent(title, text, mediaID, date)
         
         transaction.commit()
+        
+        return root.event[eventID]
     except Exception as e:
         return {"detail": str(e)}
 
@@ -168,8 +172,11 @@ async def addReplyEvent(response: Response, request: Request, eventID: int, text
         userId = token["userId"]
         
         root.event[eventID].addReply(userId, text)
+        root.user[root.event[eventID].author].addNotification(f"{root.user[userId].username} replied to your event, {root.event[eventID].title}", datetime.now())
         
         transaction.commit()
+        
+        return root.event[eventID]
     except Exception as e:
         return {"detail": str(e)}
 
@@ -183,8 +190,11 @@ async def addLikeReplyEvent(response: Response, request: Request, eventID: int, 
             return
             
         root.event[eventID].reply[replyIndex].addLike(userId)
+        root.user[root.event[eventID].reply[replyIndex].author].addNotification(f"{root.user[userId].username} liked your reply in {root.event[eventID].title}", datetime.now())
         
         transaction.commit()
+        
+        return root.event[eventID]
     except Exception as e:
         return {"detail": str(e)}
 
@@ -200,6 +210,8 @@ async def removeLikeReplyEvent(response: Response, request: Request, eventID: in
         root.event[eventID].reply[replyIndex].removeLike(userId)
         
         transaction.commit()
+        
+        return root.event[eventID]
     except Exception as e:
         return {"detail": str(e)}
 
@@ -213,6 +225,8 @@ async def addReplyEvent(response: Response, request: Request, eventID: int, repl
             raise Exception("user has no permission")
         
         transaction.commit()
+        
+        return root.event[eventID]
     except Exception as e:
         return {"detail": str(e)}
 
@@ -225,8 +239,11 @@ async def addAttending(response: Response, request: Request, eventID: int, acces
             raise Exception("author not found")
         
         root.event[eventID].addAttending(userId)
+        root.user[root.event[eventID].author].addNotification(f"{root.user[userId].username} is attending {root.event[eventID].title}", datetime.now())
         
         transaction.commit()
+        
+        return root.event[eventID]
     except Exception as e:
         return {"detail": str(e)}
     
@@ -241,6 +258,8 @@ async def removeAttending(response: Response, request: Request, eventID: int, ac
         root.event[eventID].removeAttending(userId)
         
         transaction.commit()
+        
+        return root.event[eventID]
     except Exception as e:
         return {"detail": str(e)}
 
@@ -253,8 +272,11 @@ async def addMaybe(response: Response, request: Request, eventID: int, access_to
             raise Exception("author not found")
         
         root.event[eventID].addMaybe(userId)
+        root.user[root.event[eventID].author].addNotification(f"{root.user[userId].username} may be attending {root.event[eventID].title}", datetime.now())
         
         transaction.commit()
+        
+        return root.event[eventID]
     except Exception as e:
         return {"detail": str(e)}
     
@@ -269,6 +291,8 @@ async def removeMaybe(response: Response, request: Request, eventID: int, access
         root.event[eventID].removeMaybe(userId)
         
         transaction.commit()
+        
+        return root.event[eventID]
     except Exception as e:
         return {"detail": str(e)}
 
@@ -281,8 +305,11 @@ async def addNotAttending(response: Response, request: Request, eventID: int, ac
             raise Exception("author not found")
         
         root.event[eventID].addNotAttending(userId)
+        root.user[root.event[eventID].author].addNotification(f"{root.user[userId].username} is not attending {root.event[eventID].title}", datetime.now())
         
         transaction.commit()
+        
+        return root.event[eventID]
     except Exception as e:
         return {"detail": str(e)}
     
@@ -297,6 +324,8 @@ async def removeNotAttending(response: Response, request: Request, eventID: int,
         root.event[eventID].removeNotAttending(userId)
         
         transaction.commit()
+        
+        return root.event[eventID]
     except Exception as e:
         return {"detail": str(e)}
     

@@ -9,7 +9,6 @@ from fastapi import APIRouter, Request, Response, Cookie
 from datetime import datetime
 import sys
 import os
-import operator
 
 router = APIRouter()
 
@@ -118,6 +117,8 @@ async def setNewPassword(response: Response, request: Request, token: str, passw
         root.user[userID].changePassword(password)
         
         transaction.commit()
+        
+        return {"detail": "successful"}
     except Exception as e:
         return {"detail": str(e)}
 
@@ -197,9 +198,13 @@ async def follow(response: Response, request: Request, followingID: str, access_
             raise Exception("author not found")
         
         root.user[userId].addFollowing(followingID)
+        
         root.user[followingID].addFollower(userId)
+        root.user[followingID].addNotification(f"{userId} has started following you.", datetime.now())
         
         transaction.commit()
+        
+        return root.user[userId]
     except Exception as e:
         return {"detail": str(e)}
     
@@ -215,6 +220,8 @@ async def unfollow(response: Response, request: Request, followingID: str, acces
         root.user[followingID].removeFollower(userId)
         
         transaction.commit()
+        
+        return root.user[userId]
     except Exception as e:
         return {"detail": str(e)}
     
@@ -226,5 +233,43 @@ async def getSortedIdByFollower(response: Response, request: Request):
             result.append(u.userID)
         
         return result
+    except Exception as e:
+        return {"detail": str(e)}
+
+@router.get("/user/getAllNotification", tags=["User"])
+async def getAllNotification(response: Response, request: Request, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+    
+        return root.user[userId].notification
+    except Exception as e:
+        return {"detail": str(e)}
+
+@router.post("/user/markAllNotificationsAsRead", tags=["User"])
+async def markAllNotificationsAsRead(response: Response, request: Request, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        
+        root.user[userId].markAllAsRead()
+        
+        transaction.commit()
+        
+        return {"detail": "all notifications are marked as read"}
+    except Exception as e:
+        return {"detail": str(e)}
+    
+@router.post("/user/removeNotification", tags=["User"])
+async def removeNotification(response: Response, request: Request, index: int, access_token: str = Cookie(None)):
+    try:
+        token = decodeJWT(access_token)
+        userId = token["userId"]
+        
+        root.user[userId].removeNotification(index)
+        
+        transaction.commit()
+        
+        return root.user[userId]
     except Exception as e:
         return {"detail": str(e)}

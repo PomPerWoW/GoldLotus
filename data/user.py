@@ -6,6 +6,7 @@ from email_validator import validate_email, EmailNotValidError
 from password_strength import PasswordPolicy
 
 from content import *
+from notification import Notification
 
 import hashlib
 hash_algorithm = hashlib.new("SHA256")
@@ -22,6 +23,7 @@ class User(persistent.Persistent):
         self.event = PersistentList()                   # Store as ID
         self.follower = PersistentList()                # Store as ID
         self.following = PersistentList()               # Store as ID
+        self.notification = PersistentList()            # Store as Object
 
     def __verify_account_details(self, username: str, email: str, password: str) -> None:
         # Username
@@ -91,3 +93,13 @@ class User(persistent.Persistent):
     
     def removeFollowing(self, userID: str):
         self.following.remove(userID)
+        
+    def addNotification(self, text: str, timestamp: datetime):
+        self.notification.append(Notification(text, timestamp))
+    
+    def markAllAsRead(self):
+        for n in self.notification:
+            n.markAsRead()
+    
+    def removeNotification(self, index):
+        self.notification.pop(index)
