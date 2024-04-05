@@ -71,7 +71,7 @@ async def createEventWithMedia(response: Response, request: Request, title: str,
         return {"detail": str(e)}
 
 @router.post("/removeEvent/", tags=["event"])
-async def removeEvent(response: Response, request: Request, eventID: str, access_token: str = Cookie(None)):
+async def removeEvent(response: Response, request: Request, eventID: int, access_token: str = Cookie(None)):
     try:
         token = decodeJWT(access_token)
         userId = token["userId"]
