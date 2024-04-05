@@ -61,6 +61,9 @@ app.mount("/event-static",
 app.mount("/prayers-static", 
           StaticFiles(directory="../pages/prayers"), name="prayers-static")
 
+app.mount("/notification-static", 
+          StaticFiles(directory="../pages/notification"), name="notification-static")
+
 # =============================================================================
 
 # Templates
@@ -101,6 +104,10 @@ async def eventPage(request: Request):
 @app.get("/prayers", response_class=HTMLResponse, tags=["prayers"])
 async def index(request: Request):
     return pages.TemplateResponse("prayers/prayers.html", {"request": request})
+
+@app.get("/notification", response_class=HTMLResponse, tags=["website"])
+async def userInfoPage(request: Request):
+    return pages.TemplateResponse("notification/notification.html", {"request": request})
 
 # =============================================================================
 

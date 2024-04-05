@@ -90,7 +90,7 @@ async def main():
                 
     popular_blog_id = await getMostLikedBlog()
     if popular_blog_id:
-        for i in range(3):
+        for i in range(min(3, len(popular_blog_id))):
             blog_data = await loadBlog(popular_blog_id[i])
             if blog_data.get("detail"):
                 continue
