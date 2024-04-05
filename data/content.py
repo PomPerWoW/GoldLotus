@@ -30,7 +30,7 @@ class Reply(Content):
         self.like.append(userID)
     
     def removeLike(self, userID: str):
-        self.like.pop(userID)
+        self.like.remove(userID)
         
 class Blog(Content):
     def __init__(self, blogID: int, title: str, author: str, text: str, media: list) -> None:

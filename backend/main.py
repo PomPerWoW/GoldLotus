@@ -56,6 +56,9 @@ app.mount("/userinfo-static",
 app.mount("/prayers-static", 
           StaticFiles(directory="../pages/prayers"), name="prayers-static")
 
+app.mount("/notification-static", 
+          StaticFiles(directory="../pages/notification"), name="notification-static")
+
 # =============================================================================
 
 # Templates
@@ -88,6 +91,10 @@ async def resetPasswordPage(request: Request, token: str):
 @app.get("/userInfo", response_class=HTMLResponse, tags=["website"])
 async def userInfoPage(request: Request):
     return pages.TemplateResponse("06-userinfo/userinfo.html", {"request": request})
+
+@app.get("/notification", response_class=HTMLResponse, tags=["website"])
+async def userInfoPage(request: Request):
+    return pages.TemplateResponse("notification/notification.html", {"request": request})
 
 # =============================================================================
 
