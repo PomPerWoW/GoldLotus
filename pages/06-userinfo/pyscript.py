@@ -26,6 +26,8 @@ class UserInfoWidget(AbstractWidget):
     
     def initializeWidget(self):
         js.Promise.resolve(self.onLoad()).catch(lambda e: print(e))
+        fullUrl = window.location.href
+        self.userID = fullUrl.split("/")[4]
 
         self.userinfoUserHeader = document.querySelector(".userinfo__user--header")
         
@@ -34,19 +36,38 @@ class UserInfoWidget(AbstractWidget):
         self.userinfoLogoutBtn.onclick = lambda e: self.logout(e)
         
     async def onLoad(self):
+        self.myData = await self.getMyUserInfo()
         self.data = await self.getUserInfo()
-        print(self.data)
+        
+        if self.myData.get("userID") != self.data.get("userID"):
+            self.userinfoLogoutBtn.classList.add("hidden")
+            
         self.loadUserInfoUser(self.data)
-    
-    async def getUserInfo(self):
+        
+    async def getMyUserInfo(self):
         try:
             response = await pyfetch(
-                url="/user/info", 
+                url=f"/user/info", 
                 method='GET', 
                 headers={'Content-Type': 'application/json'}
             )
             if response.ok:
                 data = await response.json()
+                print(data)
+                return data
+        except Exception as e:
+            print(e)
+    
+    async def getUserInfo(self):
+        try:
+            response = await pyfetch(
+                url=f"/user/getUser?userId={self.userID}", 
+                method='GET', 
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+                print(data)
                 return data
         except Exception as e:
             print(e)

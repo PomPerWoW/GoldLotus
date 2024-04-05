@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from blog import router as blog_router
+from event import router as event_router
 from account_management import router as accounte_management_router
 from media_response import router as media_response_router
 
@@ -12,6 +13,7 @@ app = FastAPI()
 # =============================================================================
 
 app.include_router(blog_router)
+app.include_router(event_router)
 app.include_router(accounte_management_router)
 app.include_router(media_response_router)
 
@@ -53,6 +55,9 @@ app.mount("/setpassword-static",
 app.mount("/userinfo-static", 
           StaticFiles(directory="../pages/06-userinfo"), name="userinfo-static")
 
+app.mount("/event-static", 
+          StaticFiles(directory="../pages/07-event"), name="event-static")
+
 app.mount("/prayers-static", 
           StaticFiles(directory="../pages/prayers"), name="prayers-static")
 
@@ -85,9 +90,17 @@ async def blogPage(request: Request):
 async def resetPasswordPage(request: Request, token: str):
     return pages.TemplateResponse("05-setpassword/setpassword.html", {"request": request, "token": token})
 
-@app.get("/userInfo", response_class=HTMLResponse, tags=["website"])
-async def userInfoPage(request: Request):
-    return pages.TemplateResponse("06-userinfo/userinfo.html", {"request": request})
+@app.get("/userInfo/{key}", response_class=HTMLResponse, tags=["website"])
+async def userInfoPage(request: Request, key: str):
+    return pages.TemplateResponse("06-userinfo/userinfo.html", {"request": request, "userID": key})
+
+@app.get("/lotusEvent", response_class=HTMLResponse, tags=["website"])
+async def eventPage(request: Request):
+    return pages.TemplateResponse("07-event/event.html", {"request": request})
+
+@app.get("/prayers", response_class=HTMLResponse, tags=["prayers"])
+async def index(request: Request):
+    return pages.TemplateResponse("prayers/prayers.html", {"request": request})
 
 # =============================================================================
 

@@ -1,49 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>บทกล่าวถวายผ้าป่า</title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>บทกล่าวถวายผ้าป่า</title>
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
-    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
-    <link rel="stylesheet" href="{{ url_for('global-static', path='/prayers.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('global-static', path='/general.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('global-static', path='/global-style.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('global-static', path='/queries.css') }}" />
-</head>
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/general.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/global-style.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/queries.css') }}"
+        />
 
-{% include "global-component/navbar.html" %}
+        <!-- Local CSS -->
 
-<body>
-    <div class="block">
-        <div class="spine"></div>
-        <div class="box">
-            <div class="box__header">
-                <div>บทกล่าวถวายผ้าป่า</div>
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/prayers.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('prayers-static', path='/style.css') }}"
+        />
+
+        <!-- PyScript -->
+        <link
+            rel="stylesheet"
+            href="https://pyscript.net/releases/2024.1.1/core.css"
+        />
+        <script
+            type="module"
+            src="https://pyscript.net/releases/2024.1.1/core.js"
+        ></script>
+    </head>
+    <body>
+        <!-- Loader Section -->
+
+        {% include "global-component/loader.html" %}
+
+        <!-- Navigation Section -->
+
+        {% include "global-component/navbar.html" %}
+        <div class="block">
+            <div class="spine"></div>
+            <div class="box">
+                <div class="box__header">
+                    <div>บทกล่าวถวายผ้าป่า</div>
+                </div>
+                <div class="box__body">
+                    <div id="line1">
+                        อิมานิ มะยัง ภันเต ปังสุกูละจีวะรานิ สะปะริวารานิ
+                        ภิกขุสังฆัสสะ โอโณชะยามะ สาธุโน ภันเต ภิกขุสังโฆ
+                    </div>
+                    <div id="line2">
+                        อิมานิ ปังสุกูละจีวะรานิ สะปะริวารานิ ปะฏิคคัณหาตุ
+                        อัมหากัง ทีฆารัตตัง หิตายะ สุขายะ
+                    </div>
+                    <div id="line3">
+                        ข้าแต่พระสงฆ์ผู้เจริญ
+                        ข้าพเจ้าทั้งหลายขอน้อมถวายผ้าบังสุกุล จีวร
+                        กับทั้งบริวารเหล่านี้ แก่พระภิษุสงฆ์
+                        ขอพระภิษุสงฆ์จงรับผ้าบังสุกุล จีวร
+                        กับทั้งบริวารเหล่านี้ของข้าพเจ้าทั้งหลาย
+                        เพื่อประโยชน์และความสุขแก่ข้าพเจ้าทั้งหลายสิ้นกาลนานเทอญ
+                    </div>
+                </div>
             </div>
-            <div class="box__body">
-                <div id="line1">
-                    อิมานิ มะยัง ภันเต ปังสุกูละจีวะรานิ สะปะริวารานิ
-                    ภิกขุสังฆัสสะ โอโณชะยามะ สาธุโน ภันเต ภิกขุสังโฆ
-                </div>
-                <div id="line2">
-                    อิมานิ ปังสุกูละจีวะรานิ สะปะริวารานิ ปะฏิคคัณหาตุ
-                    อัมหากัง ทีฆารัตตัง หิตายะ สุขายะ
-                </div>
-                <div id="line3">
-                    ข้าแต่พระสงฆ์ผู้เจริญ ข้าพเจ้าทั้งหลายขอน้อมถวายผ้าบังสุกุล จีวร กับทั้งบริวารเหล่านี้
-                    แก่พระภิษุสงฆ์ ขอพระภิษุสงฆ์จงรับผ้าบังสุกุล จีวร กับทั้งบริวารเหล่านี้ของข้าพเจ้าทั้งหลาย
-                    เพื่อประโยชน์และความสุขแก่ข้าพเจ้าทั้งหลายสิ้นกาลนานเทอญ
-                </div>
-            </div>
+            <audio id="myAudio" controls class="tab_audio">
+                <source
+                    src="{{ url_for('prayers-static', path='/12/12.mp3') }}"
+                    type="audio/mpeg"
+                />
+            </audio>
         </div>
-        <audio id="myAudio" controls class="tab_audio">
-            <source src="{{ url_for('prayers-static', path='/12/12.mp3') }}" type="audio/mpeg">
-        </audio>
-    </div>
-    {% include "global-component/footer.html" %}
-    <script type="py" src="{{ url_for('prayers-static', path='/12/pyscript.py') }}"></script>
-</body>
 
+        <!-- Footer Section -->
+
+        {% include "global-component/footer.html" %}
+
+        <!-- Global PyScript -->
+        <script
+            type="py"
+            src="{{ url_for('global-static', path='/pyscript.py') }}"
+        ></script>
+
+        <script
+            type="py"
+            src="{{ url_for('prayers-static', path='/12/pyscript.py') }}"
+        ></script>
+    </body>
 </html>
