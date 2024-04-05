@@ -45,6 +45,19 @@ async def removeNotification(index):
             return data
     except Exception as e:
         print(e)
+        
+async def removeAllNotification():
+    try:
+        response = await pyfetch(
+            url=f"/user/removeAllNotification", 
+            method='POST',
+            headers={'Content-Type': 'application/json'}
+        )
+        if response.ok:
+            data = await response.json()
+            return data
+    except Exception as e:
+        print(e)
 
 async def handle_delete(index, _):
     await removeNotification(index)
@@ -53,6 +66,10 @@ async def handle_delete(index, _):
         notifications = notifications.get("data")
         await display_notification(notifications)
 
+async def handle_delete_all(_):
+    await removeAllNotification()
+    container.innerHTML = ""
+    
 async def display_notification(notifications):
     container.innerHTML = ""
     for i in range(len(notifications)):
@@ -83,7 +100,7 @@ async def main():
     
     await markAllNotificationsAsRead()
     
-    # add_event_listener(document.getElementById("delete_all"), "click", handle_delete)
+    add_event_listener(document.getElementById("delete_all"), "click", handle_delete_all)
             
 
 import asyncio
