@@ -128,7 +128,7 @@ def get_current_position(success, error = None, options = None):
 async def getNearby(lat, lon):
     try:
         response = await pyfetch(
-            url=f"/gmaps/nearby?lat={lat}&lon={lon}", 
+            url=f"/nearbyTemple?lat={lat}&lon={lon}", 
             method='get',
             headers={'Content-Type': 'application/json'}
         )
