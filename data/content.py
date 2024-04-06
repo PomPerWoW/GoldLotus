@@ -66,21 +66,21 @@ class Blog(Content):
         
 class Event(Content):
     
-    def __init__(self, eventID: int, title: str, author: str, text: str, media: list, date: datetime) -> None:
+    def __init__(self, eventID: int, title: str, author: str, text: str, date: datetime, location: str):
         super().__init__(author, text)
         self.eventID = eventID                  # int
         self.title = title
         self.date = date
-        self.media = media                      # Store as ID
+        self.location = location
         self.reply = PersistentList()           # Store as obj
         self.attending = PersistentList()       # Store as ID
         self.maybe = PersistentList()           # Store as ID
         self.notAttending = PersistentList()    # Store as ID
         
-    def editContent(self, title: str, text: str, media: list, date: datetime):
+    def editContent(self, title: str, text: str, date: datetime, location: str=None):
         self.title = title
         self.text = text
-        self.media = media
+        self.location = location
         self.date = date
         self.edited = True
         self.timestamp = datetime.now()
