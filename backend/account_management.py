@@ -200,7 +200,7 @@ async def follow(response: Response, request: Request, followingID: str, access_
         root.user[userId].addFollowing(followingID)
         
         root.user[followingID].addFollower(userId)
-        root.user[followingID].addNotification(f"{userId} has started following you.", datetime.now())
+        root.user[followingID].addNotification(f"{root.user[userId].username} has started following you.", datetime.now())
         
         transaction.commit()
         

@@ -73,29 +73,27 @@ async def handle_delete_all(_):
 async def display_notification(notifications):
     container.innerHTML = ""
     for i in range(len(notifications)):
-            outer = document.createElement("div")
-            outer.classList.add("noti--head--box")
-            
-            noti = document.createElement("div")
-            noti.id = f"noti_{i}"
-            text = noti.textContent = notifications[i].get("text")  
-            if notifications[i].get("status"):
-                noti.textContent = text                 # Read
-            else:
-                noti.innerHTML = f"<b>{text}</b>"       # Unread
-            outer.appendChild(noti)
-            noti.classList.add("noti--box--name")
+        outer = document.createElement("div")
+        outer.classList.add("noti--head--box")
+        
+        noti = document.createElement("div")
+        noti.id = f"noti_{i}"
+        text = noti.textContent = notifications[i].get("text")  
+        if notifications[i].get("status"):
+            noti.textContent = text                 # Read
+        else:
+            noti.innerHTML = f"<b>{text}</b>"       # Unread
+        outer.appendChild(noti)
+        noti.classList.add("noti--box--name")
+        
+        rm = document.createElement("a")
+        rm.id = f"rm_{i}"
+        rm.textContent = "delete"
+        add_event_listener(rm, "click", functools.partial(handle_delete, i))
+        outer.appendChild(rm)
+        rm.classList.add("noti--box--delete")
 
-            
-            rm = document.createElement("a")
-            rm.id = f"rm_{i}"
-            rm.textContent = "delete"
-            add_event_listener(rm, "click", functools.partial(handle_delete, i))
-            outer.appendChild(rm)
-            rm.classList.add("noti--box--delete")
-
-            
-            container.appendChild(outer)
+        container.appendChild(outer)
 
 async def main():
     notifications = await getAllNotification()
