@@ -1,0 +1,361 @@
+/* Hero Section */
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8rem 0;
+}
+
+.hero__text {
+    padding-right: 10rem;
+    text-align: center;
+}
+
+.hero__text--header {
+    color: #dcb60e;
+}
+
+.hero__text--message {
+    color: #4d4637;
+    padding: 0 4rem;
+}
+
+.hero__image {
+    width: 100%;
+    height: auto;
+}
+
+.hero__slider {
+    max-width: 100rem;
+    padding: 0 3.2rem;
+    margin: 0 auto;
+    /* width: 500px;m
+    height: 300px; */
+}
+.slider {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+}
+/* infomation section */
+.info {
+    text-align: center;
+    margin: 5% 0 10% 0;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+}
+
+.serviceBox {
+    color: #4d4637;
+    background: #d8b778;
+    background: #d8b778;
+    text-align: center;
+    padding: 2.5rem 2.5rem 2.5rem;
+    border-radius: 3.5rem;
+    box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+/* event section */
+.event {
+    display: flex;
+    background-color: #d8b778;
+    height: 30rem;
+    color: #4d4637;
+}
+
+.event-box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.event_image {
+    width: 40rem;
+    height: auto;
+    border-radius: 0 0 30rem 30rem;
+    box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    transition: height 2s;
+}
+.eventblock {
+    display: flex;
+    padding: 5rem 0 5rem 5rem;
+}
+
+.event_column {
+    flex-direction: column;
+}
+
+.event_btn {
+    margin-left: 75%;
+}
+
+/* blog section */
+.show_blog {
+    display: flex;
+    padding: 20rem 0;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.blog_block-box {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mgb8 {
+    margin-bottom: 8rem;
+}
+
+.text_ {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-bottom: 2px solid #d8b778;
+    color: #4d4637;
+    justify-items: center;
+    padding-bottom: 2rem;
+    margin-bottom: 2%;
+}
+
+.blog_message {
+    display: flex;
+    flex-direction: column;
+    padding: 3rem 3rem 0 3rem;
+    width: 35rem;
+    height: 30rem;
+    background-color: white;
+    box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.blog_profile {
+    display: flex;
+    flex-direction: row;
+    padding: 2rem 3rem 3rem 3rem;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 2px solid #b3aa99;
+}
+.name {
+    padding: 1rem 0 0 0;
+}
+.message {
+    padding: 3rem;
+    line-height: 1.5;
+}
+
+.blog_image1 {
+    width: 7rem;
+    height: 7rem;
+    border-radius: 50%;
+}
+
+.invite {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15rem;
+    color: #4d4637;
+}
+
+.join-left {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+.join-left button {
+    width: 20rem;
+}
+.join-right {
+    display: flex;
+    height: 100%;
+    width: 60%;
+}
+.join_head {
+    display: flex;
+    flex-direction: column;
+}
+
+.join_head p {
+    width: 85%;
+    font-size: 1.5rem;
+    margin: 1.5rem 0 1.5rem 0;
+}
+
+.join_head h4 {
+    font-size: 3rem;
+}
+.join-btn {
+    background-color: #fff;
+    border: 0 solid #e2e8f0;
+    border-radius: 3rem;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: 1.5rem 2.6rem;
+    text-align: center;
+    text-decoration: none #0d172a solid;
+    text-decoration-thickness: auto;
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0px 1px 2px rgba(166, 175, 195, 0.25);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    background: rgb(0, 82, 70);
+    background: linear-gradient(
+        90deg,
+        rgba(0, 82, 70, 1) 0%,
+        rgba(0, 0, 0, 0) 130%
+    );
+    margin-top: 2rem;
+}
+
+.join-btn:hover {
+    background-color: #005246;
+    color: #fff;
+}
+
+.group-pic {
+    max-width: 100%;
+    max-height: auto;
+}
+
+/* calendar section */
+.calendar {
+    height: 70rem;
+    margin-top: 15rem;
+    display: flex;
+    flex-direction: row;
+    color: #4d4637;
+}
+.calendar-block {
+    width: 110rem;
+    height: 50rem;
+    margin: 3rem;
+    background-color: gray;
+}
+
+/* style */
+
+.gradient-bgup {
+    background-image: linear-gradient(
+        to top,
+        rgba(255, 0, 0, 0),
+        rgba(255, 249, 232)
+    );
+}
+
+.gradient-bgdown {
+    background-image: linear-gradient(
+        to top,
+        rgba(255, 0, 0, 0),
+        rgba(255, 249, 232)
+    );
+    width: 100%;
+    padding: 0 3.2rem;
+}
+
+.block {
+    display: flex;
+    padding: 2rem;
+    height: 100%;
+    flex-direction: column;
+    /* margin-top: 10rem; */
+}
+
+.box {
+    display: flex;
+    /* background-color: white; */
+    width: 100%;
+    max-height: 90%;
+    overflow-y: auto;
+    flex-direction: column;
+    /* padding: 3rem; */
+    /* box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.1); */
+}
+.show_blog1 {
+    display: flex;
+    flex-direction: row;
+}
+.show_blog h2 {
+    width: 90%;
+}
+
+.box__header {
+    font-size: 2.5rem;
+    color: #4d4637;
+    padding: 2.6rem;
+}
+
+.noti--head--box {
+    background-color: white;
+    color: #4d4637;
+    border-bottom: 1px solid darkgray;
+    padding: 1.5rem 3rem 1.5rem 3rem;
+    display: flex;
+    flex-direction: row;
+    /* font-weight: 500; */
+}
+
+.noti--box--name {
+    display: flex;
+    /* padding: 1.2rem 1rem 1.2rem 3rem; */
+    /* font-weight: 500; */
+    width: 90%;
+}
+
+.Noti--box:hover {
+    background-color: aliceblue;
+}
+
+#delete_all {
+    color: red;
+    cursor: pointer;
+}
+
+.noti--box--delete {
+    width: 10%;
+    cursor: pointer;
+    /* padding: 1.2rem 0 1.2rem 0; */
+    color: #4d4637;
+}
+
+.noti--box--time {
+    width: 10%;
+    padding: 1.2rem 1rem 1.2rem 0;
+    color: #4d4637;
+}
+.noti--body {
+    display: flex;
+    flex-direction: row;
+}
+
+.noti--body:hover {
+    background-color: rgb(242, 242, 242);
+}
+
+.icon {
+    padding: 1.2rem 1rem 1.2rem 1rem;
+}
+
+.icon:hover {
+    color: #dcb60e;
+}
+
+@media only screen and (max-width: 37.5em) {
+    .noti--box--delete{
+        display: none;
+    }
+}

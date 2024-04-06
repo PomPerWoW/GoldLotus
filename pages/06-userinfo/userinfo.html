@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- Shortcut Icon -->
+        <link
+            rel="shortcut icon"
+            type="image/png"
+            href="../../assets/icons/logo.svg"
+        />
+
+        <!-- Global CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/general.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/global-style.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/queries.css') }}"
+        />
+
+        <!-- Local CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('userinfo-static', path='/style.css') }}"
+        />
+
+        <!-- PyScript -->
+        <link
+            rel="stylesheet"
+            href="https://pyscript.net/releases/2024.1.1/core.css"
+        />
+        <script
+            type="module"
+            src="https://pyscript.net/releases/2024.1.1/core.js"
+        ></script>
+
+        <title>GoldLotus | User Info</title>
+    </head>
+    <body style="background-color: #fff9e8">
+        <!-- Loader Section -->
+
+        {% include "global-component/loader.html" %}
+
+        <!-- Navigation Section -->
+
+        {% include "global-component/navbar.html" %}
+
+        <!-- UserInfo Section -->
+        <div class="bgc">
+            <div class="container">
+                <div class="userinfo" id="userinfo">
+                    <div class="userinfo__info">
+                        <div class="userinfo__user--header"></div>
+                    </div>
+                    <div class="userinfo__blog-event">
+                        <div class="userinfo__event">
+                            <div class="userinfo__event--header">My event</div>
+                            <div class="userinfo__divider"></div>
+                            <div
+                                class="userinfo__event--box"
+                                id="userinfo__event--box"
+                            ></div>
+                        </div>
+                        <div class="userinfo__blog">
+                            <div class="userinfo__blog--header">My blog</div>
+                            <div class="userinfo__divider"></div>
+                            <div
+                                class="userinfo__blog--box"
+                                id="userinfo__blog--box"
+                            ></div>
+                        </div>
+                    </div>
+                    <div class="userinfo__logout">
+                        <div
+                            class="userinfo__logout--btn"
+                            id="userinfo__logout--btn"
+                        >
+                            Logout
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+
+        {% include "global-component/footer.html" %}
+
+        <script
+            src="https://kit.fontawesome.com/1c7eef805a.js"
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- Global PyScript -->
+        <script
+            type="py"
+            src="{{ url_for('global-static', path='/pyscript.py') }}"
+        ></script>
+
+        <!-- Local PyScript -->
+        <script
+            type="py"
+            src="{{ url_for('userinfo-static', path='/pyscript.py') }}"
+        ></script>
+    </body>
+</html>

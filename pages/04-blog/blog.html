@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- Shortcut Icon -->
+        <link
+            rel="shortcut icon"
+            type="image/png"
+            href="../../assets/icons/logo.svg"
+        />
+
+        <!-- Global CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/general.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/global-style.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/queries.css') }}"
+        />
+
+        <!-- Local CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('blog-static', path='/style.css') }}"
+        />
+
+        <!-- PyScript -->
+        <link
+            rel="stylesheet"
+            href="https://pyscript.net/releases/2024.1.1/core.css"
+        />
+        <script
+            type="module"
+            src="https://pyscript.net/releases/2024.1.1/core.js"
+        ></script>
+
+        <title>GoldLotus | Community Blog</title>
+    </head>
+    <body class="bbgc">
+        <!-- Loader Section -->
+
+        {% include "global-component/loader.html" %}
+
+        <div class="hidden blog__like--status-box" id="liked__box">
+            <p>Liked</p>
+        </div>
+
+        <div class="hidden blog__like--status-box" id="unliked__box">
+            <p>Unliked</p>
+        </div>
+
+        <div class="hidden blog__like--status-box" id="commented__box">
+            <p>Commented</p>
+        </div>
+
+        <div class="hidden blog__like--status-box" id="followed__box">
+            <p>Followed</p>
+        </div>
+
+        <div class="hidden blog__like--status-box" id="unfollowed__box">
+            <p>Unfollowed</p>
+        </div>
+
+        <div class="hidden background__black--faded" id="error__box">
+            <div class="container">
+                <div class="error__box">
+                    <h2 class="error__box--header heading-tertiary">
+                        Blog Error
+                    </h2>
+                    <p class="error__box--message">Try again.</p>
+                    <button class="error__box--btn" id="error__box--btn">
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden background__black--faded" id="success__box">
+            <div class="container">
+                <div class="success__box">
+                    <h2 class="success__box--header heading-tertiary">
+                        Blog Created
+                    </h2>
+                    <button class="success__box--btn" id="success__box--btn">
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden background__black--faded" id="user__likes">
+            <div class="container">
+                <div class="user__component">
+                    <h2 class="user__component--header heading-tertiary">
+                        Likes
+                    </h2>
+                    <div class="user__component--body"></div>
+                    <button class="user__component--btn" id="user__likes--btn">
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden background__black--faded" id="user__comments">
+            <div class="container">
+                <div class="user__component">
+                    <h2 class="user__component--header heading-tertiary">
+                        Comments
+                    </h2>
+                    <div
+                        class="user__component--body"
+                        id="user__component--body"
+                    >
+                        <div class="add__comment" id="add__comment">
+                            Add your comment
+                        </div>
+                        <div
+                            class="hidden cancel__comment"
+                            id="cancel__comment"
+                        >
+                            Cancel
+                        </div>
+                        <div
+                            class="hidden user__comments--create"
+                            id="user__comments--create"
+                        >
+                            <div class="user__comments--name">
+                                Express your thought
+                            </div>
+                            <div class="user__comments--text">
+                                <textarea
+                                    id="user__comments--text-input"
+                                    name="Text..."
+                                    class="user__comments--text-input"
+                                    placeholder="Text..."
+                                    cols="30"
+                                    rows="2"
+                                ></textarea>
+                            </div>
+                            <div
+                                class="user__comments--comment-btn"
+                                id="user__comments--publish-btn"
+                            >
+                                Comment
+                            </div>
+                        </div>
+                        <div
+                            class="user__comments--person"
+                            id="user__comments--person-1"
+                        >
+                            <div class="user__comments--upper">
+                                <div class="user__comments--name">
+                                    PomPer123
+                                </div>
+                                <div class="user__comments--timestamp">
+                                    11 minutes ago
+                                </div>
+                            </div>
+                            <div class="user__comments--text">
+                                <p>Amazing!</p>
+                            </div>
+                            <div class="user__comments--like">
+                                <i class="fa-solid fa-heart"></i>
+                                <span id="user__likes--count-1">0 likes</span>
+                            </div>
+                        </div>
+                        <div class="user__comments--person">
+                            <div class="user__comments--upper">
+                                <div class="user__comments--name">
+                                    No Comments.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        class="user__component--btn"
+                        id="user__comments--btn"
+                    >
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Section -->
+
+        {% include "global-component/navbar.html" %}
+
+        <!-- Blog Section -->
+        <div class="container">
+            <div class="blog__pagination">
+                <div class="blog__pagination--latest">
+                    <button
+                        class="blog__pagination--element"
+                        id="blog__pagination--latest"
+                    >
+                        Latest
+                    </button>
+                </div>
+                <div class="blog__pagination--popular">
+                    <button
+                        class="blog__pagination--element"
+                        id="blog__pagination--popular"
+                    >
+                        Popular
+                    </button>
+                </div>
+                <div class="blog__pagination--following">
+                    <button
+                        class="blog__pagination--element"
+                        id="blog__pagination--following"
+                    >
+                        Following
+                    </button>
+                </div>
+                <div class="blog__pagination--mypost">
+                    <button
+                        class="blog__pagination--element"
+                        id="blog__pagination--mypost"
+                    >
+                        My posts
+                    </button>
+                </div>
+                <!-- <div class="blog__search">
+                    <input type="text" placeholder="Search" />
+                    <a href="">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </a>
+                </div> -->
+            </div>
+            <div class="blog" id="blog">
+                <div class="blog__post--box" id="blog__post--box">
+                    <div class="blog__post" id="blog__post--create">
+                        <div class="blog__create-post--header">
+                            <p>Create your own post</p>
+                        </div>
+                        <div class="blog__create-post--field">
+                            <div>
+                                <input
+                                    type="text"
+                                    id="title"
+                                    name="title"
+                                    placeholder="Title"
+                                    class="blog__create-post--title"
+                                    required
+                                />
+                            </div>
+                            <div class="blog__create-post--message">
+                                <textarea
+                                    id="text"
+                                    name="insert message..."
+                                    class="blog__create-post--message"
+                                    placeholder="insert messages..."
+                                    cols="60"
+                                    rows="5"
+                                ></textarea>
+                            </div>
+
+                            <div class="blog__assets--media-btn-box">
+                                <div class="blog__assets--media-btn">
+                                    <button
+                                        class="blog__assets--ar-media-btn"
+                                        id="add-media-btn"
+                                    >
+                                        Add media
+                                    </button>
+                                </div>
+                                <div class="blog__assets--media-btn">
+                                    <button
+                                        class="blog__assets--ar-media-btn"
+                                        id="remove-media-btn"
+                                    >
+                                        Remove media
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="blog__create-post--assets">
+                                <div class="blog__create-post--assets-header">
+                                    <h1>Upload Files</h1>
+                                    <p>
+                                        Upload images and videos to express your
+                                        mind.
+                                    </p>
+                                    <p>
+                                        <span
+                                            class="blog__create-post--assets-file-valid"
+                                            >PNG, JPG, JPEG, and MP4</span
+                                        >
+                                        are allowed.
+                                    </p>
+                                </div>
+                                <div
+                                    class="blog__create-post--assets-draganddrop"
+                                >
+                                    <div class="col">
+                                        <div class="cloud-icon">
+                                            <i class="fa-solid fa-cloud"></i>
+                                        </div>
+                                        <span>Drag & Drog your files here</span>
+                                        <span>OR</span>
+                                        <button
+                                            class="blog__create-post--assets-btn-selector"
+                                        >
+                                            Browse Files
+                                        </button>
+                                        <input
+                                            type="file"
+                                            id="media"
+                                            name="media"
+                                            class="blog__create-post--assets-btn-input"
+                                            multiple
+                                        />
+                                    </div>
+                                    <div class="col">
+                                        <div class="drop-here">Drop Here</div>
+                                    </div>
+                                </div>
+                                <div class="blog__create-post--assets-list">
+                                    <div class="assets-list-title">
+                                        Upload Files
+                                    </div>
+                                    <div class="assets-list"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="blog__post--footer">
+                            <div>
+                                <button
+                                    type="submit"
+                                    class="blog__create-post--btn"
+                                    id="submit__btn"
+                                >
+                                    Create
+                                </button>
+                            </div>
+                            <div>
+                                <button
+                                    id="reset__btn"
+                                    class="blog__create-post--btn"
+                                >
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden blog__post-guest" id="blog__post--guest">
+                        <div>
+                            <h2 class="blog__post-guest--suggest">
+                                Create your own post now!
+                            </h2>
+                        </div>
+                        <div class="blog__post-guest--btn" id="nav__box--guest">
+                            <a href="/signIn">Join Us</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="blog__communities" id="blog__communities">
+                    <div class="blog__communities--header">
+                        GoldLotus members
+                    </div>
+                    <div
+                        class="blog__communities--list"
+                        id="blog__communities--list"
+                    ></div>
+                    <div>
+                        <p class="blog__communities--btn">see more members</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+
+        {% include "global-component/footer.html" %}
+
+        <!-- Global PyScript -->
+        <script
+            type="py"
+            src="{{ url_for('global-static', path='/pyscript.py') }}"
+        ></script>
+
+        <!-- Local Pyscript -->
+
+        <script
+            type="py"
+            src="{{ url_for('blog-static', path='/pyscript.py') }}"
+        ></script>
+
+        <script
+            src="https://kit.fontawesome.com/1c7eef805a.js"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>

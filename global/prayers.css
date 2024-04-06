@@ -1,0 +1,47 @@
+.block-wrapper {
+    background-color: #fff9e8;
+    display: flex;
+    height: 100%;
+}
+
+.block {
+    display: flex;
+    justify-content: center;
+    background: #fff9e8;
+    padding: 2rem; /* Add some padding to give space */
+    height: 100%;
+}
+
+.box {
+    display: flex;
+    background-color: white;
+    width: 50%;
+    margin: 10rem 0;
+    max-height: 90%;
+    overflow-y: auto;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 2rem;
+    padding: 3rem;
+    box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+#myAudio {
+    display: none;
+}
+
+.box__header {
+    font-size: 2.5rem;
+    color: #4d4637;
+}
+
+.box__body {
+    font-size: 1.8rem;
+    line-height: 1.5;
+    padding: 0 0 2rem 0; /* Add some padding at the bottom */
+}
+
+.tab_audio {
+    position: fixed;
+    bottom: 1.8rem;
+}

@@ -1,0 +1,11 @@
+backend/__pycache__
+backend/database.fs
+backend/database.fs.index
+backend/database.fs.lock
+backend/database.fs.tmp
+backend/auth/__pycache__
+backend/uploads
+data/__pycache__
+.DS_Store
+assets/.DS_Store
+assets/images/.DS_Store

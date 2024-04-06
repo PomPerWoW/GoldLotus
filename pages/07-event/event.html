@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- Shortcut Icon -->
+        <link
+            rel="shortcut icon"
+            type="image/png"
+            href="../../assets/icons/logo.svg"
+        />
+
+        <!-- Global CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/general.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/global-style.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/queries.css') }}"
+        />
+
+        <!-- Local CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('event-static', path='/style.css') }}"
+        />
+
+        <!-- PyScript -->
+        <link
+            rel="stylesheet"
+            href="https://pyscript.net/releases/2024.1.1/core.css"
+        />
+        <script
+            type="module"
+            src="https://pyscript.net/releases/2024.1.1/core.js"
+        ></script>
+
+        <title>GoldLotus | Community Event</title>
+    </head>
+    <body class="bbgc">
+        <!-- Loader Section -->
+
+        {% include "global-component/loader.html" %}
+
+        <div class="hidden blog__like--status-box" id="liked__box">
+            <p>Liked</p>
+        </div>
+
+        <div class="hidden blog__like--status-box" id="unliked__box">
+            <p>Unliked</p>
+        </div>
+
+        <div class="hidden blog__like--status-box" id="attending__box">
+            <p>Attending</p>
+        </div>
+
+        <div class="hidden blog__like--status-box" id="maybe__box">
+            <p>Maybe</p>
+        </div>
+
+        <div class="hidden blog__like--status-box" id="notattending__box">
+            <p>Not Attending</p>
+        </div>
+
+        <div class="hidden blog__like--status-box" id="commented__box">
+            <p>Commented</p>
+        </div>
+
+        <div class="hidden blog__like--status-box" id="followed__box">
+            <p>Followed</p>
+        </div>
+
+        <div class="hidden blog__like--status-box" id="unfollowed__box">
+            <p>Unfollowed</p>
+        </div>
+
+        <div class="hidden background__black--faded" id="error__box">
+            <div class="container">
+                <div class="error__box">
+                    <h2 class="error__box--header heading-tertiary">
+                        Event Error
+                    </h2>
+                    <p class="error__box--message">
+                        title, date (before today), and text are required.
+                    </p>
+                    <button class="error__box--btn" id="error__box--btn">
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden background__black--faded" id="success__box">
+            <div class="container">
+                <div class="success__box">
+                    <h2 class="success__box--header heading-tertiary">
+                        Event Created
+                    </h2>
+                    <button class="success__box--btn" id="success__box--btn">
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden background__black--faded" id="user__likes">
+            <div class="container">
+                <div class="user__component">
+                    <h2 class="user__component--header heading-tertiary">
+                        Likes
+                    </h2>
+                    <div class="user__component--body"></div>
+                    <button class="user__component--btn" id="user__likes--btn">
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden background__black--faded" id="user__comments">
+            <div class="container">
+                <div class="user__component">
+                    <h2 class="user__component--header heading-tertiary">
+                        Comments
+                    </h2>
+                    <div
+                        class="user__component--body"
+                        id="user__component--body"
+                    >
+                        <div class="add__comment" id="add__comment">
+                            Add your comment
+                        </div>
+                        <div
+                            class="hidden cancel__comment"
+                            id="cancel__comment"
+                        >
+                            Cancel
+                        </div>
+                        <div
+                            class="hidden user__comments--create"
+                            id="user__comments--create"
+                        >
+                            <div class="user__comments--name">
+                                Express your thought
+                            </div>
+                            <div class="user__comments--text">
+                                <textarea
+                                    id="user__comments--text-input"
+                                    name="Text..."
+                                    class="user__comments--text-input"
+                                    placeholder="Text..."
+                                    cols="30"
+                                    rows="2"
+                                ></textarea>
+                            </div>
+                            <div
+                                class="user__comments--comment-btn"
+                                id="user__comments--publish-btn"
+                            >
+                                Comment
+                            </div>
+                        </div>
+                        <div
+                            class="user__comments--person"
+                            id="user__comments--person-1"
+                        >
+                            <div class="user__comments--upper">
+                                <div class="user__comments--name">
+                                    PomPer123
+                                </div>
+                                <div class="user__comments--timestamp">
+                                    11 minutes ago
+                                </div>
+                            </div>
+                            <div class="user__comments--text">
+                                <p>Amazing!</p>
+                            </div>
+                            <div class="user__comments--like">
+                                <i class="fa-solid fa-heart"></i>
+                                <span id="user__likes--count-1">0 likes</span>
+                            </div>
+                        </div>
+                        <div class="user__comments--person">
+                            <div class="user__comments--upper">
+                                <div class="user__comments--name">
+                                    No Comments.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        class="user__component--btn"
+                        id="user__comments--btn"
+                    >
+                        Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Section -->
+
+        {% include "global-component/navbar.html" %}
+
+        <!-- Blog Section -->
+        <div class="container">
+            <div class="blog__pagination">
+                <div class="blog__pagination--latest">
+                    <button
+                        class="blog__pagination--element"
+                        id="blog__pagination--latest"
+                    >
+                        Latest
+                    </button>
+                </div>
+                <div class="blog__pagination--latest">
+                    <button
+                        class="blog__pagination--element"
+                        id="blog__pagination--myevent"
+                    >
+                        My Event
+                    </button>
+                </div>
+            </div>
+            <div class="blog" id="blog">
+                <div class="blog__post--box" id="blog__post--box">
+                    <div class="hidden" id="placeID"></div>
+                    <div class="blog__post" id="blog__post--create">
+                        <div class="blog__create-post--header">
+                            <p>Create your own event</p>
+                        </div>
+                        <div class="blog__create-post--field">
+                            <div>
+                                <input
+                                    type="text"
+                                    id="title"
+                                    name="title"
+                                    placeholder="Title"
+                                    class="blog__create-post--title"
+                                    required
+                                />
+                            </div>
+                            <div class="blog__create-post--datelabel">
+                                Enter event occur date:
+                            </div>
+                            <div>
+                                <input
+                                    type="datetime-local"
+                                    id="date"
+                                    name="date"
+                                    placeholder="Enter event date..."
+                                    class="blog__create-post--date"
+                                    required
+                                />
+                            </div>
+                            <div class="blog__create-post--message">
+                                <textarea
+                                    id="location"
+                                    name="insert location..."
+                                    class="blog__create-post--message"
+                                    placeholder="insert location..."
+                                    cols="60"
+                                    rows="2"
+                                ></textarea>
+                            </div>
+                            <div class="blog__create-post--message">
+                                <textarea
+                                    id="text"
+                                    name="insert details..."
+                                    class="blog__create-post--message"
+                                    placeholder="insert details..."
+                                    cols="60"
+                                    rows="5"
+                                ></textarea>
+                            </div>
+                        </div>
+                        <div class="blog__post--footer">
+                            <div>
+                                <button
+                                    type="submit"
+                                    class="blog__create-post--btn"
+                                    id="submit__btn"
+                                >
+                                    Create
+                                </button>
+                            </div>
+                            <div>
+                                <button
+                                    id="reset__btn"
+                                    class="blog__create-post--btn"
+                                >
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden blog__post-guest" id="blog__post--guest">
+                        <div>
+                            <h2 class="blog__post-guest--suggest">
+                                Create your own event now!
+                            </h2>
+                        </div>
+                        <div class="blog__post-guest--btn" id="nav__box--guest">
+                            <a href="/signIn">Join Us</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="blog__communities" id="blog__communities">
+                    <div class="blog__communities--header">
+                        GoldLotus members
+                    </div>
+                    <div
+                        class="blog__communities--list"
+                        id="blog__communities--list"
+                    ></div>
+                    <div>
+                        <p class="blog__communities--btn">see more members</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+
+        {% include "global-component/footer.html" %}
+
+        <!-- Global PyScript -->
+        <script
+            type="py"
+            src="{{ url_for('global-static', path='/pyscript.py') }}"
+        ></script>
+
+        <!-- Local Pyscript -->
+
+        <script
+            type="py"
+            src="{{ url_for('event-static', path='/pyscript.py') }}"
+        ></script>
+
+        <script
+            src="https://kit.fontawesome.com/1c7eef805a.js"
+            crossorigin="anonymous"
+        ></script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgm_2U2SClJaQ-8Hmy6UeU_dGdKb8Roh4"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgm_2U2SClJaQ-8Hmy6UeU_dGdKb8Roh4&libraries=places"></script>
+    </body>
+</html>

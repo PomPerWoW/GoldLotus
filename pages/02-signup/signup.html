@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- Shortcut Icon -->
+        <link
+            rel="shortcut icon"
+            type="image/png"
+            href="../../assets/icons/logo.svg"
+        />
+
+        <!-- Global CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/general.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/global-style.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/queries.css') }}"
+        />
+
+        <!-- Local CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('signup-static', path='/style.css') }}"
+        />
+
+        <!-- PyScript -->
+        <link
+            rel="stylesheet"
+            href="https://pyscript.net/releases/2024.1.1/core.css"
+        />
+        <script
+            type="module"
+            src="https://pyscript.net/releases/2024.1.1/core.js"
+        ></script>
+
+        <title>GoldLotus | Sign Up</title>
+    </head>
+    <body>
+        <div class="hidden background__black--faded" id="error_hidden_username">
+            <div class="container">
+                <div
+                    class="error__box error__box-signup"
+                    id="error_box_username"
+                >
+                    <h2 class="error__box--header heading-tertiary">
+                        Sign Up Error
+                    </h2>
+                    <p class="error__box--message">
+                        Username is already taken.
+                    </p>
+                    <a class="error__box--btn" href="/signUp">Ok</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden background__black--faded" id="error_hidden_email">
+            <div class="container">
+                <div class="error__box error__box-signup" id="error_box_email">
+                    <h2 class="error__box--header heading-tertiary">
+                        Sign Up Error
+                    </h2>
+                    <p class="error__box--message">Email already exist.</p>
+                    <a class="error__box--btn" href="/signUp">Ok</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden background__black--faded" id="error_hidden_default">
+            <div class="container">
+                <div
+                    class="error__box error__box-signup"
+                    id="error_box_default"
+                >
+                    <h2 class="error__box--header heading-tertiary">
+                        Sign Up Error
+                    </h2>
+                    <p class="error__box--message">
+                        Minimum length 8 characters.
+                    </p>
+                    <p class="error__box--message">
+                        Require minimum 1 uppercase letter.
+                    </p>
+                    <p class="error__box--message">
+                        Require minimum 1 non-letter character <br />(digit,
+                        special character, etc.).
+                    </p>
+                    <a class="error__box--btn" href="/signUp">Ok</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="background__image--1">
+            <div class="container">
+                <div class="back_to_home">
+                    <p>
+                        <a href="/"
+                            ><i class="icon fa-solid fa-arrow-left"></i>Back to
+                            home</a
+                        >
+                    </p>
+                </div>
+                <div class="signup">
+                    <div class="signup__image">
+                        <img
+                            class="signup__image--1"
+                            src="{{ url_for('assets-static', path='/images/monk-cartoon-1.png') }}"
+                            alt="buddha img"
+                        />
+                    </div>
+                    <div class="signup__input">
+                        <h2
+                            class="signup__input--header heading-tertiary text__center"
+                        >
+                            Sign Up
+                        </h2>
+                        <div class="signup__form" id="signup__form">
+                            <label for="username">Username</label>
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Enter your username"
+                                required
+                            />
+
+                            <label for="email">Email</label>
+                            <input
+                                type="text"
+                                id="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                required
+                            />
+
+                            <label for="password">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                required
+                            />
+
+                            <button type="submit" id="submit__btn" class="btn">
+                                Sign Up
+                            </button>
+
+                            <div class="signup__form--register">
+                                <p>
+                                    Already have an account?
+                                    <a href="/signIn">Sign In</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script
+            src="https://kit.fontawesome.com/1c7eef805a.js"
+            crossorigin="anonymous"
+        ></script>
+
+        <script
+            type="py"
+            src="{{ url_for('signup-static', path='/pyscript.py') }}"
+        ></script>
+    </body>
+</html>
