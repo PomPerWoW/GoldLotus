@@ -103,7 +103,7 @@ class Event(Content):
             self.removeNotAttending(userID)
         
     def addMaybe(self, userID: str):
-        self.attending.append(userID)
+        self.maybe.append(userID)
         if userID in self.attending:
             self.removeAttending(userID)
         if userID in self.notAttending:
@@ -120,7 +120,7 @@ class Event(Content):
         self.attending.remove(userID)
     
     def removeMaybe(self, userID: str):
-        self.attending.remove(userID)
+        self.maybe.remove(userID)
         
     def removeNotAttending(self, userID: str):
         self.notAttending.remove(userID)
