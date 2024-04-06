@@ -27,6 +27,8 @@ class UserWidget(AbstractWidget):
     def initializeWidget(self):
         self.navBoxGuest = document.querySelector("#nav__box--guest")
         self.navBoxUser = document.querySelector("#nav__box--user")
+        self.navBoxNotiGuest = document.querySelector("#nav__notibox--guest")
+        self.navBoxNotiUser = document.querySelector("#nav__notibox--user")
         asyncio.ensure_future(self.getUserInfo())
         js.Promise.resolve(self.navBoxStatus()).catch(lambda e: print(e))
         self.preloader()
@@ -40,6 +42,8 @@ class UserWidget(AbstractWidget):
     async def navBoxStatus(self):
         self.data = await self.getUserInfo()
         if self.data.get('username'):
+            self.navBoxNotiGuest.classList.add("hidden")
+            self.navBoxNotiUser.classList.remove("hidden")
             self.navBoxGuest.classList.add("hidden")
             self.navBoxUser.classList.remove("hidden")
             userGreeting = document.createElement("a")
@@ -47,6 +51,8 @@ class UserWidget(AbstractWidget):
             userGreeting.innerHTML = f"{self.data.get('username')}"  
             self.navBoxUser.appendChild(userGreeting)
         else:
+            self.navBoxNotiGuest.classList.remove("hidden")
+            self.navBoxNotiUser.classList.add("hidden")
             self.navBoxGuest.classList.remove("hidden")
             self.navBoxUser.classList.add("hidden")
         
