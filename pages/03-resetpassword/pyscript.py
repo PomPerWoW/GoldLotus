@@ -57,13 +57,13 @@ class SignInWidget(AbstractWidget):
         try:
             response = await pyfetch(
                 url=f"/user/resetPassword/?email={email}", 
-                method='GET', 
+                method='POST', 
                 headers={'Content-Type': 'application/json'}
             )
             if response.ok:
                 data = await response.json()
                 if 'detail' in data:
-                    self.hidden_element.classList.remove("hidden")
+                    window.location.href = "/signIn"
                 else:
                     window.location.href = "/signIn"
         except Exception as e:
