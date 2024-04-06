@@ -69,6 +69,75 @@ async def getMostLikedBlog():
     except Exception as e:
         print(e)
 
+from textwrap import dedent
+import json
+import js 
+from pyodide.ffi import create_proxy, to_js
+
+window = js.window
+document = js.document
+location = js.document.location
+
+from math import radians, sin, cos, sqrt, atan2
+
+def haversine_distance(lat1, lon1, lat2, lon2):
+    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
+
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+    R = 6371.0
+    distance = R * c
+    
+    return distance
+
+async def success(pos):
+    coordinates = pos.coords
+    nearby = await getNearby(coordinates.latitude, coordinates.longitude)
+    nearby_container = document.getElementById("nearby_list")
+    for i in range(len(nearby.get("results"))):
+        temple = document.createElement("div")
+        temple.className = "temple"
+        distance_away = haversine_distance(coordinates.latitude, coordinates.longitude, nearby.get("results")[i].get("geometry").get("location").get("lat"), nearby.get("results")[i].get("geometry").get("location").get("lng"))
+        temple.innerHTML = nearby.get("results")[i].get("name") + "<br>" + str(round(distance_away, 2)) + " km away, " + nearby.get("results")[i].get("vicinity")
+        
+        temple_icon = document.createElement("img")
+        temple_icon.className  = "temple_icon"
+        temple_icon.alt = "temple_icon"
+        temple_icon.src = nearby.get("results")[i].get("icon")
+        
+        nearby_container.appendChild(temple_icon)
+        nearby_container.appendChild(temple)
+        
+def get_current_position(success, error = None, options = None):
+    if not options:
+        options = {
+          "enableHighAccuracy": True,
+          "timeout": 5000,
+          "maximumAge": 0
+        }
+    if not error:
+        err_msg = dedent('''Oh No! Something happened :(
+        Error code: {err.code}
+        Error Message: {err.message}
+        ''')
+        error = create_proxy(lambda err: print(err_msg.format(err)))
+    js.window.navigator.geolocation.getCurrentPosition(create_proxy(success), create_proxy(error), options)
+
+async def getNearby(lat, lon):
+    try:
+        response = await pyfetch(
+            url=f"/gmaps/nearby?lat={lat}&lon={lon}", 
+            method='get',
+            headers={'Content-Type': 'application/json'}
+        )
+        if response.ok:
+            data = await response.json()
+            return data
+    except Exception as e:
+        print(e) 
+
 async def main():
     current_blog_id = await getCurrentBlogID()
     if current_blog_id:
@@ -101,6 +170,8 @@ async def main():
                 mostLikedBlog[i][0].innerText = blog_data["text"]
                 mostLikedBlog[i][1].innerText = username.get("username")
                 mostLikedBlog[i][2].innerText = datetime.fromisoformat(blog_data["timestamp"]).strftime("%Y-%m-%d %H:%M:%S")
+    
+    get_current_position(success)
 
 import asyncio
 asyncio.ensure_future(main())
