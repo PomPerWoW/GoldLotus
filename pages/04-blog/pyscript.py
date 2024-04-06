@@ -242,6 +242,7 @@ class LoadBlogWidget(AbstractWidget):
         self.successBoxBtn = document.querySelector("#success__box--btn")
         self.currentLatestBlogIDSaved = 0
         self.currentMyPostBlogIDSaved = 0
+        self.currentFollowingBlogIDSaved = 0
         self.currentPopularBlogIDSaved = 0
         
         self.successBoxBtn.onclick = self.createNewPostSuccess
@@ -259,6 +260,7 @@ class LoadBlogWidget(AbstractWidget):
         
         self.blogPagLatest.onclick = self.loadLatest
         self.blogPagPopularBtn.onclick = self.loadPopular
+        self.blogPagFollowingBtn.onclick = self.loadFollowing
         self.blogPagMypostBtn.onclick = self.loadMyPost
 
         self.likedBox = document.querySelector("#liked__box")
@@ -371,6 +373,35 @@ class LoadBlogWidget(AbstractWidget):
             
             if currentBlogID != 0 and self.currentMyPostBlogIDSaved != 0:
                 self.createViewMore("loadMyPost")
+
+    async def loadFollowing(self, event):
+            if event:
+                event.preventDefault()
+                
+            self.removeBlogPosts()
+                
+            viewMoreElement = document.querySelector("#blog__readmore-btn")
+            if viewMoreElement:
+                viewMoreElement.parentNode.removeChild(viewMoreElement)
+
+            userData = await self.getUserInfo()
+            userFollowing = userData.get("following")
+            if userFollowing.get("data"):
+                userFollowingData = userFollowing.get("data")
+            
+                for user in userFollowingData:
+                    followingUserDetail = await self.getUserDetail(user)
+                    print(followingUserDetail)
+
+                followingUserBlog = followingUserDetail.get("blog")
+                if followingUserBlog.get("data"):
+                    self.blogLists = followingUserBlog.get("data")
+                    
+                    for i in range(len(self.blogLists)):
+                        blogData = await self.loadBlog(self.blogLists[i])
+                        if blogData.get("detail") != "blog not found":
+                            self.createFollowingUser(followingUserDetail.get("username"), followingUserDetail.get("userID"))
+                            await self.createBlog(blogData)
 
     async def loadPopular(self, event, viewMore=False, notView=True):
         if event:
@@ -800,6 +831,14 @@ class LoadBlogWidget(AbstractWidget):
         userCommentsPerson.appendChild(userCommentsLike)
         
         self.userComponentBody.appendChild(userCommentsPerson)
+        
+    def createFollowingUser(self, username, userID):
+        divName = document.createElement("a")
+        divName.classList.add("blog__post--username-list")
+        divName.innerHTML = f"{username}'s Blogs"
+        divName.href = f"/userInfo/{userID}"
+        
+        self.blogPostBox.appendChild(divName)
             
     async def createBlog(self, blogData):
         self.createLoad()

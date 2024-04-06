@@ -118,10 +118,7 @@ def get_current_position(success, error = None, options = None):
           "maximumAge": 0
         }
     if not error:
-        err_msg = dedent('''Oh No! Something happened :(
-        Error code: {err.code}
-        Error Message: {err.message}
-        ''')
+        err_msg = dedent('''Oh No! Something happened :(''')
         error = create_proxy(lambda err: print(err_msg.format(err)))
     js.window.navigator.geolocation.getCurrentPosition(create_proxy(success), create_proxy(error), options)
 

@@ -412,6 +412,17 @@
     color: #dcb60e;
 }
 
+.blog__post--username-list {
+    color: #000;
+    text-decoration: none;
+    margin-bottom: 2rem;
+}
+
+.blog__post--username-list:hover {
+    color: #dcb60e;
+    cursor: pointer;
+}
+
 /* Communities Section */
 .blog__communities {
     display: flex;

@@ -19,7 +19,6 @@
 .userinfo__event--header {
     font-size: 1.8rem;
     font-weight: 500;
-    margin-bottom: 4rem;
 }
 
 .userinfo__user--header {
@@ -60,6 +59,7 @@
     flex-direction: row;
     padding: 10rem 0 0 20rem;
 }
+
 .personal__info {
     width: auto; /* Adjust width as needed */
     margin-right: 1rem;
@@ -166,14 +166,69 @@
     background-color: #d8b778;
 }
 
+.userinfo__blog--box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: auto;
+    gap: 2rem;
+}
+
 .userinfo__blog-event {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 4rem;
+    gap: 2rem;
 }
 
 .userinfo__blog,
 .userinfo__event {
     width: 100%;
     padding: 2rem;
+}
+
+.userinfo__blog--text {
+    margin: 2rem 0;
+}
+
+.userinfo__blog--post {
+    background-color: #e3e3e3;
+    padding: 2rem;
+    border-radius: 2rem;
+    width: 100%;
+}
+
+.userinfo__event--box {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.userinfo__event--date {
+    margin-top: 2rem;
+}
+
+.userinfo__blog--btn,
+.userinfo__event--btn {
+    margin-top: 4rem;
+    text-align: center;
+}
+
+.userinfo__blog--btn p,
+.userinfo__event--btn p {
+    border-radius: 2rem;
+    width: 18rem;
+    padding: 1rem 2rem;
+    color: #fff;
+    background-color: #d8b778;
+}
+
+.userinfo__blog--btn p:hover,
+.userinfo__event--btn p:hover {
+    cursor: pointer;
+}
+
+.userinfo__divider {
+    margin: 2rem 0 4rem 0;
+    background-color: #000;
+    width: 100%;
+    height: 0.1rem;
 }

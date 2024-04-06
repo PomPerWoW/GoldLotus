@@ -30,6 +30,8 @@ class UserInfoWidget(AbstractWidget):
         self.userID = fullUrl.split("/")[4]
 
         self.userinfoUserHeader = document.querySelector(".userinfo__user--header")
+        self.userinfoBlogBox = document.querySelector("#userinfo__blog--box")
+        self.userinfoEventBox = document.querySelector("#userinfo__event--box")
         
         # Logout
         self.userinfoLogoutBtn = document.querySelector("#userinfo__logout--btn")
@@ -43,6 +45,8 @@ class UserInfoWidget(AbstractWidget):
             self.userinfoLogoutBtn.classList.add("hidden")
             
         self.loadUserInfoUser(self.data)
+        await self.loadUserInfoBlog(self.data.get("blog"))
+        await self.loadUserInfoEvent(self.data.get("event"))
         
     async def getMyUserInfo(self):
         try:
@@ -53,7 +57,6 @@ class UserInfoWidget(AbstractWidget):
             )
             if response.ok:
                 data = await response.json()
-                print(data)
                 return data
         except Exception as e:
             print(e)
@@ -67,7 +70,6 @@ class UserInfoWidget(AbstractWidget):
             )
             if response.ok:
                 data = await response.json()
-                print(data)
                 return data
         except Exception as e:
             print(e)
@@ -135,9 +137,119 @@ class UserInfoWidget(AbstractWidget):
 
         self.userinfoUserHeader.appendChild(divLeft)
         self.userinfoUserHeader.appendChild(divRight)
-        
-if __name__ == "__main__":
     
+    async def loadBlog(self, index):
+        try:
+            response = await pyfetch(
+                url=f"/getBlog/?blogID={index}", 
+                method='GET',
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+                return data
+        except Exception as e:
+            print(e)
+    
+    async def loadEvent(self, index):
+        try:
+            response = await pyfetch(
+                url=f"/getEvent/?eventID={index}", 
+                method='GET',
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.ok:
+                data = await response.json()
+                return data
+        except Exception as e:
+            print(e)
+    
+    async def loadUserInfoBlog(self, blogList):
+        if blogList.get("data"):
+            blogsData = blogList.get("data")
+            for i in range(len(blogsData)):
+                blogData = await self.loadBlog(blogsData[i])
+                userinfoBlogPost = document.createElement("div")
+                userinfoBlogPost.classList.add("userinfo__blog--post")
+
+                userinfoBlogTitle = document.createElement("div")
+                userinfoBlogTitle.classList.add("userinfo__blog--title")
+                userinfoBlogTitle.innerHTML = f"{blogData.get('title')}"
+
+                userinfoBlogText = document.createElement("div")
+                userinfoBlogText.classList.add("userinfo__blog--text")
+                userinfoBlogText.innerHTML = f"{blogData.get('text')}"
+
+                userinfoBlogTimestamp = document.createElement("div")
+                userinfoBlogTimestamp.classList.add("userinfo__blog--timestamp")
+                
+                timestampObj = datetime.fromisoformat(blogData.get('timestamp'))
+                current_time = datetime.now()
+                time_difference = current_time - timestampObj
+                days = time_difference.days
+                hours, remainder = divmod(time_difference.seconds, 3600)
+                minutes, seconds = divmod(remainder, 60)
+                
+                if days == 0:
+                    if hours == 0:
+                        if minutes == 0:
+                            userinfoBlogTimestamp.innerHTML = f"{seconds} {'seconds' if seconds > 1 else 'second'} ago"
+                        else:
+                            userinfoBlogTimestamp.innerHTML = f"{minutes} {'minutes' if minutes > 1 else 'minute'} ago"
+                    else:
+                        userinfoBlogTimestamp.innerHTML = f"{hours} {'hours' if hours > 1 else 'hour'} ago"
+                else:
+                    userinfoBlogTimestamp.innerHTML = f"{days} {'days' if days > 1 else 'day'} ago"
+
+                userinfoBlogPost.appendChild(userinfoBlogTitle)
+                userinfoBlogPost.appendChild(userinfoBlogText)
+                userinfoBlogPost.appendChild(userinfoBlogTimestamp)
+
+                self.userinfoBlogBox.appendChild(userinfoBlogPost)
+    
+    async def loadUserInfoEvent(self, eventList):
+        if eventList.get("data"):
+            blogsData = eventList.get("data")
+            for i in range(len(blogsData)):
+                blogData = await self.loadEvent(blogsData[i])
+                userinfoBlogPost = document.createElement("div")
+                userinfoBlogPost.classList.add("userinfo__event--post")
+
+                userinfoBlogTitle = document.createElement("div")
+                userinfoBlogTitle.classList.add("userinfo__event--title")
+                userinfoBlogTitle.innerHTML = f"{blogData.get('title')}"
+
+                userinfoBlogTimestamp = document.createElement("div")
+                userinfoBlogTimestamp.classList.add("userinfo__event--date")
+                
+                target_date_str = f"{blogData.get('date')}"
+                target_date = datetime.fromisoformat(target_date_str)
+                today = datetime.today()
+                difference = target_date - today
+                daysLeft = difference.days
+                hoursLeft = difference.seconds // 3600
+                minutesLeft = (difference.seconds % 3600) // 60
+                secondsLeft = difference.seconds % 60
+                
+                formatDate = target_date.strftime("%d/%m/%Y %H:%M")
+                
+                if daysLeft == 0:
+                    if hoursLeft == 0:
+                        if minutesLeft == 0:
+                            userinfoBlogTimestamp.innerHTML = f"{formatDate} ({secondsLeft} {'seconds' if secondsLeft > 1 else 'second'} left)"
+                        else:
+                            userinfoBlogTimestamp.innerHTML = f"{formatDate} ({minutesLeft} {'minutes' if minutesLeft > 1 else 'minute'} left)"
+                    else:
+                        userinfoBlogTimestamp.innerHTML = f"{formatDate} ({hoursLeft} {'hours' if hoursLeft > 1 else 'hour'} left)"
+                else:
+                    userinfoBlogTimestamp.innerHTML = f"{formatDate} ({daysLeft} {'days' if daysLeft > 1 else 'day'} left)"
+
+                userinfoBlogPost.appendChild(userinfoBlogTitle)
+                userinfoBlogPost.appendChild(userinfoBlogTimestamp)
+
+                self.userinfoEventBox.appendChild(userinfoBlogPost)
+    
+if __name__ == "__main__":
     w = UserInfoWidget("userinfo")
     w.initializeWidget()
     
