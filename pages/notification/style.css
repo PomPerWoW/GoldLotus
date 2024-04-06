@@ -353,3 +353,9 @@
 .icon:hover {
     color: #dcb60e;
 }
+
+@media only screen and (max-width: 37.5em) {
+    .noti--box--delete{
+        display: none;
+    }
+}

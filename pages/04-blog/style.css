@@ -664,3 +664,41 @@
     color: #000;
     background-color: #f0cf95;
 }
+
+/* <= 1200px (Landscape Tablets) */
+@media only screen and (max-width: 75em) {
+
+}
+/* <= 900px (Tablets) */
+@media only screen and (max-width: 56.25em) {
+    .blog__communities{
+        display: none;
+    }
+    .blog{
+        grid-template-columns:none
+    }
+}
+
+/* <= 600px (Phone) */
+@media only screen and (max-width: 37.5em) {
+    .blog__communities{
+        display: none;
+    }
+    .blog{
+        grid-template-columns:none;
+    }
+    .blog__pagination--element{
+        padding: 0.2rem 1.2rem;
+    }
+    .blog__post{
+        width: auto;
+    }
+    body{
+        margin: 2rem;
+    }
+}
+
+/* >= 1800px (Big desktop) */
+@media only screen and (min-width: 112.5em) {
+
+}
