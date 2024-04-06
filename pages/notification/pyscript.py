@@ -74,6 +74,7 @@ async def display_notification(notifications):
     container.innerHTML = ""
     for i in range(len(notifications)):
             outer = document.createElement("div")
+            outer.classList.add("noti--head--box")
             
             noti = document.createElement("div")
             noti.id = f"noti_{i}"
@@ -83,12 +84,16 @@ async def display_notification(notifications):
             else:
                 noti.innerHTML = f"<b>{text}</b>"       # Unread
             outer.appendChild(noti)
+            noti.classList.add("noti--box--name")
+
             
             rm = document.createElement("a")
             rm.id = f"rm_{i}"
             rm.textContent = "delete"
             add_event_listener(rm, "click", functools.partial(handle_delete, i))
             outer.appendChild(rm)
+            rm.classList.add("noti--box--delete")
+
             
             container.appendChild(outer)
 
