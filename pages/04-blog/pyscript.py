@@ -731,9 +731,10 @@ class LoadBlogWidget(AbstractWidget):
         userCommentsUpper = document.createElement("div")
         userCommentsUpper.classList.add("user__comments--upper")
         
-        userCommentsName = document.createElement("div")
+        userCommentsName = document.createElement("a")
         userCommentsName.classList.add("user__comments--name")
         userCommentsName.innerHTML = f"{userDetail.get('username')}"
+        userCommentsName.href = f"/userInfo/{userDetail.get('userID')}"
 
         userCommentsTimestamp = document.createElement("div")
         userCommentsTimestamp.classList.add("user__comments--timestamp")
@@ -814,9 +815,10 @@ class LoadBlogWidget(AbstractWidget):
         blogPostHeader = document.createElement("div")
         blogPostHeader.classList.add("blog__post--header")
         
-        blogPostUsername = document.createElement("div")
+        blogPostUsername = document.createElement("a")
         blogPostUsername.classList.add("blog__post--username")    
         blogPostUsername.innerHTML = f"{authorName}"
+        blogPostUsername.href = f"/userInfo/{blogData.get('author')}"
 
         blogPostPosted = document.createElement("div")
         blogPostPosted.classList.add("blog__post--posted")
@@ -975,9 +977,10 @@ class LoadBlogWidget(AbstractWidget):
         blogCommunitiesDetais = document.createElement("div")
         blogCommunitiesDetais.classList.add("blog__communities--details")
 
-        blogCommunitiesName = document.createElement("div")
+        blogCommunitiesName = document.createElement("a")
         blogCommunitiesName.classList.add("blog__communities--name")
         blogCommunitiesName.innerHTML = f"{memberDetail.get('username')}"
+        blogCommunitiesName.href = f"/userInfo/{memberID}"
 
         blogCommunitiesFollower = document.createElement("div")
         blogCommunitiesFollower.classList.add("blog__communities--follower")

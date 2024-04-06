@@ -146,30 +146,25 @@ async def main():
         while count < 3 and current_blog_id > 0:
             current_blog_id -= 1
             blog_data = await loadBlog(current_blog_id)
-            if blog_data.get("detail"):
-                continue
-        
-            if blog_data:
-                username = await getUserDetail(blog_data["author"])
-                
-                latestBlog[count][0].innerText = blog_data["text"]
-                latestBlog[count][1].innerText = username.get("username")
-                latestBlog[count][2].innerText = datetime.fromisoformat(blog_data["timestamp"]).strftime("%Y-%m-%d %H:%M:%S")
-                count += 1
+            if not blog_data.get("detail"):
+                if blog_data:
+                    username = await getUserDetail(blog_data["author"])
+                    
+                    latestBlog[count][0].innerText = blog_data["text"]
+                    latestBlog[count][1].innerText = username.get("username")
+                    latestBlog[count][2].innerText = datetime.fromisoformat(blog_data["timestamp"]).strftime("%Y-%m-%d %H:%M:%S")
+                    count += 1
                 
     popular_blog_id = await getMostLikedBlog()
     if popular_blog_id:
         for i in range(min(3, len(popular_blog_id))):
             blog_data = await loadBlog(popular_blog_id[i])
-            if blog_data.get("detail"):
-                continue
-        
-            if blog_data:
-                username = await getUserDetail(blog_data["author"])
-                
-                mostLikedBlog[i][0].innerText = blog_data["text"]
-                mostLikedBlog[i][1].innerText = username.get("username")
-                mostLikedBlog[i][2].innerText = datetime.fromisoformat(blog_data["timestamp"]).strftime("%Y-%m-%d %H:%M:%S")
+            if not blog_data.get("detail"):
+                if blog_data:
+                    username = await getUserDetail(blog_data["author"])
+                    mostLikedBlog[i][0].innerText = blog_data["text"]
+                    mostLikedBlog[i][1].innerText = username.get("username")
+                    mostLikedBlog[i][2].innerText = datetime.fromisoformat(blog_data["timestamp"]).strftime("%Y-%m-%d %H:%M:%S")
     
     get_current_position(success)
 

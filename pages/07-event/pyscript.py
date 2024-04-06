@@ -29,6 +29,7 @@ class BlogWidget(AbstractWidget):
     def initializeWidget(self):
         self.allFiles = []
         self.counter = 0
+        self.body = document.querySelector("body")
         self.createPostAssets = document.querySelector(".blog__create-post--assets")
         self.listSection = document.querySelector(".blog__create-post--assets-list")
         self.assetsList = document.querySelector(".assets-list")
@@ -42,39 +43,99 @@ class BlogWidget(AbstractWidget):
         self.resetBtn.onclick = self.resetInput
         self.statusBox1.onclick = lambda e: self.removeStatus(e)
     
+    def createLoad(self):
+        elementLoaderBox = document.createElement("div")
+        elementLoaderBox.classList.add("element__page-loader--box")
+
+        elementLoader = document.createElement("div")
+        elementLoader.classList.add("element__page-loader")
+        
+        elementLoaderBox.appendChild(elementLoader)
+        
+        self.body.appendChild(elementLoaderBox)
+        
+    async def getLocation(self):
+        location = document.querySelector("#location").value
+        if location != "":
+            self.createLoad()
+            await self.get_place_id(location)
+            await asyncio.sleep(1)
+            elements = document.querySelectorAll('.element__page-loader--box')
+        
+            for elem in elements:
+                elem.parentNode.removeChild(elem)
+                
+            placeID = document.querySelector("#placeID").innerHTML   
+            print(placeID)
+            return placeID
+        return ""
+    
     async def uploadFile(self, event):
         event.preventDefault()
         title = document.querySelector("#title").value
         text = document.querySelector("#text").value
         date = document.querySelector("#date").value
+        placeID = await self.getLocation()
         
-        date_time_obj = datetime.fromisoformat(date)
-        current_datetime = datetime.now()
-
-        if date_time_obj > current_datetime:
-            try:
-                response = await pyfetch(
-                    url=f"/createEvent/?title={title}&text={text}&date={date}",
-                    method='POST',
-                    headers={'Content-Type': 'application/json'}
-                )
-
-                if response.ok:
-                    data = await response.json()
-                    detail_value = data.get('detail')
-                    self.successBox.classList.remove("hidden")
-                    self.resetInput(event)
-                    return data
-            except Exception as error:
-                print('Error:', error)
-        else:
+        if title == "" or text == "" or date == "":
             self.errorBox.classList.remove("hidden")
+        else:
+            date_time_obj = datetime.fromisoformat(date)
+            current_datetime = datetime.now()
+
+            if date_time_obj > current_datetime:
+                try:
+                    response = await pyfetch(
+                        url=f"/createEvent/?title={title}&text={text}&date={date}&location={placeID}",
+                        method='POST',
+                        headers={'Content-Type': 'application/json'}
+                    )
+
+                    if response.ok:
+                        data = await response.json()
+                        self.successBox.classList.remove("hidden")
+                        self.resetInput(event)
+                        return data
+                except Exception as error:
+                    print('Error:', error)
+            else:
+                self.errorBox.classList.remove("hidden")
+
+    async def get_place_id(self, place_name):
+        javascript_code = f"""
+            async function getPlaceID() {{
+                var request = {{
+                    query: '{place_name}',
+                    fields: ['place_id']
+                }};
+
+                var service = new google.maps.places.PlacesService(document.createElement('div'));
+
+                service.textSearch(request, function (results, status) {{
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {{
+                        if (results && results.length > 0) {{
+                            var placeID = results[0].place_id;
+                            document.getElementById('placeID').innerText = placeID;
+                        }} else {{
+                            document.getElementById('placeID').innerText = "No results found";
+                        }}
+                    }} else {{
+                        document.getElementById('placeID').innerText = "Error: " + status;
+                    }}
+                }});
+            }}
+            
+            getPlaceID()
+        """
+        
+        js.eval(javascript_code)
             
     def resetInput(self, event):
         event.preventDefault()
         document.querySelector("#title").value = ""
         document.querySelector("#date").value = ""
         document.querySelector("#text").value = ""
+        document.querySelector("#location").value = ""
     
     def removeStatus(self, event):
         event.preventDefault()
@@ -675,9 +736,10 @@ class LoadBlogWidget(AbstractWidget):
         userCommentsUpper = document.createElement("div")
         userCommentsUpper.classList.add("user__comments--upper")
         
-        userCommentsName = document.createElement("div")
+        userCommentsName = document.createElement("a")
         userCommentsName.classList.add("user__comments--name")
         userCommentsName.innerHTML = f"{userDetail.get('username')}"
+        userCommentsName.href = f"/userInfo/{userDetail.get('userID')}"
 
         userCommentsTimestamp = document.createElement("div")
         userCommentsTimestamp.classList.add("user__comments--timestamp")
@@ -759,9 +821,10 @@ class LoadBlogWidget(AbstractWidget):
         blogPostHeader = document.createElement("div")
         blogPostHeader.classList.add("blog__post--header")
         
-        blogPostUsername = document.createElement("div")
+        blogPostUsername = document.createElement("a")
         blogPostUsername.classList.add("blog__post--username")    
         blogPostUsername.innerHTML = f"{authorName}"
+        blogPostUsername.href = f"/userInfo/{blogData.get('author')}"
 
         blogPostPosted = document.createElement("div")
         blogPostPosted.classList.add("blog__post--posted")
@@ -814,7 +877,7 @@ class LoadBlogWidget(AbstractWidget):
         if daysLeft == 0:
             if hoursLeft == 0:
                 if minutesLeft == 0:
-                    blogPostTitleH3.innerHTML = f"{blogData.get('title')}, {formatDate} ({target_date} {secondsLeft} {'seconds' if secondsLeft > 1 else 'second'} left)"
+                    blogPostTitleH3.innerHTML = f"{blogData.get('title')}, {formatDate} ({secondsLeft} {'seconds' if secondsLeft > 1 else 'second'} left)"
                 else:
                     blogPostTitleH3.innerHTML = f"{blogData.get('title')}, {formatDate} ({minutesLeft} {'minutes' if minutesLeft > 1 else 'minute'} left)"
             else:
@@ -832,8 +895,15 @@ class LoadBlogWidget(AbstractWidget):
 
         blogPostMessage.appendChild(blogPostMessageP)
         
+        placeID = blogData.get("location")
+        
+        blogPostLocation = document.createElement("iframe")
+        blogPostLocation.classList.add("map")
+        blogPostLocation.src = f"https://www.google.com/maps/embed/v1/place?q=place_id:{placeID}&key=AIzaSyDgm_2U2SClJaQ-8Hmy6UeU_dGdKb8Roh4"
+        
         blogPostField.appendChild(blogPostTitle)
         blogPostField.appendChild(blogPostMessage)
+        blogPostField.appendChild(blogPostLocation)
 
         blogPostFooter = document.createElement("div")
         blogPostFooter.classList.add("blog__post--footer")
@@ -1000,9 +1070,10 @@ class LoadBlogWidget(AbstractWidget):
         blogCommunitiesDetais = document.createElement("div")
         blogCommunitiesDetais.classList.add("blog__communities--details")
 
-        blogCommunitiesName = document.createElement("div")
+        blogCommunitiesName = document.createElement("a")
         blogCommunitiesName.classList.add("blog__communities--name")
         blogCommunitiesName.innerHTML = f"{memberDetail.get('username')}"
+        blogCommunitiesName.href = f"/userInfo/{memberID}"
 
         blogCommunitiesFollower = document.createElement("div")
         blogCommunitiesFollower.classList.add("blog__communities--follower")

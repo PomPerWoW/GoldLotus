@@ -332,6 +332,8 @@
 }
 
 .blog__post--username {
+    color: #000;
+    text-decoration: none;
     font-weight: 500;
 }
 
@@ -441,7 +443,8 @@
 }
 
 .blog__communities--name {
-    margin-bottom: 0.4rem;
+    color: #000;
+    text-decoration: none;
 }
 
 .blog__communities--name:hover {
@@ -450,6 +453,7 @@
 }
 
 .blog__communities--follower {
+    margin-top: 0.4rem;
     color: #616161;
 }
 
@@ -594,6 +598,11 @@
 
 .user__likes--name {
     margin-bottom: 0.5rem;
+}
+
+.user__comments--name {
+    color: #000;
+    text-decoration: none;
 }
 
 .user__comments--name:hover {

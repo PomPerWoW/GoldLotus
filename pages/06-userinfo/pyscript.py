@@ -78,6 +78,13 @@ class UserInfoWidget(AbstractWidget):
         window.location.href = "/"
 
     def loadUserInfoUser(self, userInfo):
+        divLeft = document.createElement("div")
+        divLeft.classList.add("div-left")
+        
+        userInfoUserImg = document.createElement("img")
+        userInfoUserImg.classList.add("userinfo--img")
+        userInfoUserImg.src = "/assets/images/monk-cartoon-1.png"
+        
         divFragment = document.createElement("div")
 
         userInfoUserID = document.createElement("div")
@@ -107,10 +114,30 @@ class UserInfoWidget(AbstractWidget):
         divFragment.appendChild(userInfoUserID)
         divFragment.appendChild(userInfoUserName)
         divFragment.appendChild(userInfoUserEmail)
+        
+        divLeft.appendChild(userInfoUserImg)
+        divLeft.appendChild(divFragment)
+        
+        divRight = document.createElement("div")
+        divRight.classList.add("div-right")
+        
+        userFollowingData = userInfo.get('following')
+        userFollowerData = userInfo.get('follower')
+        
+        userFollowing = document.createElement("p")
+        userFollowing.innerHTML = f"{len(userFollowingData)} Following"
+        
+        userFollower = document.createElement("p")
+        userFollower.innerHTML = f"{len(userFollowerData)} Follower"
 
-        self.userinfoUserHeader.appendChild(divFragment)
+        divRight.appendChild(userFollowing)
+        divRight.appendChild(userFollower)
+
+        self.userinfoUserHeader.appendChild(divLeft)
+        self.userinfoUserHeader.appendChild(divRight)
         
 if __name__ == "__main__":
+    
     w = UserInfoWidget("userinfo")
     w.initializeWidget()
     

@@ -267,8 +267,6 @@
     padding: 0 3.2rem;
 }
 
-
-
 .block {
     display: flex;
     padding: 2rem;
@@ -281,7 +279,7 @@
     display: flex;
     /* background-color: white; */
     width: 100%;
-    max-height: 90%; 
+    max-height: 90%;
     overflow-y: auto;
     flex-direction: column;
     /* padding: 3rem; */
@@ -289,63 +287,69 @@
 }
 .show_blog1 {
     display: flex;
-    flex-direction: row;    
+    flex-direction: row;
 }
-.show_blog h2{
-    width: 90%
+.show_blog h2 {
+    width: 90%;
 }
 
 .box__header {
     font-size: 2.5rem;
-    color: #4D4637;
+    color: #4d4637;
     padding: 2.6rem;
 }
 
-.noti--head--box{
+.noti--head--box {
     background-color: white;
-    color: #4D4637; 
-    border-bottom:1px solid darkgray; 
+    color: #4d4637;
+    border-bottom: 1px solid darkgray;
     padding: 1.5rem 3rem 1.5rem 3rem;
     display: flex;
     flex-direction: row;
     /* font-weight: 500; */
 }
 
-.noti--box--name{
+.noti--box--name {
     display: flex;
     /* padding: 1.2rem 1rem 1.2rem 3rem; */
     /* font-weight: 500; */
     width: 90%;
 }
 
-.Noti--box:hover{
+.Noti--box:hover {
     background-color: aliceblue;
 }
 
-.noti--box--delete{
-    width: 10%;
-    /* padding: 1.2rem 0 1.2rem 0; */
-    color: #4D4637; 
+#delete_all {
+    color: red;
+    cursor: pointer;
 }
 
-.noti--box--time{
+.noti--box--delete {
+    width: 10%;
+    cursor: pointer;
+    /* padding: 1.2rem 0 1.2rem 0; */
+    color: #4d4637;
+}
+
+.noti--box--time {
     width: 10%;
     padding: 1.2rem 1rem 1.2rem 0;
-    color: #4D4637; 
+    color: #4d4637;
 }
 .noti--body {
     display: flex;
     flex-direction: row;
 }
 
-.noti--body:hover{
+.noti--body:hover {
     background-color: rgb(242, 242, 242);
 }
 
-.icon{
+.icon {
     padding: 1.2rem 1rem 1.2rem 1rem;
 }
 
-.icon:hover{
+.icon:hover {
     color: #dcb60e;
 }

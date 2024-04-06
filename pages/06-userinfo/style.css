@@ -3,6 +3,18 @@
     background-color: #fff9e8;
 }
 
+.div-left {
+    display: flex;
+    align-items: center;
+}
+
+.div-right {
+    display: flex;
+    margin-right: 4rem;
+    gap: 4rem;
+    align-items: flex-end;
+}
+
 .userinfo__blog--header,
 .userinfo__event--header {
     font-size: 1.8rem;
@@ -13,6 +25,7 @@
 .userinfo__user--header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 4rem;
     background-color: hsla(39, 55%, 66%, 0.2);
     padding: 2rem;

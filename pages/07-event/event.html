@@ -87,7 +87,7 @@
                         Event Error
                     </h2>
                     <p class="error__box--message">
-                        Try again. Make sure the date was right.
+                        title, date (before today), and text are required.
                     </p>
                     <button class="error__box--btn" id="error__box--btn">
                         Ok
@@ -254,6 +254,7 @@
             </div>
             <div class="blog" id="blog">
                 <div class="blog__post--box" id="blog__post--box">
+                    <div class="hidden" id="placeID"></div>
                     <div class="blog__post" id="blog__post--create">
                         <div class="blog__create-post--header">
                             <p>Create your own event</p>
@@ -269,6 +270,9 @@
                                     required
                                 />
                             </div>
+                            <div class="blog__create-post--datelabel">
+                                Enter event occur date:
+                            </div>
                             <div>
                                 <input
                                     type="datetime-local"
@@ -281,10 +285,20 @@
                             </div>
                             <div class="blog__create-post--message">
                                 <textarea
-                                    id="text"
-                                    name="insert messages..."
+                                    id="location"
+                                    name="insert location..."
                                     class="blog__create-post--message"
-                                    placeholder="insert details and location..."
+                                    placeholder="insert location..."
+                                    cols="60"
+                                    rows="2"
+                                ></textarea>
+                            </div>
+                            <div class="blog__create-post--message">
+                                <textarea
+                                    id="text"
+                                    name="insert details..."
+                                    class="blog__create-post--message"
+                                    placeholder="insert details..."
                                     cols="60"
                                     rows="5"
                                 ></textarea>
@@ -357,5 +371,8 @@
             src="https://kit.fontawesome.com/1c7eef805a.js"
             crossorigin="anonymous"
         ></script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgm_2U2SClJaQ-8Hmy6UeU_dGdKb8Roh4"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgm_2U2SClJaQ-8Hmy6UeU_dGdKb8Roh4&libraries=places"></script>
     </body>
 </html>
