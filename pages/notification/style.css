@@ -98,7 +98,7 @@
 /* blog section */
 .show_blog {
     display: flex;
-    padding-top: 20rem;
+    padding: 20rem 0;
     align-items: center;
     flex-wrap: wrap;
 }

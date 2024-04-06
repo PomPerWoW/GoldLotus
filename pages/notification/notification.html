@@ -1,60 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- Shortcut Icon -->
+        <link
+            rel="shortcut icon"
+            type="image/png"
+            href="../../assets/icons/logo.svg"
+        />
 
-    <!-- Shortcut Icon -->
-    <link rel="shortcut icon" type="image/png" href="../../assets/icons/logo.svg" />
+        <!-- Global CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/general.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/global-style.css') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('global-static', path='/queries.css') }}"
+        />
 
-    <!-- Global CSS -->
-    <link rel="stylesheet" href="{{ url_for('global-static', path='/general.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('global-static', path='/global-style.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('global-static', path='/queries.css') }}" />
+        <!-- Local CSS -->
+        <link
+            rel="stylesheet"
+            href="{{ url_for('notification-static', path='/style.css') }}"
+        />
 
-    <!-- Local CSS -->
-    <link rel="stylesheet" href="{{ url_for('main-static', path='/style.css') }}" />
+        <!-- PyScript -->
+        <link
+            rel="stylesheet"
+            href="https://pyscript.net/releases/2024.1.1/core.css"
+        />
+        <script
+            type="module"
+            src="https://pyscript.net/releases/2024.1.1/core.js"
+        ></script>
 
-    <!-- PyScript -->
-    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css" />
-    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+        <title>GoldLotus | Notifications</title>
+    </head>
 
-    <title>GoldLotus</title>
-</head>
+    <body>
+        <!-- Loader Section -->
 
-<body>
-    <!-- Loader Section -->
+        {% include "global-component/loader.html" %}
 
-    {% include "global-component/loader.html" %}
+        <!-- Navigation Section -->
 
-    <!-- Navigation Section -->
+        {% include "global-component/navbar.html" %}
 
-    {% include "global-component/navbar.html" %}
-
-    <div class="gradient-bgup">
-        <div class="container">
-            <section class="show_blog">
-                <div class="text_">
-                    <h2>Notifications</h2>
-                </div>
-                <div id="notifications"></div>
-                <a id="delete_all">Delete All</a>
-            </section>
+        <div class="gradient-bgup">
+            <div class="container">
+                <section class="show_blog">
+                    <div class="text_">
+                        <h2>Notifications</h2>
+                    </div>
+                    <div id="notifications"></div>
+                    <a id="delete_all">Delete All</a>
+                </section>
+            </div>
         </div>
-    </div>
 
-    <!-- Footer Section -->
+        <!-- Footer Section -->
 
-    {% include "global-component/footer.html" %}
+        {% include "global-component/footer.html" %}
 
-    <!-- Global PyScript -->
-    <script type="py" src="{{ url_for('global-static', path='/pyscript.py') }}"></script>
+        <!-- Global PyScript -->
+        <script
+            type="py"
+            src="{{ url_for('global-static', path='/pyscript.py') }}"
+        ></script>
 
-    <!-- Local Pyscript-->
-    <script type="py" src="{{ url_for('notification-static', path='/pyscript.py') }}"></script>
+        <!-- Local Pyscript-->
+        <script
+            type="py"
+            src="{{ url_for('notification-static', path='/pyscript.py') }}"
+        ></script>
 
-    <script src="https://kit.fontawesome.com/1c7eef805a.js" crossorigin="anonymous"></script>
-</body>
-
+        <script
+            src="https://kit.fontawesome.com/1c7eef805a.js"
+            crossorigin="anonymous"
+        ></script>
+    </body>
 </html>

@@ -507,14 +507,21 @@
 
 #liked__box,
 #commented__box,
-#followed__box {
+#followed__box,
+#attending__box {
     z-index: 1000;
     color: #fff;
     background-color: #57ad68;
 }
 
+#maybe__box {
+    background-color: #d8b778;
+}
+
 #unliked__box,
-#unfollowed__box {
+#unfollowed__box,
+#notattending__box,
+#cancel__box {
     z-index: 1000;
     color: #fff;
     background-color: #ad5757;

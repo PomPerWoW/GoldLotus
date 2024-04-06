@@ -144,10 +144,23 @@
 }
 
 .userinfo__logout--btn {
+    margin-top: 4rem;
     cursor: pointer;
     padding: 1rem 2rem;
     font-weight: 500;
     border-radius: 2rem;
     color: #fff;
     background-color: #d8b778;
+}
+
+.userinfo__blog-event {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+}
+
+.userinfo__blog,
+.userinfo__event {
+    width: 100%;
+    padding: 2rem;
 }

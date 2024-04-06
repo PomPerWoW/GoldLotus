@@ -56,6 +56,18 @@
             <p>Unliked</p>
         </div>
 
+        <div class="hidden blog__like--status-box" id="attending__box">
+            <p>Attending</p>
+        </div>
+
+        <div class="hidden blog__like--status-box" id="maybe__box">
+            <p>Maybe</p>
+        </div>
+
+        <div class="hidden blog__like--status-box" id="notattending__box">
+            <p>Not Attending</p>
+        </div>
+
         <div class="hidden blog__like--status-box" id="commented__box">
             <p>Commented</p>
         </div>
@@ -72,9 +84,11 @@
             <div class="container">
                 <div class="error__box">
                     <h2 class="error__box--header heading-tertiary">
-                        Blog Error
+                        Event Error
                     </h2>
-                    <p class="error__box--message">Try again.</p>
+                    <p class="error__box--message">
+                        Try again. Make sure the date was right.
+                    </p>
                     <button class="error__box--btn" id="error__box--btn">
                         Ok
                     </button>
@@ -86,7 +100,7 @@
             <div class="container">
                 <div class="success__box">
                     <h2 class="success__box--header heading-tertiary">
-                        Blog Created
+                        Event Created
                     </h2>
                     <button class="success__box--btn" id="success__box--btn">
                         Ok
@@ -242,7 +256,7 @@
                 <div class="blog__post--box" id="blog__post--box">
                     <div class="blog__post" id="blog__post--create">
                         <div class="blog__create-post--header">
-                            <p>Create your own post</p>
+                            <p>Create your own event</p>
                         </div>
                         <div class="blog__create-post--field">
                             <div>
@@ -299,7 +313,7 @@
                     <div class="hidden blog__post-guest" id="blog__post--guest">
                         <div>
                             <h2 class="blog__post-guest--suggest">
-                                Create your own post now!
+                                Create your own event now!
                             </h2>
                         </div>
                         <div class="blog__post-guest--btn" id="nav__box--guest">
