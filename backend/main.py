@@ -6,6 +6,8 @@ from blog import router as blog_router
 from account_management import router as accounte_management_router
 from account_management import *
 from media_response import router as media_response_router
+from event import router as event_router
+from map import router as map_router
 
 app = FastAPI()
 
@@ -15,6 +17,8 @@ app = FastAPI()
 app.include_router(blog_router)
 app.include_router(accounte_management_router)
 app.include_router(media_response_router)
+app.include_router(event_router)
+app.include_router(map_router)
 
 # =============================================================================
 
