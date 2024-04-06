@@ -97,6 +97,9 @@ async def success(pos):
     nearby = await getNearby(coordinates.latitude, coordinates.longitude)
     nearby_container = document.getElementById("nearby_list")
     for i in range(len(nearby.get("results"))):
+        templeData = document.createElement("div")
+        templeData.classList.add("temple__data")
+        
         temple = document.createElement("div")
         temple.className = "temple"
         distance_away = haversine_distance(coordinates.latitude, coordinates.longitude, nearby.get("results")[i].get("geometry").get("location").get("lat"), nearby.get("results")[i].get("geometry").get("location").get("lng"))
@@ -107,8 +110,10 @@ async def success(pos):
         temple_icon.alt = "temple_icon"
         temple_icon.src = nearby.get("results")[i].get("icon")
         
-        nearby_container.appendChild(temple_icon)
-        nearby_container.appendChild(temple)
+        templeData.appendChild(temple_icon)
+        templeData.appendChild(temple)
+        
+        nearby_container.appendChild(templeData)
         
 def get_current_position(success, error = None, options = None):
     if not options:

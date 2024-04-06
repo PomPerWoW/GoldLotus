@@ -400,7 +400,6 @@ class LoadBlogWidget(AbstractWidget):
                     for i in range(len(self.blogLists)):
                         blogData = await self.loadBlog(self.blogLists[i])
                         if blogData.get("detail") != "blog not found":
-                            self.createFollowingUser(followingUserDetail.get("username"), followingUserDetail.get("userID"))
                             await self.createBlog(blogData)
 
     async def loadPopular(self, event, viewMore=False, notView=True):

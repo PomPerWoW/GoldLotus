@@ -84,20 +84,37 @@ class BlogWidget(AbstractWidget):
             current_datetime = datetime.now()
 
             if date_time_obj > current_datetime:
-                try:
-                    response = await pyfetch(
-                        url=f"/createEvent/?title={title}&text={text}&date={date}&location={placeID}",
-                        method='POST',
-                        headers={'Content-Type': 'application/json'}
-                    )
+                if placeID == "":
+                    print("yes")
+                    try:
+                        response = await pyfetch(
+                            url=f"/createEvent/?title={title}&text={text}&date={date}",
+                            method='POST',
+                            headers={'Content-Type': 'application/json'}
+                        )
 
-                    if response.ok:
-                        data = await response.json()
-                        self.successBox.classList.remove("hidden")
-                        self.resetInput(event)
-                        return data
-                except Exception as error:
-                    print('Error:', error)
+                        if response.ok:
+                            data = await response.json()
+                            self.successBox.classList.remove("hidden")
+                            self.resetInput(event)
+                            return data
+                    except Exception as error:
+                        print('Error:', error)
+                else:
+                    try:
+                        response = await pyfetch(
+                            url=f"/createEvent/?title={title}&text={text}&date={date}&location={placeID}",
+                            method='POST',
+                            headers={'Content-Type': 'application/json'}
+                        )
+
+                        if response.ok:
+                            data = await response.json()
+                            self.successBox.classList.remove("hidden")
+                            self.resetInput(event)
+                            return data
+                    except Exception as error:
+                        print('Error:', error)
             else:
                 self.errorBox.classList.remove("hidden")
 
@@ -166,15 +183,9 @@ class LoadBlogWidget(AbstractWidget):
         # Btn
         self.blogPagLatest = document.querySelector("#blog__pagination--latest")
         self.blogPagMyEvent = document.querySelector("#blog__pagination--myevent")
-        self.blogPagAttendingBtn = document.querySelector("#blog__pagination--attending")
-        self.blogPagMaybeBtn = document.querySelector("#blog__pagination--maybe")
-        self.blogPagNotAttendingBtn = document.querySelector("#blog__pagination--notattending")
         
         self.blogPagLatest.onclick = self.loadAllEvent
         self.blogPagMyEvent.onclick = self.loadMyEvent
-        self.blogPagAttendingBtn.onclick = self.loadAttending
-        self.blogPagMaybeBtn.onclick = self.loadMaybe
-        self.blogPagNotAttendingBtn.onclick = self.loadNotAttending
 
         self.likedBox = document.querySelector("#liked__box")
         self.unLikedBox = document.querySelector("#unliked__box")
@@ -201,8 +212,7 @@ class LoadBlogWidget(AbstractWidget):
         
         # Communities
         self.blogCommunities = document.querySelector("#blog__communities")
-        self.blogCommunitiesList = document.querySelector("#blog__communities--list")
-
+        
     async def onLoad(self):
         self.data = await self.getUserInfo()
         if self.data.get("detail") == "'NoneType' object is not subscriptable":
@@ -897,13 +907,14 @@ class LoadBlogWidget(AbstractWidget):
         
         placeID = blogData.get("location")
         
-        blogPostLocation = document.createElement("iframe")
-        blogPostLocation.classList.add("map")
-        blogPostLocation.src = f"https://www.google.com/maps/embed/v1/place?q=place_id:{placeID}&key=AIzaSyDgm_2U2SClJaQ-8Hmy6UeU_dGdKb8Roh4"
-        
         blogPostField.appendChild(blogPostTitle)
         blogPostField.appendChild(blogPostMessage)
-        blogPostField.appendChild(blogPostLocation)
+        
+        if placeID != None:
+            blogPostLocation = document.createElement("iframe")
+            blogPostLocation.classList.add("map")
+            blogPostLocation.src = f"https://www.google.com/maps/embed/v1/place?q=place_id:{placeID}&key=AIzaSyDgm_2U2SClJaQ-8Hmy6UeU_dGdKb8Roh4"
+            blogPostField.appendChild(blogPostLocation)
 
         blogPostFooter = document.createElement("div")
         blogPostFooter.classList.add("blog__post--footer")
@@ -1062,6 +1073,8 @@ class LoadBlogWidget(AbstractWidget):
             print(e)
 
     async def loadMembers(self, memberID):
+        self.blogCommunitiesList = document.querySelector("#blog__communities--list")
+
         memberDetail = await self.getUserDetail(memberID)
         
         blogCommunitiesPeople = document.createElement("div")
