@@ -94,14 +94,20 @@ def haversine_distance(lat1, lon1, lat2, lon2):
 
 async def success(pos):
     coordinates = pos.coords
-    print([coordinates.latitude, coordinates.longitude])
     nearby = await getNearby(coordinates.latitude, coordinates.longitude)
     nearby_container = document.getElementById("nearby_list")
     for i in range(len(nearby.get("results"))):
         temple = document.createElement("div")
+        temple.className = "temple"
         distance_away = haversine_distance(coordinates.latitude, coordinates.longitude, nearby.get("results")[i].get("geometry").get("location").get("lat"), nearby.get("results")[i].get("geometry").get("location").get("lng"))
-        temple.innerHTML = nearby.get("results")[i].get("name") + "<br>" + str(distance_away) + " km away"
+        temple.innerHTML = nearby.get("results")[i].get("name") + "<br>" + str(round(distance_away, 2)) + " km away, " + nearby.get("results")[i].get("vicinity")
         
+        temple_icon = document.createElement("img")
+        temple_icon.className  = "temple_icon"
+        temple_icon.alt = "temple_icon"
+        temple_icon.src = nearby.get("results")[i].get("icon")
+        
+        nearby_container.appendChild(temple_icon)
         nearby_container.appendChild(temple)
         
 def get_current_position(success, error = None, options = None):
